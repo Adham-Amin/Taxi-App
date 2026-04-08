@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart';
+import 'package:taxi_app/core/utils/app_colors.dart';
+import 'package:taxi_app/core/utils/app_styles.dart';
+
+class RoleButton extends StatelessWidget {
+  const RoleButton({
+    super.key,
+    required this.title,
+    required this.isActive,
+    required this.onTap,
+  });
+
+  final String title;
+  final bool isActive;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: isActive ? AppColors.darkGrey : Colors.transparent,
+          border: Border.all(
+            color: isActive
+                ? AppColors.lightGreen.withValues(alpha: 0.2)
+                : Colors.transparent,
+          ),
+        ),
+        child: Text(
+          'Continue as $title',
+          style: AppStyles.textBold14.copyWith(
+            color: isActive ? AppColors.lightGreen : AppColors.lightGrey,
+          ),
+        ),
+      ),
+    );
+  }
+}
