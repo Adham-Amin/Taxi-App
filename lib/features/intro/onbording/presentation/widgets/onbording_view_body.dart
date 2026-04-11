@@ -30,9 +30,9 @@ class OnbordingViewBody extends StatelessWidget {
           110.hs,
           CustomButton(
             title: 'Get Started',
-            onTap: () {
-              Prefs.setBool('SeenOnboarding', true);
+            onTap: () async {
               context.go(AppRoutes.welcome);
+              await Prefs.setBool('SeenOn', true);
             },
           ),
         ],

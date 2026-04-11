@@ -16,9 +16,9 @@ class OnbordingView extends StatelessWidget {
         backgroundColor: Colors.transparent,
         actions: [
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               context.go(AppRoutes.welcome);
-              Prefs.setBool('SeenOnboarding', true);
+              await Prefs.setBool('SeenOn', true);
             },
             child: Text(
               'Skip',

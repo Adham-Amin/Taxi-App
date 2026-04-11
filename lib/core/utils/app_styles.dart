@@ -4,6 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 abstract class AppStyles {
   static const String fontFamily = 'Manrope';
 
+  static TextStyle textRegular10 = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 10.sp,
+  );
   static TextStyle textRegular12 = TextStyle(
     fontWeight: FontWeight.w400,
     fontSize: 12.sp,

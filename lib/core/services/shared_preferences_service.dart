@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
 
 abstract class Prefs {
   static SharedPreferences? _prefs;
@@ -7,14 +10,14 @@ abstract class Prefs {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  // static Future<void> setUser(UserEntity user) async {
-  //   await _prefs?.setString('user', jsonEncode(user.toJson()));
-  // }
+  static Future<void> setUser(UserInfoModel user) async {
+    await _prefs?.setString('user', jsonEncode(user.toMap()));
+  }
 
-  // static UserEntity? getUser() {
-  //   final user = _prefs?.getString('user');
-  //   return user != null ? UserEntity.fromJson(jsonDecode(user)) : null;
-  // }
+  static UserInfoModel? getUser() {
+    final user = _prefs?.getString('user');
+    return user != null ? UserInfoModel.fromMap(jsonDecode(user)) : null;
+  }
 
   static Future<void> clearUserData() async {
     await _prefs?.remove('user');

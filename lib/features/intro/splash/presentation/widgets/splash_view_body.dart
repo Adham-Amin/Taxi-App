@@ -18,9 +18,7 @@ class _SplashViewBodyState extends State<SplashViewBody> {
   @override
   initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      context.go(AppRoutes.onboarding);
-    });
+    Future.delayed(const Duration(seconds: 3), checkNavigation);
   }
 
   void checkNavigation() async {
@@ -35,7 +33,7 @@ class _SplashViewBodyState extends State<SplashViewBody> {
       return;
     }
 
-    final seen = Prefs.getBool('SeenOnboarding');
+    final seen = Prefs.getBool('SeenOn');
     if (seen) {
       context.go(AppRoutes.welcome);
     } else {

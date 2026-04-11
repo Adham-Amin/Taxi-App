@@ -3,8 +3,7 @@ class AppRoutes {
   static const String onboarding = '/onboarding';
   static const String welcome = '/welcome';
   static const String login = '/login';
-  static const String driverRegister = '/driverRegister';
-  static const String userRegister = '/userRegister';
+  static const String register = '/register';
   static const String userMain = '/userMain';
   static const String driverMain = '/driverMain';
 }

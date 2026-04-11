@@ -25,13 +25,15 @@ class CrazyApp extends StatelessWidget {
       designSize: const Size(390, 884),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        themeMode: ThemeMode.dark,
-        theme: AppThemes.lightTheme,
-        darkTheme: AppThemes.darkTheme,
-        routerConfig: RouterGenerationConfig.router,
-      ),
+      builder: (context, child) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          themeMode: ThemeMode.dark,
+          theme: AppThemes.lightTheme,
+          darkTheme: AppThemes.darkTheme,
+          routerConfig: RouterGenerationConfig.router,
+        );
+      },
     );
   }
 }

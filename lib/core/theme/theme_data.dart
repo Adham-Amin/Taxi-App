@@ -15,13 +15,26 @@ class AppThemes {
     ),
     fontFamily: AppStyles.fontFamily,
     inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
+      hintStyle: AppStyles.textRegular16.copyWith(color: AppColors.darkGrey),
+      suffixIconColor: AppColors.lightGreen.withValues(alpha: 0.5),
+      filled: true,
+      fillColor: AppColors.darkBlack,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(32),
-        borderSide: const BorderSide(color: Colors.orange),
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(
+          color: AppColors.lightGreen.withValues(alpha: 0.5),
+        ),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.red),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: Colors.red),
       ),
     ),

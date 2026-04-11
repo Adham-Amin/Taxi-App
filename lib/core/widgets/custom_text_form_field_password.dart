@@ -33,7 +33,6 @@ class _CustomTextFormFieldPasswordState
       validator: widget.validator,
       style: AppStyles.textRegular14,
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.lock_outline),
         hintText: widget.hintText,
         suffixIcon: IconButton(
           onPressed: () {
@@ -42,10 +41,8 @@ class _CustomTextFormFieldPasswordState
             });
           },
           icon: Icon(
-            isPasswordVisible
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined,
-            color: AppColors.accent,
+            isPasswordVisible ? Icons.lock_outline : Icons.lock_open_outlined,
+            color: AppColors.lightGreen.withValues(alpha: 0.5),
           ),
         ),
       ),

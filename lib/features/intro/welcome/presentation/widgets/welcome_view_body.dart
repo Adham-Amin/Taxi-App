@@ -30,16 +30,11 @@ class _WelcomeViewBodyState extends State<WelcomeViewBody> {
           Spacer(),
           SvgPicture.asset(AppAssets.svgsLogo),
           24.hs,
-          Text(
-            'Crazy Taxi',
-            style: AppStyles.textExtraBold36.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+          Text('Crazy Taxi', style: AppStyles.textExtraBold36),
           12.hs,
           Text(
             'Experience the next generation of peer-to-peer urban mobility.',
-            style: AppStyles.textMedium16,
+            style: AppStyles.textMedium16.copyWith(color: AppColors.accent),
             textAlign: TextAlign.center,
           ),
           48.hs,
@@ -62,9 +57,7 @@ class _WelcomeViewBodyState extends State<WelcomeViewBody> {
             shadeColor: Colors.transparent,
             colorText: AppColors.lightGrey,
             onTap: () {
-              role == UserTypeEnum.driver
-                  ? context.push(AppRoutes.driverRegister)
-                  : context.push(AppRoutes.userRegister);
+              context.push(AppRoutes.register, extra: role.name);
             },
           ),
           Spacer(),
