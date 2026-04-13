@@ -15,7 +15,7 @@ class AppThemes {
     ),
     fontFamily: AppStyles.fontFamily,
     inputDecorationTheme: InputDecorationTheme(
-      hintStyle: AppStyles.textRegular16.copyWith(color: AppColors.darkGrey),
+      hintStyle: AppStyles.textRegular16.copyWith(color: AppColors.accent),
       suffixIconColor: AppColors.lightGreen.withValues(alpha: 0.5),
       filled: true,
       fillColor: AppColors.darkBlack,

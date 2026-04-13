@@ -14,6 +14,10 @@ class AppAssets {
   /// assets/images/logo_splash.png
   static const String imagesLogoSplash = "assets/images/logo_splash.png";
 
+  /// Assets for imagesMarker
+  /// assets/images/Marker.png
+  static const String imagesMarker = "assets/images/Marker.png";
+
   /// Assets for imagesOnbording
   /// assets/images/onbording.png
   static const String imagesOnbording = "assets/images/onbording.png";
