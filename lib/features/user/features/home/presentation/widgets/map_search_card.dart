@@ -18,29 +18,24 @@ class MapSearchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 80,
-      left: 24,
-      right: 24,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.dark.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            LocationIconsColumn(),
-            16.ws,
-            Expanded(
-              child: LocationFieldsColumn(
-                currentLocation: currentLocation,
-                onTap: destLocation,
-              ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.dark.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          LocationIconsColumn(),
+          16.ws,
+          Expanded(
+            child: LocationFieldsColumn(
+              currentLocation: currentLocation,
+              onTap: destLocation,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

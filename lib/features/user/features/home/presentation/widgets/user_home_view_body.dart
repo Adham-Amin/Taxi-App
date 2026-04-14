@@ -11,8 +11,11 @@ import 'package:taxi_app/core/utils/app_assets.dart';
 import 'package:taxi_app/features/user/features/home/domain/entities/place_entity.dart';
 import 'package:taxi_app/features/user/features/home/presentation/cubit/google_map_cubit.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/custom_drawer_button.dart';
+import 'package:taxi_app/features/user/features/home/presentation/widgets/done_trip.dart';
+import 'package:taxi_app/features/user/features/home/presentation/widgets/driver_info.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/map_search_card.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/request_button.dart';
+import 'package:taxi_app/features/user/features/home/presentation/widgets/searching_driver_overlay.dart';
 
 class UserHomeViewBody extends StatefulWidget {
   const UserHomeViewBody({super.key});
@@ -23,26 +26,27 @@ class UserHomeViewBody extends StatefulWidget {
 
 class _UserHomeViewBodyState extends State<UserHomeViewBody> {
   GoogleMapController? _mapController;
-
+  StreamSubscription<LocationData>? _locationSubscription;
   final LocationServices _locationService = LocationServices();
-
-  CameraPosition initialCameraPosition = const CameraPosition(
-    target: LatLng(27.003337, 29.9530391),
-    zoom: 5,
-  );
+  late CameraPosition initialCameraPosition;
 
   LatLng? _currentLocation;
   final Set<Marker> _markers = {};
   final Set<Polyline> _polylines = {};
-  StreamSubscription<LocationData>? _locationSubscription;
+
+  var stauts = 'Done';
 
   String? darkMapStyle;
 
   @override
   void initState() {
     super.initState();
-    _initLocation();
     _loadMapStyle();
+    getLocationStream();
+    initialCameraPosition = const CameraPosition(
+      target: LatLng(27.003337, 29.9530391),
+      zoom: 5,
+    );
   }
 
   @override
@@ -50,10 +54,6 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     _mapController?.dispose();
     _locationSubscription?.cancel();
     super.dispose();
-  }
-
-  void _initLocation() {
-    getLocationStream();
   }
 
   @override
@@ -74,13 +74,55 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
             }
           },
         ),
-        MapSearchCard(
-          currentLocation: (_) {
-            getCurrentLocation();
-          },
-          destLocation: _onDestinationSelected,
-        ),
-        RequestButton(),
+        stauts == 'Done'
+            ? DoneTrip(
+                onTap: () {
+                  setState(() {
+                    stauts = 'Cancel';
+                  });
+                },
+              )
+            : stauts == 'Accepted' || stauts == 'Arrived'
+            ? DriverInfo(stauts: stauts)
+            : stauts == 'Search'
+            ? SearchingDriverOverlay(
+                cancelSearching: () {
+                  setState(() {
+                    stauts = 'Cancel';
+                  });
+                },
+              )
+            : Padding(
+                padding: const EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                  bottom: 32,
+                  top: 80,
+                ),
+                child: Column(
+                  children: [
+                    MapSearchCard(
+                      currentLocation: (_) {
+                        getCurrentLocation();
+                      },
+                      destLocation: _onDestinationSelected,
+                    ),
+                    Spacer(),
+                    RequestButton(
+                      onTap: () {
+                        setState(() {
+                          stauts = 'Search';
+                        });
+                        Timer(const Duration(seconds: 5), () {
+                          setState(() {
+                            stauts = 'Accepted';
+                          });
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
         CustomDrawerButton(),
       ],
     );
@@ -88,10 +130,6 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
 
   Future<void> _loadMapStyle() async {
     darkMapStyle = await rootBundle.loadString('assets/json/map_style.json');
-
-    if (_mapController != null) {
-      _mapController!.setMapStyle(darkMapStyle);
-    }
   }
 
   void getCurrentLocation() async {

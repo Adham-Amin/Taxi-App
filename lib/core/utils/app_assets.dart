@@ -10,6 +10,10 @@ class AppAssets {
   /// assets/icons/logos_google-icon.png
   static const String iconsLogosGoogleIcon = "assets/icons/logos_google-icon.png";
 
+  /// Assets for imagesCheckmark
+  /// assets/images/checkmark.png
+  static const String imagesCheckmark = "assets/images/checkmark.png";
+
   /// Assets for imagesLogoSplash
   /// assets/images/logo_splash.png
   static const String imagesLogoSplash = "assets/images/logo_splash.png";
@@ -29,6 +33,10 @@ class AppAssets {
   /// Assets for imagesSplashScreen
   /// assets/images/splash_screen.png
   static const String imagesSplashScreen = "assets/images/splash_screen.png";
+
+  /// Assets for svgsCheckmark
+  /// assets/svgs/checkmark.svg
+  static const String svgsCheckmark = "assets/svgs/checkmark.svg";
 
   /// Assets for svgsLogo
   /// assets/svgs/logo.svg
