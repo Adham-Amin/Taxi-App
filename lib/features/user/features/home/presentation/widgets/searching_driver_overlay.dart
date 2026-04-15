@@ -3,7 +3,6 @@ import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/car_loading.dart';
-import 'package:taxi_app/features/user/features/home/presentation/widgets/user_home_view_body.dart';
 
 class SearchingDriverOverlay extends StatefulWidget {
   const SearchingDriverOverlay({super.key, required this.cancelSearching});

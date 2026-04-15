@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi_app/core/services/api_service.dart';
 import 'package:taxi_app/features/user/features/home/data/models/place_response.dart';
-import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
 import 'package:taxi_app/features/user/features/home/data/models/route_response.dart';
 
 abstract class MapDataSource {

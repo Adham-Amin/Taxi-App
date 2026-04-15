@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
 import 'package:taxi_app/features/user/features/home/data/models/trip_status_enum.dart';
@@ -73,12 +72,14 @@ class TripCubit extends Cubit<TripState> {
   Future<void> cancelRide() async {
     if (currentTripId == null) return;
     await tripRepo.cancelRide(tripId: currentTripId!);
+    close();
     emit(TripCanceled());
   }
 
   Future<void> doneRide() async {
     if (currentTripId == null) return;
     await tripRepo.doneRide(tripId: currentTripId!);
+    close();
     emit(TripDone());
   }
 
