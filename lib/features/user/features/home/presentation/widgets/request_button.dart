@@ -6,9 +6,16 @@ import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
 
 class RequestButton extends StatelessWidget {
-  const RequestButton({super.key, required this.onTap});
+  const RequestButton({
+    super.key,
+    required this.onTap,
+    required this.priceController,
+    required this.isLoading,
+  });
 
   final VoidCallback onTap;
+  final bool isLoading;
+  final TextEditingController priceController;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +35,12 @@ class RequestButton extends StatelessWidget {
                 color: AppColors.lightGreen,
               ),
               12.ws,
-              Expanded(child: CustomTextFormField(hintText: 'Enter amount')),
+              Expanded(
+                child: CustomTextFormField(
+                  hintText: 'Enter amount',
+                  controller: priceController,
+                ),
+              ),
               12.ws,
               Text(
                 'EGP',
@@ -39,7 +51,11 @@ class RequestButton extends StatelessWidget {
             ],
           ),
           16.hs,
-          CustomButton(title: 'Request Ride', onTap: onTap),
+          CustomButton(
+            isLoading: isLoading,
+            title: 'Request Ride',
+            onTap: onTap,
+          ),
         ],
       ),
     );

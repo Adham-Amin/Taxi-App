@@ -4,8 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/core/services/api_service.dart';
 import 'package:taxi_app/core/widgets/custom_drawer.dart';
 import 'package:taxi_app/features/user/features/home/data/datasources/google_map_data_source.dart';
+import 'package:taxi_app/features/user/features/home/data/datasources/trip_data_source.dart';
 import 'package:taxi_app/features/user/features/home/data/repositories/google_map_repo_impl.dart';
-import 'package:taxi_app/features/user/features/home/presentation/cubit/google_map_cubit.dart';
+import 'package:taxi_app/features/user/features/home/data/repositories/trip_repo_impl.dart';
+import 'package:taxi_app/features/user/features/home/presentation/manager/cubit/trip_cubit.dart';
+import 'package:taxi_app/features/user/features/home/presentation/manager/map_cubit/google_map_cubit.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/user_home_view_body.dart';
 
 class UserHomeView extends StatelessWidget {
@@ -13,14 +16,23 @@ class UserHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GoogleMapCubit(
-        googleMapRepo: GoogleMapRepoImpl(
-          googleMapDataSource: GoogleMapDataSourceImpl(
-            apiService: ApiService(Dio()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => MapCubit(
+            googleMapRepo: MapRepoImpl(
+              googleMapDataSource: MapDataSourceImpl(
+                apiService: ApiService(Dio()),
+              ),
+            ),
           ),
         ),
-      ),
+        BlocProvider(
+          create: (context) => TripCubit(
+            tripRepo: TripRepoImpl(tripDataSource: TripDataSourceImpl()),
+          ),
+        ),
+      ],
       child: Scaffold(
         body: SafeArea(child: UserHomeViewBody()),
         drawer: CustomDrawer(selectedIndex: 0, onIndexChanged: (index) {}),

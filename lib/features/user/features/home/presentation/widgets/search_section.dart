@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
-import 'package:taxi_app/features/user/features/home/domain/entities/place_entity.dart';
-import 'package:taxi_app/features/user/features/home/presentation/cubit/google_map_cubit.dart';
+import 'package:taxi_app/features/user/features/home/presentation/manager/map_cubit/google_map_cubit.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/search_list.dart';
 
 class SearchSection extends StatefulWidget {
-  const SearchSection({super.key, required this.onTap});
+  const SearchSection({super.key, required this.destination});
 
-  final Function(PlaceEntity) onTap;
+  final Function(LocationModel) destination;
 
   @override
   State<SearchSection> createState() => _SearchSectionState();
@@ -29,7 +29,6 @@ class _SearchSectionState extends State<SearchSection> {
   void dispose() {
     _searchController.dispose();
     _debounce?.cancel();
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -44,9 +43,9 @@ class _SearchSectionState extends State<SearchSection> {
             if (_debounce?.isActive ?? false) _debounce!.cancel();
             _debounce = Timer(const Duration(milliseconds: 400), () {
               if (_searchController.text.isNotEmpty) {
-                context.read<GoogleMapCubit>().getPlaces(query: value);
+                context.read<MapCubit>().getPlaces(query: value);
               } else {
-                context.read<GoogleMapCubit>().clearPlaces();
+                context.read<MapCubit>().clearPlaces();
               }
             });
           },
@@ -55,8 +54,13 @@ class _SearchSectionState extends State<SearchSection> {
         SearchList(
           onTap: (place) {
             _searchController.text = place.displayName;
-            context.read<GoogleMapCubit>().clearPlaces();
-            widget.onTap(place);
+            context.read<MapCubit>().clearPlaces();
+            var dest = LocationModel(
+              lat: place.lat.toDouble(),
+              lng: place.lon.toDouble(),
+              fullAddress: place.displayName,
+            );
+            widget.destination(dest);
           },
         ),
       ],

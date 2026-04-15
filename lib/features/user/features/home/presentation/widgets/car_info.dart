@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
+import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
 
 class CarInfo extends StatelessWidget {
-  const CarInfo({super.key});
+  const CarInfo({super.key, required this.trip});
+
+  final TripModel trip;
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +24,12 @@ class CarInfo extends StatelessWidget {
         ),
         8.hs,
         Text(
-          'BMW • White',
+          '${trip.driver.carModel} • ${trip.driver.carColor}',
           style: AppStyles.textBold14.copyWith(color: AppColors.white),
         ),
         2.hs,
         Text(
-          'AHF-123',
+          trip.driver.carPlateNumber,
           style: AppStyles.textRegular12.copyWith(color: AppColors.accent),
         ),
       ],

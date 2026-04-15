@@ -1,5 +1,5 @@
 class DriverModel {
-  final String id;
+  final String? id;
   final String image;
   final String name;
   final String email;
@@ -7,14 +7,13 @@ class DriverModel {
   final String carModel;
   final String carColor;
   final String carPlateNumber;
-  final double lat;
-  final double lng;
+  final double? lat;
+  final double? lng;
   final String role;
-  num? rating;
   bool? isAvailable;
 
   DriverModel({
-    required this.id,
+    this.id,
     required this.name,
     required this.email,
     required this.phone,
@@ -22,12 +21,22 @@ class DriverModel {
     required this.carColor,
     required this.carPlateNumber,
     required this.image,
-    required this.lat,
-    required this.lng,
+    this.lat,
+    this.lng,
     required this.role,
     this.isAvailable = true,
-    this.rating = 4,
   });
+
+  factory DriverModel.empty() => DriverModel(
+    name: '',
+    email: '',
+    phone: '',
+    carModel: '',
+    carColor: '',
+    carPlateNumber: '',
+    image: '',
+    role: '',
+  );
 
   Map<String, dynamic> toMap() {
     return {
@@ -43,7 +52,6 @@ class DriverModel {
       'lng': lng,
       'role': role,
       'isAvailable': isAvailable,
-      'rating': rating,
     };
   }
 
@@ -57,11 +65,10 @@ class DriverModel {
       carColor: map['carColor'] ?? '',
       carPlateNumber: map['carPlateNumber'] ?? '',
       image: map['image'] ?? '',
-      lat: map['lat'] ?? '',
-      lng: map['lng'] ?? '',
       role: map['role'] ?? '',
       isAvailable: map['isAvailable'] ?? true,
-      rating: map['rating'] ?? 4,
+      lat: (map['lat'] as num?)?.toDouble(),
+      lng: (map['lng'] as num?)?.toDouble(),
     );
   }
 }

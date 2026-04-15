@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
+import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/car_info.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/dirver_buttons.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/driver_image.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/driver_name_and_stauts.dart';
 
 class DriverInfo extends StatelessWidget {
-  const DriverInfo({super.key, required this.stauts});
+  const DriverInfo({super.key, required this.trip});
 
-  final String stauts;
+  final TripModel trip;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +28,14 @@ class DriverInfo extends StatelessWidget {
           children: [
             Row(
               children: [
-                DriverImage(),
+                DriverImage(trip: trip),
                 16.ws,
-                Expanded(child: DriverNameAndStauts(stauts: stauts)),
-                CarInfo(),
+                Expanded(child: DriverNameAndStauts(trip: trip)),
+                CarInfo(trip: trip),
               ],
             ),
             Divider(height: 24, color: AppColors.white.withValues(alpha: 0.08)),
-            DirverButtons(),
+            DirverButtons(trip: trip),
           ],
         ),
       ),

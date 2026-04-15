@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
+import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/trip_completed_card.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/trip_completed_header.dart';
 
 class DoneTrip extends StatelessWidget {
-  const DoneTrip({super.key, required this.onTap});
+  const DoneTrip({super.key, required this.onTap, required this.trip});
 
   final VoidCallback onTap;
+  final TripModel trip;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class DoneTrip extends StatelessWidget {
           Spacer(),
           TripCompletedHeader(),
           32.hs,
-          TripCompletedCard(),
+          TripCompletedCard(trip: trip),
           Spacer(),
           CustomButton(title: 'Done', onTap: onTap),
           32.hs,

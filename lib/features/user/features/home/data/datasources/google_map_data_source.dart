@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi_app/core/services/api_service.dart';
 import 'package:taxi_app/features/user/features/home/data/models/place_response.dart';
+import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
 import 'package:taxi_app/features/user/features/home/data/models/route_response.dart';
 
-abstract class GoogleMapDataSource {
+abstract class MapDataSource {
   Future<List<PlaceResponse>> getPlaces({required String query});
   Future<List<LatLng>> getPolylinePoints({
     required LatLng origin,
@@ -11,10 +13,10 @@ abstract class GoogleMapDataSource {
   });
 }
 
-class GoogleMapDataSourceImpl implements GoogleMapDataSource {
+class MapDataSourceImpl implements MapDataSource {
   final ApiService _apiService;
 
-  GoogleMapDataSourceImpl({required ApiService apiService})
+  MapDataSourceImpl({required ApiService apiService})
     : _apiService = apiService;
 
   @override

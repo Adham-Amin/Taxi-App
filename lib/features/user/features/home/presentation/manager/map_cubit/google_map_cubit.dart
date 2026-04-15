@@ -4,10 +4,10 @@ import 'package:taxi_app/features/user/features/home/domain/entities/place_entit
 import 'package:taxi_app/features/user/features/home/domain/repositories/google_map_repo.dart';
 part 'google_map_state.dart';
 
-class GoogleMapCubit extends Cubit<GoogleMapState> {
-  GoogleMapCubit({required this.googleMapRepo}) : super(GoogleMapInitial());
+class MapCubit extends Cubit<GoogleMapState> {
+  MapCubit({required this.googleMapRepo}) : super(GoogleMapInitial());
 
-  final GoogleMapRepo googleMapRepo;
+  final MapRepo googleMapRepo;
 
   List<PlaceEntity> places = [];
   List<LatLng> polylinePoints = [];

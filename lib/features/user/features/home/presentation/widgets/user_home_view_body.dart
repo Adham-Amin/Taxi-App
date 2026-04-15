@@ -1,15 +1,22 @@
 import 'dart:async';
-import 'dart:math';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+import 'package:taxi_app/core/helper/map_helper.dart';
+
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/services/location_service.dart';
-import 'package:taxi_app/core/utils/app_assets.dart';
-import 'package:taxi_app/features/user/features/home/domain/entities/place_entity.dart';
-import 'package:taxi_app/features/user/features/home/presentation/cubit/google_map_cubit.dart';
+import 'package:taxi_app/core/services/shared_preferences_service.dart';
+import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
+import 'package:taxi_app/features/auth/data/models/driver_model.dart';
+import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
+import 'package:taxi_app/features/user/features/home/data/models/trip_status_enum.dart';
+import 'package:taxi_app/features/user/features/home/presentation/manager/cubit/trip_cubit.dart';
+import 'package:taxi_app/features/user/features/home/presentation/manager/map_cubit/google_map_cubit.dart';
+
 import 'package:taxi_app/features/user/features/home/presentation/widgets/custom_drawer_button.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/done_trip.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/driver_info.dart';
@@ -25,24 +32,29 @@ class UserHomeViewBody extends StatefulWidget {
 }
 
 class _UserHomeViewBodyState extends State<UserHomeViewBody> {
+  late TextEditingController _priceController;
   GoogleMapController? _mapController;
-  StreamSubscription<LocationData>? _locationSubscription;
+  StreamSubscription? _locationSubscription;
+
   final LocationServices _locationService = LocationServices();
+
   late CameraPosition initialCameraPosition;
 
-  LatLng? _currentLocation;
+  LocationModel? _currentLocation;
+  LocationModel? _destinationLocation;
+
   final Set<Marker> _markers = {};
-  final Set<Polyline> _polylines = {};
+  Set<Polyline> _polylines = {};
 
-  var stauts = 'Done';
-
+  String status = '';
   String? darkMapStyle;
 
   @override
   void initState() {
     super.initState();
     _loadMapStyle();
-    getLocationStream();
+    _initLocationStream();
+    _priceController = TextEditingController();
     initialCameraPosition = const CameraPosition(
       target: LatLng(27.003337, 29.9530391),
       zoom: 5,
@@ -53,220 +65,225 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
   void dispose() {
     _mapController?.dispose();
     _locationSubscription?.cancel();
+    _priceController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        GoogleMap(
-          myLocationButtonEnabled: false,
-          zoomControlsEnabled: false,
-          compassEnabled: false,
-          initialCameraPosition: initialCameraPosition,
-          markers: _markers,
-          polylines: _polylines,
-          onMapCreated: (controller) {
-            _mapController = controller;
-            if (darkMapStyle != null) {
-              _mapController?.setMapStyle(darkMapStyle);
-            }
-          },
-        ),
-        stauts == 'Done'
-            ? DoneTrip(
-                onTap: () {
-                  setState(() {
-                    stauts = 'Cancel';
-                  });
-                },
+    return BlocConsumer<TripCubit, TripState>(
+      listener: (context, state) {
+        state is TripError
+            ? customSnackBar(
+                context: context,
+                message: state.message,
+                type: AnimatedSnackBarType.warning,
               )
-            : stauts == 'Accepted' || stauts == 'Arrived'
-            ? DriverInfo(stauts: stauts)
-            : stauts == 'Search'
-            ? SearchingDriverOverlay(
-                cancelSearching: () {
-                  setState(() {
-                    stauts = 'Cancel';
-                  });
-                },
-              )
-            : Padding(
-                padding: const EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                  bottom: 32,
-                  top: 80,
-                ),
-                child: Column(
-                  children: [
-                    MapSearchCard(
-                      currentLocation: (_) {
-                        getCurrentLocation();
-                      },
-                      destLocation: _onDestinationSelected,
-                    ),
-                    Spacer(),
-                    RequestButton(
-                      onTap: () {
-                        setState(() {
-                          stauts = 'Search';
-                        });
-                        Timer(const Duration(seconds: 5), () {
-                          setState(() {
-                            stauts = 'Accepted';
-                          });
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-        CustomDrawerButton(),
-      ],
+            : null;
+      },
+      builder: (context, state) {
+        return Stack(
+          children: [
+            _buildMap(),
+
+            _buildStatusUI(state),
+
+            const CustomDrawerButton(),
+          ],
+        );
+      },
     );
+  }
+
+  Widget _buildStatusUI(TripState state) {
+    if (state is TripSearching) {
+      return SearchingDriverOverlay(
+        cancelSearching: () {
+          _priceController.clear();
+          _polylines.clear();
+          _markers.clear();
+          _initLocationStream();
+          context.read<TripCubit>().cancelRide();
+        },
+      );
+    }
+
+    if (state is TripAccepted || state is TripArrived || state is TripOnGoing) {
+      final trip = (state as dynamic).trip as TripModel;
+      if (trip.status == TripStatus.accepted) {
+        _updateDriverMarker(LatLng(trip.driver.lat!, trip.driver.lng!));
+      } else {
+        _markers.removeWhere((m) => m.markerId.value == 'driver_marker');
+      }
+      return DriverInfo(trip: trip);
+    }
+
+    if (state is TripCompleted) {
+      return DoneTrip(
+        trip: state.trip,
+        onTap: () {
+          _priceController.clear();
+          _polylines.clear();
+          _markers.clear();
+          _initLocationStream();
+          context.read<TripCubit>().doneRide();
+        },
+      );
+    }
+
+    return _buildIdleUI(state is TripLoading);
+  }
+
+  Widget _buildMap() {
+    return GoogleMap(
+      myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
+      compassEnabled: false,
+      initialCameraPosition: initialCameraPosition,
+      markers: _markers,
+      polylines: _polylines,
+      onMapCreated: (controller) async {
+        _mapController = controller;
+        if (darkMapStyle != null) {
+          await controller.setMapStyle(darkMapStyle);
+        }
+      },
+    );
+  }
+
+  Widget _buildIdleUI(bool isLoading) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 32, top: 80),
+      child: Column(
+        children: [
+          MapSearchCard(
+            currentLocation: (currentLocation) {
+              setState(() => _currentLocation = currentLocation);
+              return _getCurrentLocation();
+            },
+            destLocation: (dest) {
+              setState(() => _destinationLocation = dest);
+              _onDestinationSelected(destination: dest);
+            },
+          ),
+          const Spacer(),
+
+          RequestButton(
+            isLoading: isLoading,
+            priceController: _priceController,
+            onTap: () {
+              if (_destinationLocation == null ||
+                  _currentLocation == null ||
+                  _priceController.text.isEmpty) {
+                customSnackBar(
+                  context: context,
+                  message: 'Please fill all fields',
+                  type: AnimatedSnackBarType.warning,
+                );
+                return;
+              }
+              final trip = TripModel(
+                id: '',
+                userId: FirebaseAuth.instance.currentUser!.uid,
+                driverId: null,
+                destination: _destinationLocation!,
+                driver: DriverModel(
+                  id: '',
+                  name: '',
+                  email: '',
+                  phone: '',
+                  carModel: '',
+                  carColor: '',
+                  carPlateNumber: '',
+                  image: '',
+                  role: '',
+                ),
+                status: TripStatus.searching,
+                pickup: _currentLocation!,
+                price: double.tryParse(_priceController.text) ?? 0.0,
+                user: Prefs.getUser()!,
+              );
+
+              context.read<TripCubit>().requestRide(trip: trip);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _updateDriverMarker(LatLng location) async {
+    _markers.removeWhere((m) => m.markerId.value == 'driver_marker');
+
+    final marker = Marker(
+      markerId: const MarkerId('driver_marker'),
+      position: LatLng(location.latitude, location.longitude),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    );
+
+    _markers.add(marker);
+    setState(() {});
   }
 
   Future<void> _loadMapStyle() async {
     darkMapStyle = await rootBundle.loadString('assets/json/map_style.json');
   }
 
-  void getCurrentLocation() async {
-    final location = await _locationService.getCurrentLocation();
-    Marker marker = Marker(
-      markerId: const MarkerId('CurrentLocation'),
-      position: LatLng(
-        location.locationLat.toDouble(),
-        location.locationLng.toDouble(),
-      ),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-    );
-    _markers.add(marker);
-    setState(() {});
-    _updateCurrentLocation(location);
-  }
-
-  void getLocationStream() {
+  void _initLocationStream() {
     _locationSubscription = _locationService.getLocationStream().listen((
       location,
     ) {
-      _updateCurrentLocation(
+      _updateLocation(
         LocationModel(
-          locationLat: location.latitude!,
-          locationLng: location.longitude!,
+          lat: location.latitude!,
+          lng: location.longitude!,
           fullAddress: '',
         ),
       );
     });
   }
 
-  void _updateCurrentLocation(LocationModel location) async {
-    final LatLng newLocation = LatLng(
-      location.locationLat.toDouble(),
-      location.locationLng.toDouble(),
-    );
-
-    _currentLocation = newLocation;
-
-    _mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: newLocation, zoom: 18),
-      ),
-    );
-
-    _markers.removeWhere((m) => m.markerId.value == 'myLocation');
-
+  Future<void> _getCurrentLocation() async {
+    final location = await _locationService.getCurrentLocation();
     _markers.add(
       Marker(
-        markerId: const MarkerId('myLocation'),
-        position: newLocation,
-        icon: await BitmapDescriptor.asset(
-          ImageConfiguration(size: const Size(50, 50)),
-          AppAssets.imagesMarker,
+        markerId: const MarkerId('CurrentLocation'),
+        position: LatLng(location.lat, location.lng),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      ),
+    );
+    setState(() {});
+    _updateLocation(location);
+  }
+
+  Future<void> _updateLocation(LocationModel location) async {
+    if (_mapController != null) {
+      await _mapController!.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: LatLng(location.lat, location.lng), zoom: 18),
         ),
-      ),
-    );
-
-    setState(() {});
-  }
-
-  Future<void> _onDestinationSelected(PlaceEntity destination) async {
-    if (_currentLocation == null) return;
-
-    final LatLng dest = LatLng(
-      destination.lat.toDouble(),
-      destination.lon.toDouble(),
-    );
-
-    _addDestinationMarker(dest);
-
-    await context.read<GoogleMapCubit>().getPolylinePoints(
-      origin: _currentLocation!,
-      destination: dest,
-    );
-
-    _drawPolyline();
-    _moveCameraToBounds();
-  }
-
-  void _addDestinationMarker(LatLng destination) {
-    _markers.removeWhere((m) => m.markerId.value == 'destination');
-
-    _markers.add(
-      Marker(
-        markerId: const MarkerId('destination'),
-        position: destination,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-      ),
-    );
-
-    setState(() {});
-  }
-
-  void _drawPolyline() {
-    final points = context.read<GoogleMapCubit>().polylinePoints;
-
-    _polylines.addAll([
-      Polyline(
-        polylineId: const PolylineId('route_glow'),
-        color: const Color(0x5522C55E),
-        width: 12,
-        points: points,
-      ),
-
-      Polyline(
-        polylineId: const PolylineId('route'),
-        color: const Color(0xFF22C55E),
-        width: 5,
-        points: points,
-      ),
-    ]);
-
-    setState(() {});
-  }
-
-  void _moveCameraToBounds() {
-    final points = context.read<GoogleMapCubit>().polylinePoints;
-    if (points.isEmpty) return;
-
-    LatLng northeast = LatLng(points[0].latitude, points[0].longitude);
-    LatLng southwest = LatLng(points[0].latitude, points[0].longitude);
-
-    for (var point in points) {
-      northeast = LatLng(
-        max(northeast.latitude, point.latitude),
-        max(northeast.longitude, point.longitude),
-      );
-
-      southwest = LatLng(
-        min(southwest.latitude, point.latitude),
-        min(southwest.longitude, point.longitude),
       );
     }
+    _markers.removeWhere((m) => m.markerId.value == 'myLocation');
+    final marker = await MapHelper.buildCurrentMarker(location: location);
+    _markers.add(marker);
+    setState(() {});
+  }
 
-    final bounds = LatLngBounds(northeast: northeast, southwest: southwest);
-
-    _mapController?.animateCamera(CameraUpdate.newLatLngBounds(bounds, 64));
+  Future<void> _onDestinationSelected({
+    required LocationModel destination,
+  }) async {
+    if (_currentLocation == null) return;
+    final dest = LatLng(destination.lat, destination.lng);
+    _markers.add(MapHelper.buildDestinationMarker(destination: dest));
+    setState(() {});
+    await context.read<MapCubit>().getPolylinePoints(
+      origin: LatLng(_currentLocation!.lat, _currentLocation!.lng),
+      destination: dest,
+    );
+    final points = context.read<MapCubit>().polylinePoints;
+    _polylines = MapHelper.buildRoutePolylines(points: points);
+    setState(() {});
+    await MapHelper.fitBounds(controller: _mapController!, points: points);
   }
 }

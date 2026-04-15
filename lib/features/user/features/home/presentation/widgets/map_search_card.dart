@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
-import 'package:taxi_app/features/user/features/home/domain/entities/place_entity.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/location_fields_column.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/location_icons_column.dart';
 
@@ -13,8 +12,8 @@ class MapSearchCard extends StatelessWidget {
     required this.destLocation,
   });
 
-  final Function(LatLng) currentLocation;
-  final Function(PlaceEntity) destLocation;
+  final Function(LocationModel) currentLocation;
+  final Function(LocationModel) destLocation;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class MapSearchCard extends StatelessWidget {
           Expanded(
             child: LocationFieldsColumn(
               currentLocation: currentLocation,
-              onTap: destLocation,
+              destination: destLocation,
             ),
           ),
         ],

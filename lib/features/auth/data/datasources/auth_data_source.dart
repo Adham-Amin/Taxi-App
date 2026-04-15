@@ -51,12 +51,47 @@ class AuthDataSourceImpl implements AuthDataSource {
       email: email,
       password: password,
     );
-    return UserInfoModel(
-      id: credential.user?.uid ?? '',
-      name: credential.user?.displayName ?? '',
-      email: credential.user?.email ?? '',
-      role: credential.user?.photoURL ?? '',
-    );
+    var user = await getUserOrDriverData(role: credential.user?.photoURL ?? '');
+    return user;
+  }
+
+  Future<UserInfoModel> getUserOrDriverData({required String role}) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    final collection = role == "driver" ? "drivers" : "users";
+
+    final doc = await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(uid)
+        .get();
+
+    if (!doc.exists) {
+      throw Exception("Data not found");
+    }
+
+    if (role == "driver") {
+      final data = DriverModel.fromMap(doc.data()!);
+
+      return UserInfoModel(
+        name: data.name,
+        email: data.email,
+        role: role,
+        id: data.id ?? '',
+        image: data.image,
+        phone: data.phone,
+      );
+    } else {
+      final data = UserModel.fromJson(doc.data()!);
+
+      return UserInfoModel(
+        name: data.name,
+        email: data.email,
+        role: role,
+        id: data.id,
+        image: data.image,
+        phone: data.phone,
+      );
+    }
   }
 
   @override
@@ -74,9 +109,12 @@ class AuthDataSourceImpl implements AuthDataSource {
     await credential.user!.reload();
     final updatedUser = FirebaseAuth.instance.currentUser!;
 
-    await saveUserData(updatedUser, image, phone);
+    var imageUrl = await uploadImageToCloudinary(image);
+    await saveUserData(updatedUser, imageUrl ?? '', phone);
 
     return UserInfoModel(
+      image: imageUrl ?? '',
+      phone: phone,
       id: updatedUser.uid,
       name: updatedUser.displayName ?? '',
       email: updatedUser.email ?? '',
@@ -84,12 +122,10 @@ class AuthDataSourceImpl implements AuthDataSource {
     );
   }
 
-  Future<void> saveUserData(User user, File image, String phone) async {
-    await user.updatePhotoURL("user");
-    var imageUrl = await uploadImageToCloudinary(image);
+  Future<void> saveUserData(User user, String image, String phone) async {
     var userData = UserModel(
       id: user.uid,
-      image: imageUrl ?? '',
+      image: image,
       name: user.displayName ?? '',
       phone: phone,
       email: user.email ?? '',
@@ -122,8 +158,9 @@ class AuthDataSourceImpl implements AuthDataSource {
     await credential.user!.updatePhotoURL("driver");
     await credential.user!.reload();
     final updatedUser = FirebaseAuth.instance.currentUser!;
+    var imageUrl = await uploadImageToCloudinary(image);
     await saveDriverData(
-      image,
+      imageUrl ?? '',
       updatedUser,
       carModel,
       carColor,
@@ -133,6 +170,8 @@ class AuthDataSourceImpl implements AuthDataSource {
       phone,
     );
     return UserInfoModel(
+      image: imageUrl ?? '',
+      phone: phone,
       id: updatedUser.uid,
       name: updatedUser.displayName ?? '',
       email: updatedUser.email ?? '',
@@ -141,7 +180,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   Future<void> saveDriverData(
-    File image,
+    String image,
     User updatedUser,
     String carModel,
     String carColor,
@@ -150,7 +189,6 @@ class AuthDataSourceImpl implements AuthDataSource {
     double lng,
     String phone,
   ) async {
-    var imageUrl = await uploadImageToCloudinary(image);
     var driverData = DriverModel(
       id: updatedUser.uid,
       name: updatedUser.displayName ?? '',
@@ -159,12 +197,11 @@ class AuthDataSourceImpl implements AuthDataSource {
       carModel: carModel,
       carColor: carColor,
       carPlateNumber: carPlateNumber,
-      image: imageUrl ?? '',
+      image: image,
       lat: lat,
       lng: lng,
       role: updatedUser.photoURL ?? '',
       isAvailable: true,
-      rating: 0,
     );
     await FirebaseFirestore.instance
         .collection("drivers")

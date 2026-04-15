@@ -40,8 +40,8 @@ class LocationServices {
     );
     var place = placemarks[0];
     return LocationModel(
-      locationLat: position.latitude!,
-      locationLng: position.longitude!,
+      lat: position.latitude!,
+      lng: position.longitude!,
       fullAddress: '${place.locality}, ${place.country}',
     );
   }

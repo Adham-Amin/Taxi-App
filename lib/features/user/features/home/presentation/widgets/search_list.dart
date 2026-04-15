@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/features/user/features/home/domain/entities/place_entity.dart';
-import 'package:taxi_app/features/user/features/home/presentation/cubit/google_map_cubit.dart';
+import 'package:taxi_app/features/user/features/home/presentation/manager/map_cubit/google_map_cubit.dart';
 
 class SearchList extends StatelessWidget {
   const SearchList({super.key, required this.onTap});
@@ -12,8 +12,8 @@ class SearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var placeList = context.watch<GoogleMapCubit>().places;
-    return BlocBuilder<GoogleMapCubit, GoogleMapState>(
+    var placeList = context.watch<MapCubit>().places;
+    return BlocBuilder<MapCubit, GoogleMapState>(
       builder: (context, state) {
         if (state is PlacesLoaded) {
           return ListView.separated(

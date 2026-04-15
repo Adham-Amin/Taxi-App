@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
+import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
 
 class DriverImage extends StatelessWidget {
-  const DriverImage({super.key});
+  const DriverImage({super.key, required this.trip});
+
+  final TripModel trip;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class DriverImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: Image.network(
-          'https://res.cloudinary.com/dquchh5v9/image/upload/v1775913983/cqlijsnv3d51xqskd7q9.webp',
+          trip.driver.image,
           height: 64,
           width: 64,
           fit: BoxFit.cover,

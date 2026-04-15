@@ -240,8 +240,8 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                       carPlateNumber: plateController.text.trim(),
                       carModel: modelController.text.trim(),
                       carColor: colorController.text.trim(),
-                      lat: location!.locationLat.toDouble(),
-                      lng: location!.locationLng.toDouble(),
+                      lat: location!.lat.toDouble(),
+                      lng: location!.lng.toDouble(),
                     );
                   },
                 );

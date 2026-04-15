@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
+import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/dot_icon.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/location_item.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/price_section.dart';
-import 'package:taxi_app/features/user/features/home/presentation/widgets/user_home_view_body.dart';
 
 class TripCompletedCard extends StatelessWidget {
-  const TripCompletedCard({super.key});
+  const TripCompletedCard({super.key, required this.trip});
+
+  final TripModel trip;
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +51,11 @@ class TripCompletedCard extends StatelessWidget {
                   children: [
                     LocationItem(
                       title: 'PICKUP',
-                      value: 'Maghagha, 16911, Egypt',
+                      value: trip.pickup.fullAddress,
                     ),
                     LocationItem(
                       title: 'DESTINATION',
-                      value: 'Madinat Maghagha, 16915, Egypt',
+                      value: trip.destination.fullAddress,
                     ),
                   ],
                 ),
@@ -61,7 +63,7 @@ class TripCompletedCard extends StatelessWidget {
             ),
           ),
           24.hs,
-          PriceSection(),
+          PriceSection(price: trip.price.toString()),
         ],
       ),
     );

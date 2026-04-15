@@ -6,9 +6,9 @@ import 'package:taxi_app/features/user/features/home/data/datasources/google_map
 import 'package:taxi_app/features/user/features/home/domain/entities/place_entity.dart';
 import 'package:taxi_app/features/user/features/home/domain/repositories/google_map_repo.dart';
 
-class GoogleMapRepoImpl extends GoogleMapRepo {
-  final GoogleMapDataSource googleMapDataSource;
-  GoogleMapRepoImpl({required this.googleMapDataSource});
+class MapRepoImpl extends MapRepo {
+  final MapDataSource googleMapDataSource;
+  MapRepoImpl({required this.googleMapDataSource});
 
   @override
   Future<Either<Failure, List<PlaceEntity>>> getPlaces({

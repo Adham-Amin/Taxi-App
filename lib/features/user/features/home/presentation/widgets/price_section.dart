@@ -3,7 +3,9 @@ import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 
 class PriceSection extends StatelessWidget {
-  const PriceSection({super.key});
+  const PriceSection({super.key, required this.price});
+
+  final String price;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class PriceSection extends StatelessWidget {
             style: AppStyles.textSemiBold12.copyWith(color: AppColors.accent),
           ),
           Text(
-            '\$42.50',
+            '\$$price',
             style: AppStyles.textExtraBold24.copyWith(
               color: AppColors.lightGreen,
             ),
