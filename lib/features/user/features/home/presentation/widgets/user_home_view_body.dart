@@ -18,8 +18,6 @@ import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart
 import 'package:taxi_app/features/user/features/home/data/models/trip_status_enum.dart';
 import 'package:taxi_app/features/user/features/home/presentation/manager/cubit/trip_cubit.dart';
 import 'package:taxi_app/features/user/features/home/presentation/manager/map_cubit/google_map_cubit.dart';
-
-import 'package:taxi_app/features/user/features/home/presentation/widgets/custom_drawer_button.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/done_trip.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/driver_info.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/map_search_card.dart';
@@ -84,15 +82,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
             : null;
       },
       builder: (context, state) {
-        return Stack(
-          children: [
-            _buildMap(),
-
-            _buildStatusUI(state),
-
-            const CustomDrawerButton(),
-          ],
-        );
+        return Stack(children: [_buildMap(), _buildStatusUI(state)]);
       },
     );
   }
@@ -156,7 +146,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
 
   Widget _buildIdleUI(bool isLoading) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 32, top: 80),
+      padding: const EdgeInsets.all(24),
       child: Column(
         children: [
           MapSearchCard(
@@ -282,6 +272,10 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     final points = context.read<MapCubit>().polylinePoints;
     _polylines = MapHelper.buildRoutePolylines(points: points);
     setState(() {});
-    await MapHelper.fitBounds(controller: _mapController!, points: points);
+    await MapHelper.fitBounds(
+      controller: _mapController!,
+      padding: 170,
+      points: points,
+    );
   }
 }
