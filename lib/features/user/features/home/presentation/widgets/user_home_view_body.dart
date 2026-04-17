@@ -183,6 +183,8 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
 
               final trip = TripModel(
                 id: '',
+                driverId: '',
+                userId: Prefs.getUser()!.id,
                 destination: _destinationLocation!,
                 driver: DriverModel.empty(),
                 status: TripStatus.searching,

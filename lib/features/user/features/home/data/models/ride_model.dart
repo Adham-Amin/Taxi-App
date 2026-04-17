@@ -3,6 +3,7 @@ import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/features/auth/data/models/driver_model.dart';
 import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
 import 'package:taxi_app/features/user/features/home/data/models/trip_status_enum.dart';
+import 'package:taxi_app/features/user/features/trips/domain/entities/trip_entity.dart';
 
 class TripModel {
   final String id;
@@ -10,11 +11,15 @@ class TripModel {
   final LocationModel pickup;
   final LocationModel destination;
   final double price;
+  final String userId;
+  final String driverId;
   final DriverModel driver;
   final UserInfoModel user;
   final String createdAt;
 
   TripModel({
+    required this.userId,
+    required this.driverId,
     required this.id,
     required this.status,
     required this.pickup,
@@ -28,6 +33,8 @@ class TripModel {
     final data = doc.data() as Map<String, dynamic>;
 
     return TripModel(
+      userId: data['user_id'] ?? '',
+      driverId: data['driver_id'] ?? '',
       id: doc.id,
       status: TripStatusExtension.fromString(data['status'] ?? 'searching'),
       pickup: LocationModel.fromJson(
@@ -58,6 +65,8 @@ class TripModel {
       'driver': driver.toMap(),
       'user': user.toMap(),
       'created_at': createdAt,
+      'user_id': userId,
+      'driver_id': driverId,
     };
   }
 
@@ -70,5 +79,16 @@ class TripModel {
     driver: driver,
     user: user,
     createdAt: createdAt,
+    userId: userId,
+    driverId: driverId,
+  );
+
+  TripEntity toEntity() => TripEntity(
+    driverName: driver.name,
+    price: price,
+    status: status.name,
+    originAddress: pickup.fullAddress,
+    destinationAddress: destination.fullAddress,
+    date: createdAt,
   );
 }

@@ -5,7 +5,7 @@ import 'package:taxi_app/features/auth/presentation/pages/register_view.dart';
 import 'package:taxi_app/features/intro/onbording/presentation/views/onbording_view.dart';
 import 'package:taxi_app/features/intro/splash/presentation/views/splash_view.dart';
 import 'package:taxi_app/features/intro/welcome/presentation/views/welcome_view.dart';
-import 'package:taxi_app/features/user/main/user_main_view.dart';
+import 'package:taxi_app/features/user/features/main/user_main_view.dart';
 
 class RouterGenerationConfig {
   static GoRouter router = GoRouter(
