@@ -1,10 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:taxi_app/core/helper/map_helper.dart';
 
 import 'package:taxi_app/core/models/location_model.dart';
@@ -145,6 +147,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
       onMapCreated: (controller) async {
         _mapController = controller;
         if (darkMapStyle != null) {
+          // ignore: deprecated_member_use
           await controller.setMapStyle(darkMapStyle);
         }
       },
@@ -180,28 +183,23 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
                   message: 'Please fill all fields',
                   type: AnimatedSnackBarType.warning,
                 );
+                setState(() {});
                 return;
               }
+
+              var formattedDate = DateFormat(
+                'yyyy MMM d, hh:mm a',
+              ).format(DateTime.now());
+
               final trip = TripModel(
                 id: '',
-                userId: FirebaseAuth.instance.currentUser!.uid,
-                driverId: null,
                 destination: _destinationLocation!,
-                driver: DriverModel(
-                  id: '',
-                  name: '',
-                  email: '',
-                  phone: '',
-                  carModel: '',
-                  carColor: '',
-                  carPlateNumber: '',
-                  image: '',
-                  role: '',
-                ),
+                driver: DriverModel.empty(),
                 status: TripStatus.searching,
                 pickup: _currentLocation!,
                 price: double.tryParse(_priceController.text) ?? 0.0,
                 user: Prefs.getUser()!,
+                createdAt: formattedDate,
               );
 
               context.read<TripCubit>().requestRide(trip: trip);

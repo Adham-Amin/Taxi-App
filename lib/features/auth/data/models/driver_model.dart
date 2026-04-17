@@ -28,6 +28,7 @@ class DriverModel {
   });
 
   factory DriverModel.empty() => DriverModel(
+    id: '',
     name: '',
     email: '',
     phone: '',

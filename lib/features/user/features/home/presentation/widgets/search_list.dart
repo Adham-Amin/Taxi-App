@@ -21,7 +21,7 @@ class SearchList extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             separatorBuilder: (context, index) => 6.hs,
-            itemCount: placeList.length > 5 ? 5 : placeList.length,
+            itemCount: placeList.length > 4 ? 4 : placeList.length,
             itemBuilder: (context, index) => Container(
               decoration: BoxDecoration(
                 color: AppColors.dark,

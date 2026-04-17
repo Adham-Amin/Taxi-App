@@ -3,9 +3,9 @@ enum TripStatus {
   accepted,
   arrived,
   onTrip,
+  completed,
   done,
   canceled,
-  completed,
 }
 
 extension TripStatusExtension on TripStatus {
