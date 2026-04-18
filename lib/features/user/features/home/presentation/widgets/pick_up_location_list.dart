@@ -5,14 +5,14 @@ import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/features/user/features/home/domain/entities/place_entity.dart';
 import 'package:taxi_app/features/user/features/home/presentation/manager/map_cubit/google_map_cubit.dart';
 
-class SearchList extends StatelessWidget {
-  const SearchList({super.key, required this.onTap});
+class PickUpLocationList extends StatelessWidget {
+  const PickUpLocationList({super.key, required this.onTap});
 
   final Function(PlaceEntity) onTap;
 
   @override
   Widget build(BuildContext context) {
-    var placeList = context.watch<MapCubit>().distinationplaces;
+    var placeList = context.watch<MapCubit>().pickUpPlaces;
     return BlocBuilder<MapCubit, GoogleMapState>(
       builder: (context, state) {
         if (state is PlacesLoaded) {

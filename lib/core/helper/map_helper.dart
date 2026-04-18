@@ -40,6 +40,14 @@ class MapHelper {
     );
   }
 
+  static Marker buildPickupMarker({required LatLng pickup}) {
+    return Marker(
+      markerId: const MarkerId('pickup'),
+      position: pickup,
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+    );
+  }
+
   static LatLngBounds calculateBounds({required List<LatLng> points}) {
     LatLng northeast = points.first;
     LatLng southwest = points.first;

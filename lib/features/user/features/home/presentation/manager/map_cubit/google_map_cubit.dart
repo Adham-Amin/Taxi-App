@@ -9,20 +9,31 @@ class MapCubit extends Cubit<GoogleMapState> {
 
   final MapRepo googleMapRepo;
 
-  List<PlaceEntity> places = [];
+  List<PlaceEntity> pickUpPlaces = [];
+  List<PlaceEntity> distinationplaces = [];
   List<LatLng> polylinePoints = [];
 
-  Future<void> getPlaces({required String query}) async {
+  Future<void> getPickUpPlaces({required String query}) async {
     emit(PlacesLoading());
     var result = await googleMapRepo.getPlaces(query: query);
     result.fold((l) => emit(GoogleMapError(failure: l.message)), (r) {
-      places = r;
+      pickUpPlaces = r;
+      emit(PlacesLoaded());
+    });
+  }
+
+  Future<void> getDistinationPlaces({required String query}) async {
+    emit(PlacesLoading());
+    var result = await googleMapRepo.getPlaces(query: query);
+    result.fold((l) => emit(GoogleMapError(failure: l.message)), (r) {
+      distinationplaces = r;
       emit(PlacesLoaded());
     });
   }
 
   void clearPlaces() {
-    places = [];
+    pickUpPlaces = [];
+    distinationplaces = [];
     emit(PlacesLoaded());
   }
 

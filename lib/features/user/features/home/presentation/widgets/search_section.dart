@@ -43,7 +43,7 @@ class _SearchSectionState extends State<SearchSection> {
             if (_debounce?.isActive ?? false) _debounce!.cancel();
             _debounce = Timer(const Duration(milliseconds: 400), () {
               if (_searchController.text.isNotEmpty) {
-                context.read<MapCubit>().getPlaces(query: value);
+                context.read<MapCubit>().getDistinationPlaces(query: value);
               } else {
                 context.read<MapCubit>().clearPlaces();
               }

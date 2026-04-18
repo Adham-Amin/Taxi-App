@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'dart:async';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
@@ -137,7 +137,6 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
       onMapCreated: (controller) async {
         _mapController = controller;
         if (darkMapStyle != null) {
-          // ignore: deprecated_member_use
           await controller.setMapStyle(darkMapStyle);
         }
       },
@@ -152,7 +151,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
           MapSearchCard(
             currentLocation: (currentLocation) {
               setState(() => _currentLocation = currentLocation);
-              return _getCurrentLocation();
+              _onPickupSelected(pickup: currentLocation);
             },
             destLocation: (dest) {
               setState(() => _destinationLocation = dest);
@@ -233,19 +232,6 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     });
   }
 
-  Future<void> _getCurrentLocation() async {
-    final location = await _locationService.getCurrentLocation();
-    _markers.add(
-      Marker(
-        markerId: const MarkerId('CurrentLocation'),
-        position: LatLng(location.lat, location.lng),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      ),
-    );
-    setState(() {});
-    _updateLocation(location);
-  }
-
   Future<void> _updateLocation(LocationModel location) async {
     if (_mapController != null) {
       await _mapController!.animateCamera(
@@ -257,6 +243,18 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     _markers.removeWhere((m) => m.markerId.value == 'myLocation');
     final marker = await MapHelper.buildCurrentMarker(location: location);
     _markers.add(marker);
+    setState(() {});
+  }
+
+  Future<void> _onPickupSelected({required LocationModel pickup}) async {
+    _currentLocation = pickup;
+    _mapController!.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(pickup.lat, pickup.lng), zoom: 18),
+      ),
+    );
+    final pickUP = LatLng(pickup.lat, pickup.lng);
+    _markers.add(MapHelper.buildPickupMarker(pickup: pickUP));
     setState(() {});
   }
 

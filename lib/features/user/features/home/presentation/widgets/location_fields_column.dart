@@ -1,9 +1,14 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
+import 'package:taxi_app/features/user/features/home/domain/entities/place_entity.dart';
+import 'package:taxi_app/features/user/features/home/presentation/manager/map_cubit/google_map_cubit.dart';
+import 'package:taxi_app/features/user/features/home/presentation/widgets/pick_up_location_list.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/search_section.dart';
 
 class LocationFieldsColumn extends StatefulWidget {
@@ -21,6 +26,7 @@ class LocationFieldsColumn extends StatefulWidget {
 
 class _LocationFieldsColumnState extends State<LocationFieldsColumn> {
   late TextEditingController fromController;
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -31,6 +37,7 @@ class _LocationFieldsColumnState extends State<LocationFieldsColumn> {
   @override
   void dispose() {
     fromController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -41,16 +48,40 @@ class _LocationFieldsColumnState extends State<LocationFieldsColumn> {
         CustomTextFormField(
           hintText: 'From',
           controller: fromController,
-          readOnly: true,
+          onChanged: (value) {
+            if (_debounce?.isActive ?? false) _debounce!.cancel();
+            _debounce = Timer(const Duration(milliseconds: 400), () {
+              if (value.isNotEmpty) {
+                context.read<MapCubit>().getPickUpPlaces(query: value);
+              } else {
+                context.read<MapCubit>().clearPlaces();
+              }
+            });
+          },
           suffixIcon: IconButton(
             onPressed: () async {
+              context.read<MapCubit>().clearPlaces();
               final loc = await LocationServices().getCurrentLocation();
-              widget.currentLocation(loc);
               fromController.text = loc.fullAddress;
+              widget.currentLocation(loc);
               setState(() {});
             },
-            icon: Icon(Icons.location_on_outlined, color: AppColors.darkRed),
+            icon: Icon(Icons.my_location, color: AppColors.darkRed),
           ),
+        ),
+        10.hs,
+        PickUpLocationList(
+          onTap: (place) {
+            fromController.text = place.displayName;
+            context.read<MapCubit>().clearPlaces();
+            final loc = LocationModel(
+              lat: place.lat.toDouble(),
+              lng: place.lon.toDouble(),
+              fullAddress: place.displayName,
+            );
+
+            widget.currentLocation(loc);
+          },
         ),
         8.hs,
         SearchSection(destination: widget.destination),
