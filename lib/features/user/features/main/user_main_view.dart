@@ -3,6 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/user/features/home/presentation/pages/user_home_view.dart';
+import 'package:taxi_app/features/user/features/trips/presentation/pages/trips_view.dart';
 
 class UserMainView extends StatefulWidget {
   const UserMainView({super.key});
@@ -18,7 +19,7 @@ class MainPageState extends State<UserMainView> {
 
   final List<Widget> _pages = [
     UserHomeView(),
-    const Center(child: Text('Trips')),
+    TripsView(),
     const Center(child: Text('Profile')),
   ];
 

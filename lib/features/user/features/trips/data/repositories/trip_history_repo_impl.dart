@@ -9,9 +9,22 @@ class TripHistoryRepoImpl extends TripHistoryRepo {
   TripHistoryRepoImpl({required this.tripRemoteDataSource});
 
   @override
-  Future<Either<Failure, List<TripEntity>>> getTripsHistory() async {
+  Stream<Either<Failure, List<TripEntity>>> getTripsHistory() {
     try {
-      final trips = await tripRemoteDataSource.getTripsHistory();
+      return tripRemoteDataSource.getTripsHistoryStream().map((trips) {
+        return Right(trips.map((e) => e.toEntity()).toList());
+      });
+    } catch (e) {
+      return Stream.value(Left(ServerFailure(e.toString())));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<TripEntity>>> searchTrips({
+    required String query,
+  }) async {
+    try {
+      final trips = await tripRemoteDataSource.searchTrips(query: query);
       return Right(trips.map((e) => e.toEntity()).toList());
     } catch (e) {
       return Left(ServerFailure(e.toString()));

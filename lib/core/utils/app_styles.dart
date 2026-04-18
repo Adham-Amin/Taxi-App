@@ -91,6 +91,10 @@ abstract class AppStyles {
     fontSize: 24.sp,
   );
 
+  static TextStyle textBold12 = TextStyle(
+    fontWeight: FontWeight.w700,
+    fontSize: 12.sp,
+  );
   static TextStyle textBold14 = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 14.sp,
@@ -120,6 +124,10 @@ abstract class AppStyles {
     fontSize: 32.sp,
   );
 
+  static TextStyle textExtraBold18 = TextStyle(
+    fontWeight: FontWeight.w800,
+    fontSize: 18.sp,
+  );
   static TextStyle textExtraBold24 = TextStyle(
     fontWeight: FontWeight.w800,
     fontSize: 24.sp,
