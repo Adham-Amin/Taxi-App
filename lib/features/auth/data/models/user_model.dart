@@ -1,3 +1,5 @@
+import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
+
 class UserModel {
   final String id;
   final String image;
@@ -5,7 +7,6 @@ class UserModel {
   final String email;
   final String phone;
   final String role;
-  num? rating;
 
   UserModel({
     required this.id,
@@ -14,7 +15,6 @@ class UserModel {
     required this.email,
     required this.phone,
     required this.role,
-    this.rating = 5,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -25,7 +25,6 @@ class UserModel {
       email: json['email'],
       phone: json['phone'],
       role: json['role'],
-      rating: json['rating'],
     );
   }
 
@@ -37,7 +36,15 @@ class UserModel {
       'email': email,
       'phone': phone,
       'role': role,
-      'rating': rating,
     };
   }
+
+  UserInfoModel toUserInfoModel() => UserInfoModel(
+    name: name,
+    email: email,
+    role: role,
+    id: id,
+    image: image,
+    phone: phone,
+  );
 }

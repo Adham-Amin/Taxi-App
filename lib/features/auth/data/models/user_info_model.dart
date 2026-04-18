@@ -1,18 +1,18 @@
 class UserInfoModel {
   final String id;
-  final String image;
-  final String phone;
-  final String name;
-  final String email;
+  final String? image;
+  final String? phone;
+  final String? name;
+  final String? email;
   final String role;
 
   UserInfoModel({
-    required this.name,
-    required this.email,
+    this.name,
+    this.email,
     required this.role,
     required this.id,
-    required this.image,
-    required this.phone,
+    this.image,
+    this.phone,
   });
 
   factory UserInfoModel.empty() => UserInfoModel(
@@ -41,4 +41,13 @@ class UserInfoModel {
     image: map['image'] ?? '',
     phone: map['phone'] ?? '',
   );
+
+  Map<String, dynamic> toUpdateData() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (name != null) data['name'] = name;
+    if (image != null) data['image'] = image;
+    if (email != null) data['email'] = email;
+    if (phone != null) data['phone'] = phone;
+    return data;
+  }
 }
