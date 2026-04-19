@@ -41,7 +41,7 @@ class _CustomTextFormFieldPasswordState
             });
           },
           icon: Icon(
-            isPasswordVisible ? Icons.lock_outline : Icons.lock_open_outlined,
+            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
             color: AppColors.lightGreen.withValues(alpha: 0.5),
           ),
         ),

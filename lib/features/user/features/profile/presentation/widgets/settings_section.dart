@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:taxi_app/core/routing/app_routes.dart';
+import 'package:taxi_app/core/utils/app_colors.dart';
+import 'package:taxi_app/features/user/features/profile/presentation/widgets/button_tile.dart';
+import 'package:taxi_app/features/user/features/profile/presentation/widgets/custom_divider.dart';
+
+class SettingsSection extends StatelessWidget {
+  const SettingsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: _boxDecoration(),
+      child: Column(
+        children: [
+          ButtonTile(
+            onTap: () {
+              context.push(AppRoutes.userchangePasswordProfile);
+            },
+            icon: Icons.password_outlined,
+            title: 'Change Password',
+          ),
+          const CustomDivider(),
+          ButtonTile(
+            onTap: () {
+              context.push(AppRoutes.userLanguageProfile);
+            },
+            icon: Icons.language_outlined,
+            title: 'Language',
+          ),
+          const CustomDivider(),
+          ButtonTile(
+            onTap: () {
+              context.push(AppRoutes.userThemeProfile);
+            },
+            icon: Icons.dark_mode_outlined,
+            title: 'Theme Mode',
+          ),
+        ],
+      ),
+    );
+  }
+
+  BoxDecoration _boxDecoration() {
+    return BoxDecoration(
+      color: AppColors.darkBlack,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: AppColors.grey, width: 2),
+    );
+  }
+}

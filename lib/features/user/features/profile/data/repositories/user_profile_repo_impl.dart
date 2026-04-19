@@ -37,9 +37,14 @@ class UserProfileRepoImpl extends UserProfileRepo {
   @override
   Future<Either<Failure, void>> changePassword({
     required String newPassword,
+
+    required String password,
   }) async {
     try {
-      await userProfileDataSource.changePassword(newPassword: newPassword);
+      await userProfileDataSource.changePassword(
+        password: password,
+        newPassword: newPassword,
+      );
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure(e.toString()));

@@ -81,22 +81,6 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
           ),
           16.hs,
           Text(
-            'EMAIL ADDRESS',
-            style: AppStyles.textRegular10.copyWith(
-              color: AppColors.accent,
-              letterSpacing: 2,
-            ),
-          ),
-          6.hs,
-          CustomTextFormField(
-            controller: emailController,
-            validator: Validators.email,
-            keyboardType: TextInputType.emailAddress,
-            hintText: 'adham@example.com',
-            suffixIcon: Icon(Icons.email_outlined),
-          ),
-          16.hs,
-          Text(
             'Phone Number',
             style: AppStyles.textRegular10.copyWith(
               color: AppColors.accent,

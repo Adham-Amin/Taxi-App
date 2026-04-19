@@ -32,9 +32,15 @@ class UserProfileCubit extends Cubit<UserProfileState> {
     );
   }
 
-  Future<void> changePassword({required String newPassword}) async {
+  Future<void> changePassword({
+    required String newPassword,
+    required String password,
+  }) async {
     emit(UserProfileLoading());
-    var result = await userProfileRepo.changePassword(newPassword: newPassword);
+    var result = await userProfileRepo.changePassword(
+      password: password,
+      newPassword: newPassword,
+    );
     result.fold(
       (failure) => emit(UserProfileError(failure: failure.message)),
       (profileUserModel) => emit(UserProfileLoaded()),
