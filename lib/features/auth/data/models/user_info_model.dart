@@ -1,16 +1,16 @@
 class UserInfoModel {
-  final String id;
+  final String? id;
   final String? image;
   final String? phone;
   final String? name;
   final String? email;
-  final String role;
+  final String? role;
 
   UserInfoModel({
     this.name,
     this.email,
-    required this.role,
-    required this.id,
+    this.role,
+    this.id,
     this.image,
     this.phone,
   });

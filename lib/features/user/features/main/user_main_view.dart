@@ -3,6 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/user/features/home/presentation/pages/user_home_view.dart';
+import 'package:taxi_app/features/user/features/profile/presentation/pages/user_profile_view.dart';
 import 'package:taxi_app/features/user/features/trips/presentation/pages/trips_view.dart';
 
 class UserMainView extends StatefulWidget {
@@ -17,11 +18,7 @@ class UserMainView extends StatefulWidget {
 class MainPageState extends State<UserMainView> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    UserHomeView(),
-    TripsView(),
-    const Center(child: Text('Profile')),
-  ];
+  final List<Widget> _pages = [UserHomeView(), TripsView(), UserProfileView()];
 
   void changeTab(int index) {
     setState(() {

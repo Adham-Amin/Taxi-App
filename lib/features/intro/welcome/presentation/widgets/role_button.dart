@@ -33,7 +33,7 @@ class RoleButton extends StatelessWidget {
         child: Text(
           'Continue as $title',
           style: AppStyles.textBold14.copyWith(
-            color: isActive ? AppColors.lightGreen : AppColors.lightGrey,
+            color: isActive ? AppColors.lightGreen : AppColors.light,
           ),
         ),
       ),

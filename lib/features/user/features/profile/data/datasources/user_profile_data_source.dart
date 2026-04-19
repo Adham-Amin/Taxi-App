@@ -6,6 +6,7 @@ import 'package:taxi_app/features/auth/data/models/user_model.dart';
 abstract class UserProfileDataSource {
   Future<UserModel> getUserProfile();
   Future<void> updateUserProfile({required UserInfoModel userModel});
+  Future<void> changePassword({required String newPassword});
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
@@ -25,5 +26,10 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update(userModel.toUpdateData());
+  }
+
+  @override
+  Future<void> changePassword({required String newPassword}) async {
+    await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
   }
 }

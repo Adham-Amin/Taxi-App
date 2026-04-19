@@ -6,6 +6,7 @@ import 'package:taxi_app/features/intro/onbording/presentation/views/onbording_v
 import 'package:taxi_app/features/intro/splash/presentation/views/splash_view.dart';
 import 'package:taxi_app/features/intro/welcome/presentation/views/welcome_view.dart';
 import 'package:taxi_app/features/user/features/main/user_main_view.dart';
+import 'package:taxi_app/features/user/features/profile/presentation/pages/user_update_profile_view.dart';
 
 class RouterGenerationConfig {
   static GoRouter router = GoRouter(
@@ -40,6 +41,11 @@ class RouterGenerationConfig {
         path: AppRoutes.userMain,
         name: AppRoutes.userMain,
         builder: (context, state) => const UserMainView(),
+      ),
+      GoRoute(
+        path: AppRoutes.userEditProfile,
+        name: AppRoutes.userEditProfile,
+        builder: (context, state) => const UserUpdateProfileView(),
       ),
     ],
   );

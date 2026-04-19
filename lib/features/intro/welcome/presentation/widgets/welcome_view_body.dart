@@ -55,7 +55,7 @@ class _WelcomeViewBodyState extends State<WelcomeViewBody> {
             title: 'Register',
             backgroundColor: AppColors.darkGrey,
             shadeColor: Colors.transparent,
-            colorText: AppColors.lightGrey,
+            colorText: AppColors.light,
             onTap: () {
               context.push(AppRoutes.register, extra: role.name);
             },

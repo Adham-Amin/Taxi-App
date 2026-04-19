@@ -6,6 +6,7 @@ import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
+// ignore: unused_import
 import 'package:taxi_app/features/user/features/home/domain/entities/place_entity.dart';
 import 'package:taxi_app/features/user/features/home/presentation/manager/map_cubit/google_map_cubit.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/pick_up_location_list.dart';

@@ -18,10 +18,10 @@ class DirverButtons extends StatelessWidget {
           child: CustomButton(
             title: 'Message',
             onTap: () {},
-            colorText: AppColors.lightGrey,
+            colorText: AppColors.light,
             backgroundColor: AppColors.darkGrey,
             shadeColor: Colors.transparent,
-            child: Icon(Icons.message_outlined, color: AppColors.lightGreen),
+            icon: Icon(Icons.message_outlined, color: AppColors.lightGreen),
           ),
         ),
         12.ws,
@@ -31,10 +31,10 @@ class DirverButtons extends StatelessWidget {
             onTap: () {
               launchUrl(Uri.parse('tel:${trip.driver.phone}'));
             },
-            colorText: AppColors.lightGrey,
+            colorText: AppColors.light,
             backgroundColor: AppColors.darkGrey,
             shadeColor: Colors.transparent,
-            child: Icon(Icons.call_outlined, color: AppColors.lightGreen),
+            icon: Icon(Icons.call_outlined, color: AppColors.lightGreen),
           ),
         ),
       ],

@@ -4,30 +4,40 @@ import 'package:taxi_app/features/user/features/profile/domain/repositories/user
 
 part 'profile_state.dart';
 
-class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit({required this.userProfileRepo}) : super(ProfileInitial());
+class UserProfileCubit extends Cubit<UserProfileState> {
+  UserProfileCubit({required this.userProfileRepo})
+    : super(UserProfileInitial());
 
   final UserProfileRepo userProfileRepo;
 
   Future<void> getUserProfile() async {
-    emit(ProfileLoading());
+    emit(UserProfileLoading());
     final result = await userProfileRepo.getUserProfile();
     result.fold(
-      (failure) => emit(ProfileError(failure: failure.message)),
-      (profileUserModel) =>
-          emit(ProfileLoaded(profileUserModel: profileUserModel)),
+      (failure) => emit(UserProfileError(failure: failure.message)),
+      (profileUserModel) => emit(UserProfileLoaded(user: profileUserModel)),
     );
   }
 
   Future<void> updateUserProfile({
     required UserInfoModel profileUserModel,
   }) async {
+    emit(UserProfileLoading());
     var result = await userProfileRepo.updateUserProfile(
       profileUserModel: profileUserModel,
     );
     result.fold(
-      (failure) => emit(ProfileError(failure: failure.message)),
-      (profileUserModel) => emit(ProfileLoaded()),
+      (failure) => emit(UserProfileError(failure: failure.message)),
+      (profileUserModel) => emit(UserProfileLoaded()),
+    );
+  }
+
+  Future<void> changePassword({required String newPassword}) async {
+    emit(UserProfileLoading());
+    var result = await userProfileRepo.changePassword(newPassword: newPassword);
+    result.fold(
+      (failure) => emit(UserProfileError(failure: failure.message)),
+      (profileUserModel) => emit(UserProfileLoaded()),
     );
   }
 }

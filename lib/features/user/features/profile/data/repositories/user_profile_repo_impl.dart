@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:taxi_app/core/errors/failure.dart';
+import 'package:taxi_app/core/services/shared_preferences_service.dart';
 import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
 import 'package:taxi_app/features/user/features/profile/data/datasources/user_profile_data_source.dart';
 import 'package:taxi_app/features/user/features/profile/domain/repositories/user_profile_repo.dart';
@@ -25,6 +26,20 @@ class UserProfileRepoImpl extends UserProfileRepo {
       await userProfileDataSource.updateUserProfile(
         userModel: profileUserModel,
       );
+      var user = await userProfileDataSource.getUserProfile();
+      Prefs.setUser(user.toUserInfoModel());
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> changePassword({
+    required String newPassword,
+  }) async {
+    try {
+      await userProfileDataSource.changePassword(newPassword: newPassword);
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure(e.toString()));

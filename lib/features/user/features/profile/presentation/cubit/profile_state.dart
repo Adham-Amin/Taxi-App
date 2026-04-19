@@ -1,18 +1,18 @@
 part of 'profile_cubit.dart';
 
-abstract class ProfileState {}
+abstract class UserProfileState {}
 
-class ProfileInitial extends ProfileState {}
+class UserProfileInitial extends UserProfileState {}
 
-class ProfileLoading extends ProfileState {}
+class UserProfileLoading extends UserProfileState {}
 
-class ProfileLoaded extends ProfileState {
-  final UserInfoModel? profileUserModel;
+class UserProfileLoaded extends UserProfileState {
+  final UserInfoModel? user;
 
-  ProfileLoaded({this.profileUserModel});
+  UserProfileLoaded({this.user});
 }
 
-class ProfileError extends ProfileState {
+class UserProfileError extends UserProfileState {
   final String failure;
-  ProfileError({required this.failure});
+  UserProfileError({required this.failure});
 }

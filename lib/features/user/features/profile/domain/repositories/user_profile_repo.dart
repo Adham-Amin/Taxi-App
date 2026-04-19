@@ -8,4 +8,6 @@ abstract class UserProfileRepo {
   Future<Either<Failure, void>> updateUserProfile({
     required UserInfoModel profileUserModel,
   });
+
+  Future<Either<Failure, void>> changePassword({required String newPassword});
 }

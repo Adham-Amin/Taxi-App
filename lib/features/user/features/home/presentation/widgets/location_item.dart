@@ -21,7 +21,7 @@ class LocationItem extends StatelessWidget {
         4.hs,
         Text(
           value,
-          style: AppStyles.textBold16.copyWith(color: AppColors.lightGrey),
+          style: AppStyles.textBold16.copyWith(color: AppColors.light),
         ),
       ],
     );

@@ -12,7 +12,7 @@ class CustomButton extends StatelessWidget {
     this.colorText,
     this.isLoading = false,
     this.shadeColor,
-    this.child,
+    this.icon,
   });
 
   final String title;
@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
   final Color? shadeColor;
   final Color? colorText;
   final bool isLoading;
-  final Widget? child;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class CustomButton extends StatelessWidget {
                 spacing: 8.w,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ?child,
+                  ?icon,
                   Text(
                     title,
                     style: AppStyles.textBold18.copyWith(

@@ -23,7 +23,7 @@ class TripCompletedHeader extends StatelessWidget {
         24.hs,
         Text(
           'Trip Completed',
-          style: AppStyles.textExtraBold30.copyWith(color: AppColors.lightGrey),
+          style: AppStyles.textExtraBold30.copyWith(color: AppColors.light),
         ),
         8.hs,
         Text(
