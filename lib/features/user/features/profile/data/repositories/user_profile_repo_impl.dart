@@ -50,4 +50,20 @@ class UserProfileRepoImpl extends UserProfileRepo {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> changeEmail({
+    required String password,
+    required String newEmail,
+  }) async {
+    try {
+      await userProfileDataSource.changeEmail(
+        password: password,
+        newEmail: newEmail,
+      );
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

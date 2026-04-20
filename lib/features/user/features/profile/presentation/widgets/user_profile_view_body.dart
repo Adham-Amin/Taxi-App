@@ -13,14 +13,9 @@ import 'package:taxi_app/features/user/features/profile/presentation/widgets/pro
 import 'package:taxi_app/features/user/features/profile/presentation/widgets/section_header.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/widgets/settings_section.dart';
 
-class UserProfileViewBody extends StatefulWidget {
+class UserProfileViewBody extends StatelessWidget {
   const UserProfileViewBody({super.key});
 
-  @override
-  State<UserProfileViewBody> createState() => _UserProfileViewBodyState();
-}
-
-class _UserProfileViewBodyState extends State<UserProfileViewBody> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserProfileCubit, UserProfileState>(
@@ -32,7 +27,7 @@ class _UserProfileViewBodyState extends State<UserProfileViewBody> {
                 name: 'Adham Amin',
                 email: 'adham.amin@gmail.com',
                 phone: '+201012345678',
-                image: '',
+                image: 'https://i.pravatar.cc/300',
                 role: 'user',
                 id: '',
               );

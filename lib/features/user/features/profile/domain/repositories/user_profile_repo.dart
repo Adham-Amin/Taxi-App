@@ -13,4 +13,9 @@ abstract class UserProfileRepo {
     required String password,
     required String newPassword,
   });
+
+  Future<Either<Failure, void>> changeEmail({
+    required String password,
+    required String newEmail,
+  });
 }

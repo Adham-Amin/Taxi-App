@@ -6,6 +6,7 @@ class AppRoutes {
   static const String register = '/register';
   static const String userMain = '/userMain';
   static const String userEditProfile = '/userEditProfile';
+  static const String userchangeEmailProfile = '/userchangeEmailProfile';
   static const String userchangePasswordProfile = '/userchangePasswordProfile';
   static const String userLanguageProfile = '/userLanguageProfile';
   static const String userThemeProfile = '/userThemeProfile';

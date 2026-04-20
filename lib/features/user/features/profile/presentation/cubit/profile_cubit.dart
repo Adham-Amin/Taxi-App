@@ -46,4 +46,19 @@ class UserProfileCubit extends Cubit<UserProfileState> {
       (profileUserModel) => emit(UserProfileLoaded()),
     );
   }
+
+  Future<void> changeEmail({
+    required String password,
+    required String newEmail,
+  }) async {
+    emit(UserProfileLoading());
+    var result = await userProfileRepo.changeEmail(
+      password: password,
+      newEmail: newEmail,
+    );
+    result.fold(
+      (failure) => emit(UserProfileError(failure: failure.message)),
+      (profileUserModel) => emit(UserProfileLoaded()),
+    );
+  }
 }

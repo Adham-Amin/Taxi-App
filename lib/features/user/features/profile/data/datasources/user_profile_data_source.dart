@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:taxi_app/core/services/shared_preferences_service.dart';
 import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
 import 'package:taxi_app/features/auth/data/models/user_model.dart';
 
@@ -9,6 +10,10 @@ abstract class UserProfileDataSource {
   Future<void> changePassword({
     required String password,
     required String newPassword,
+  });
+  Future<void> changeEmail({
+    required String password,
+    required String newEmail,
   });
 }
 
@@ -46,5 +51,27 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     await user.reauthenticateWithCredential(credential);
 
     await user.updatePassword(newPassword);
+  }
+
+  @override
+  Future<void> changeEmail({
+    required String password,
+    required String newEmail,
+  }) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    final credential = EmailAuthProvider.credential(
+      email: user!.email!,
+      password: password,
+    );
+
+    await user.reauthenticateWithCredential(credential);
+
+    await user.verifyBeforeUpdateEmail(newEmail);
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({'email': newEmail});
   }
 }

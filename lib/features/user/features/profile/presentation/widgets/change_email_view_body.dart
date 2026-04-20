@@ -8,34 +8,34 @@ import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
+import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field_password.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/cubit/profile_cubit.dart';
 
-class ChangePasswordUserViewBody extends StatefulWidget {
-  const ChangePasswordUserViewBody({super.key});
+class ChangeEmailUserViewBody extends StatefulWidget {
+  const ChangeEmailUserViewBody({super.key});
 
   @override
-  State<ChangePasswordUserViewBody> createState() =>
-      _ChangePasswordUserViewBodyState();
+  State<ChangeEmailUserViewBody> createState() =>
+      _ChangeEmailUserViewBodyState();
 }
 
-class _ChangePasswordUserViewBodyState
-    extends State<ChangePasswordUserViewBody> {
-  late TextEditingController passwordController, newPasswordController;
+class _ChangeEmailUserViewBodyState extends State<ChangeEmailUserViewBody> {
+  late TextEditingController passwordController, newEmailController;
   final formKey = GlobalKey<FormState>();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
 
   @override
   void initState() {
+    newEmailController = TextEditingController();
     passwordController = TextEditingController();
-    newPasswordController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
     passwordController.dispose();
-    newPasswordController.dispose();
+    newEmailController.dispose();
     super.dispose();
   }
 
@@ -51,7 +51,21 @@ class _ChangePasswordUserViewBodyState
           children: [
             32.hs,
             Text(
-              'CURRENT PASSWORD',
+              'New EMAIL',
+              style: AppStyles.textRegular10.copyWith(
+                color: AppColors.accent,
+                letterSpacing: 2,
+              ),
+            ),
+            6.hs,
+            CustomTextFormField(
+              controller: newEmailController,
+              validator: Validators.email,
+              hintText: 'adham@example.com',
+            ),
+            16.hs,
+            Text(
+              'PASSWORD',
               style: AppStyles.textRegular10.copyWith(
                 color: AppColors.accent,
                 letterSpacing: 2,
@@ -68,28 +82,14 @@ class _ChangePasswordUserViewBodyState
               },
               hintText: '•••••••••••••',
             ),
-            16.hs,
-            Text(
-              'NEW PASSWORD',
-              style: AppStyles.textRegular10.copyWith(
-                color: AppColors.accent,
-                letterSpacing: 2,
-              ),
-            ),
-            6.hs,
-            CustomTextFormFieldPassword(
-              controller: newPasswordController,
-              validator: Validators.password,
-              hintText: '•••••••••••••',
-            ),
             32.hs,
             BlocConsumer<UserProfileCubit, UserProfileState>(
               listener: (context, state) {
                 if (state is UserProfileLoaded) {
-                  context.pop();
+                  context.pop(true);
                   customSnackBar(
                     context: context,
-                    message: 'Password changed successfully',
+                    message: 'Email changed successfully',
                     type: AnimatedSnackBarType.success,
                   );
                 }
@@ -108,9 +108,9 @@ class _ChangePasswordUserViewBodyState
                   onTap: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();
-                      context.read<UserProfileCubit>().changePassword(
+                      context.read<UserProfileCubit>().changeEmail(
+                        newEmail: newEmailController.text,
                         password: passwordController.text,
-                        newPassword: newPasswordController.text,
                       );
                     } else {
                       setState(

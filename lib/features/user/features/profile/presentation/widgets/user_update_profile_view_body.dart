@@ -29,13 +29,12 @@ class UserUpdateProfileViewBody extends StatefulWidget {
 
 class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
   File? file;
-  late TextEditingController nameController, emailController, phoneController;
+  late TextEditingController nameController, phoneController;
 
   @override
   void initState() {
     var user = Prefs.getUser()!;
     nameController = TextEditingController(text: user.name);
-    emailController = TextEditingController(text: user.email);
     phoneController = TextEditingController(text: user.phone);
     super.initState();
   }
@@ -43,7 +42,6 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
   @override
   void dispose() {
     nameController.dispose();
-    emailController.dispose();
     phoneController.dispose();
     super.dispose();
   }
@@ -124,18 +122,26 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
                       profileUserModel: UserInfoModel(
                         image: imageUrl,
                         name: nameController.text,
-                        email: emailController.text,
                         phone: phoneController.text,
                       ),
                     );
                   } else if (file == null) {
-                    context.read<UserProfileCubit>().updateUserProfile(
-                      profileUserModel: UserInfoModel(
-                        name: nameController.text,
-                        email: emailController.text,
-                        phone: phoneController.text,
-                      ),
-                    );
+                    if (nameController.text != Prefs.getUser()!.name ||
+                        phoneController.text != Prefs.getUser()!.phone) {
+                      context.read<UserProfileCubit>().updateUserProfile(
+                        profileUserModel: UserInfoModel(
+                          name: nameController.text,
+                          phone: phoneController.text,
+                        ),
+                      );
+                    } else {
+                      customSnackBar(
+                        context: context,
+                        message: 'Please change at least one field',
+                        type: AnimatedSnackBarType.warning,
+                      );
+                      setState(() {});
+                    }
                   } else {
                     customSnackBar(
                       context: context,
