@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:taxi_app/core/services/shared_preferences_service.dart';
 import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
 import 'package:taxi_app/features/auth/data/models/user_model.dart';
 

@@ -9,11 +9,13 @@ class ButtonTile extends StatelessWidget {
     required this.onTap,
     required this.icon,
     required this.title,
+    this.trailing,
   });
 
   final VoidCallback onTap;
   final IconData icon;
   final String title;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,12 @@ class ButtonTile extends StatelessWidget {
             style: AppStyles.textMedium16.copyWith(color: AppColors.light),
           ),
           const Spacer(),
-          Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.lightGreen),
+          trailing ??
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+                color: AppColors.lightGreen,
+              ),
         ],
       ),
     );
