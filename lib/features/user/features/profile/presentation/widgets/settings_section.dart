@@ -41,7 +41,7 @@ class SettingsSection extends StatelessWidget {
           const CustomDivider(),
           ButtonTile(
             onTap: () {
-              context.push(AppRoutes.userLanguageProfile);
+              context.push(AppRoutes.language);
             },
             icon: Icons.language_outlined,
             title: 'Language',

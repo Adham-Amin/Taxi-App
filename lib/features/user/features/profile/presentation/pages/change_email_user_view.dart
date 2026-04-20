@@ -4,7 +4,7 @@ import 'package:taxi_app/core/widgets/custom_back_button.dart';
 import 'package:taxi_app/features/user/features/profile/data/datasources/user_profile_data_source.dart';
 import 'package:taxi_app/features/user/features/profile/data/repositories/user_profile_repo_impl.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:taxi_app/features/user/features/profile/presentation/widgets/change_email_view_body.dart';
+import 'package:taxi_app/features/user/features/profile/presentation/widgets/change_email_user_view_body.dart';
 
 class ChangeEmailUserView extends StatelessWidget {
   const ChangeEmailUserView({super.key});

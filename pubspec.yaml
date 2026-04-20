@@ -33,6 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1
   dio: ^5.9.2
+  easy_localization: ^3.0.8
   firebase_auth: ^6.3.0
   firebase_core: ^4.6.0
   flutter:
@@ -74,6 +75,7 @@ flutter:
     - assets/images/
     - assets/svgs/
     - assets/icons/
+    - assets/translations/
     - assets/json/map_style.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

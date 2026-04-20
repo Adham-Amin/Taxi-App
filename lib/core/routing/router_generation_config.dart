@@ -5,8 +5,9 @@ import 'package:taxi_app/features/auth/presentation/pages/register_view.dart';
 import 'package:taxi_app/features/intro/onbording/presentation/views/onbording_view.dart';
 import 'package:taxi_app/features/intro/splash/presentation/views/splash_view.dart';
 import 'package:taxi_app/features/intro/welcome/presentation/views/welcome_view.dart';
+import 'package:taxi_app/features/language/presentation/views/language_view.dart';
 import 'package:taxi_app/features/user/features/main/user_main_view.dart';
-import 'package:taxi_app/features/user/features/profile/presentation/pages/change_email_view.dart';
+import 'package:taxi_app/features/user/features/profile/presentation/pages/change_email_user_view.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/pages/change_password_user_view.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/pages/user_update_profile_view.dart';
 
@@ -58,6 +59,11 @@ class RouterGenerationConfig {
         path: AppRoutes.userchangeEmailProfile,
         name: AppRoutes.userchangeEmailProfile,
         builder: (context, state) => const ChangeEmailUserView(),
+      ),
+      GoRoute(
+        path: AppRoutes.language,
+        name: AppRoutes.language,
+        builder: (context, state) => const LanguageView(),
       ),
     ],
   );

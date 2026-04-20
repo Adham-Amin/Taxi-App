@@ -8,12 +8,10 @@ class AppRoutes {
   static const String userEditProfile = '/userEditProfile';
   static const String userchangeEmailProfile = '/userchangeEmailProfile';
   static const String userchangePasswordProfile = '/userchangePasswordProfile';
-  static const String userLanguageProfile = '/userLanguageProfile';
-  static const String userThemeProfile = '/userThemeProfile';
+  static const String language = '/language';
   static const String driverMain = '/driverMain';
   static const String driverEditProfile = '/driverEditProfile';
+  static const String driverchangeEmailProfile = '/driverchangeEmailProfile';
   static const String driverchangePasswordProfile =
       '/driverchangePasswordProfile';
-  static const String driverLanguageProfile = '/driverLanguageProfile';
-  static const String driverThemeProfile = '/driverThemeProfile';
 }
