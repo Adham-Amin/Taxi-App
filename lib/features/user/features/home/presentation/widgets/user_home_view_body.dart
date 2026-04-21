@@ -12,6 +12,8 @@ import 'package:taxi_app/core/helper/map_helper.dart';
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/core/services/shared_preferences_service.dart';
+import 'package:taxi_app/core/theme_cubit/theme_cubit.dart';
+import 'package:taxi_app/core/theme_cubit/theme_state.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/features/auth/data/models/driver_model.dart';
 import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
@@ -127,20 +129,24 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     return _buildIdleUI(state is TripLoading);
   }
 
-  Widget _buildMap(bool isLiaght) {
-    return GoogleMap(
-      myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
-      compassEnabled: false,
-      initialCameraPosition: initialCameraPosition,
-      markers: _markers,
-      polylines: _polylines,
-      onMapCreated: (controller) async {
-        _mapController = controller;
-        if (darkMapStyle != null && !isLiaght) {
-          await controller.setMapStyle(darkMapStyle);
-        }
+  Widget _buildMap(bool isLight) {
+    return BlocListener<ThemeCubit, ThemeState>(
+      listener: (context, state) {
+        final isLight = state.themeMode == ThemeMode.light;
+        _applyMapStyle(isLight);
       },
+      child: GoogleMap(
+        myLocationButtonEnabled: false,
+        zoomControlsEnabled: false,
+        compassEnabled: false,
+        initialCameraPosition: initialCameraPosition,
+        markers: _markers,
+        polylines: _polylines,
+        onMapCreated: (controller) async {
+          _mapController = controller;
+          _applyMapStyle(isLight);
+        },
+      ),
     );
   }
 
@@ -200,6 +206,16 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
         ],
       ),
     );
+  }
+
+  Future<void> _applyMapStyle(bool isLight) async {
+    if (_mapController == null) return;
+
+    if (isLight) {
+      await _mapController!.setMapStyle(null);
+    } else {
+      await _mapController!.setMapStyle(darkMapStyle);
+    }
   }
 
   Future<void> _updateDriverMarker(LatLng location) async {
