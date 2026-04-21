@@ -11,6 +11,7 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Column(
       children: [
         CircleAvatar(radius: 50, backgroundImage: NetworkImage(user.image!)),
@@ -19,7 +20,9 @@ class ProfileHeader extends StatelessWidget {
         4.hs,
         Text(
           user.email!,
-          style: AppStyles.textRegular14.copyWith(color: AppColors.accent),
+          style: AppStyles.textRegular14.copyWith(
+            color: isLight ? AppColors.slateGray : AppColors.accent,
+          ),
         ),
         16.hs,
         RoleBadge(role: user.role!),

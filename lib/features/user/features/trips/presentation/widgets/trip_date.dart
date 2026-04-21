@@ -11,14 +11,20 @@ class TripDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Row(
       children: [
         8.ws,
-        Icon(Icons.calendar_month, color: AppColors.accent),
+        Icon(
+          Icons.calendar_month,
+          color: isLight ? AppColors.dark : AppColors.accent,
+        ),
         8.ws,
         Text(
           trip.date,
-          style: AppStyles.textSemiBold12.copyWith(color: AppColors.accent),
+          style: AppStyles.textSemiBold12.copyWith(
+            color: isLight ? AppColors.dark : AppColors.accent,
+          ),
         ),
       ],
     );

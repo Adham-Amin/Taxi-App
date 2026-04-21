@@ -12,6 +12,7 @@ class SearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     var placeList = context.watch<MapCubit>().distinationplaces;
     return BlocBuilder<MapCubit, GoogleMapState>(
       builder: (context, state) {
@@ -24,7 +25,7 @@ class SearchList extends StatelessWidget {
             itemCount: placeList.length > 3 ? 3 : placeList.length,
             itemBuilder: (context, index) => Container(
               decoration: BoxDecoration(
-                color: AppColors.dark,
+                color: isLight ? AppColors.white : AppColors.dark,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: ListTile(

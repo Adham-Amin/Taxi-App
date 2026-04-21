@@ -17,21 +17,26 @@ class InfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Row(
       children: [
-        Icon(icon, color: AppColors.lightGrey),
-        8.ws,
+        Icon(icon, color: isLight ? AppColors.lightGrey : AppColors.lightGrey),
+        16.ws,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
-              style: AppStyles.textBold12.copyWith(color: AppColors.lightGrey),
+              style: AppStyles.textBold12.copyWith(
+                color: isLight ? AppColors.lightGrey : AppColors.lightGrey,
+              ),
             ),
             4.hs,
             Text(
               subtitle,
-              style: AppStyles.textMedium14.copyWith(color: AppColors.light),
+              style: AppStyles.textMedium14.copyWith(
+                color: isLight ? AppColors.dark : AppColors.light,
+              ),
             ),
           ],
         ),

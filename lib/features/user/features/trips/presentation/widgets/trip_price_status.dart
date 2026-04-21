@@ -11,13 +11,16 @@ class TripPriceStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Column(
       children: [
         Text(
           '\$${trip.price}',
           style: AppStyles.textExtraBold18.copyWith(
             color: trip.status == 'canceled'
-                ? AppColors.accent
+                ? isLight
+                      ? AppColors.slateGray
+                      : AppColors.accent
                 : trip.status == 'searching'
                 ? AppColors.accent
                 : AppColors.lightGreen,

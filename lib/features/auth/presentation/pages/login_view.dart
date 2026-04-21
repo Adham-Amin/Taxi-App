@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_back_button.dart';
 import 'package:taxi_app/features/auth/data/datasources/auth_data_source.dart';
 import 'package:taxi_app/features/auth/data/repositories/auth_repo.dart';
@@ -21,7 +20,7 @@ class LoginView extends StatelessWidget {
           backgroundColor: Colors.transparent,
           leading: Center(child: const CustomBackButton()),
           scrolledUnderElevation: 0,
-          title: Text('Login', style: AppStyles.textExtraBold24),
+          title: Text('Login'),
         ),
         body: LoginViewBody(),
       ),

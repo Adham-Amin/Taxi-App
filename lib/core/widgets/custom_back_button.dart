@@ -7,13 +7,15 @@ class CustomBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return GestureDetector(
       onTap: () => context.pop(),
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: AppColors.grey,
+          color: isLight ? AppColors.white : AppColors.grey,
+          border: Border.all(color: isLight ? AppColors.light : AppColors.grey),
         ),
         child: const Icon(Icons.arrow_back, color: AppColors.lightGreen),
       ),

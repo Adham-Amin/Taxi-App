@@ -25,6 +25,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -67,7 +68,9 @@ class CustomButton extends StatelessWidget {
                   Text(
                     title,
                     style: AppStyles.textBold18.copyWith(
-                      color: colorText ?? AppColors.darkGreen,
+                      color:
+                          colorText ??
+                          (isLight ? AppColors.white : AppColors.darkGreen),
                     ),
                   ),
                 ],

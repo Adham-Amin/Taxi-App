@@ -12,14 +12,15 @@ class DirverButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Row(
       children: [
         Expanded(
           child: CustomButton(
             title: 'Message',
             onTap: () {},
-            colorText: AppColors.light,
-            backgroundColor: AppColors.darkGrey,
+            colorText: isLight ? AppColors.dark : AppColors.light,
+            backgroundColor: isLight ? AppColors.offWhite : AppColors.darkGrey,
             shadeColor: Colors.transparent,
             icon: Icon(Icons.message_outlined, color: AppColors.lightGreen),
           ),
@@ -31,8 +32,8 @@ class DirverButtons extends StatelessWidget {
             onTap: () {
               launchUrl(Uri.parse('tel:${trip.driver.phone}'));
             },
-            colorText: AppColors.light,
-            backgroundColor: AppColors.darkGrey,
+            colorText: isLight ? AppColors.dark : AppColors.light,
+            backgroundColor: isLight ? AppColors.offWhite : AppColors.darkGrey,
             shadeColor: Colors.transparent,
             icon: Icon(Icons.call_outlined, color: AppColors.lightGreen),
           ),

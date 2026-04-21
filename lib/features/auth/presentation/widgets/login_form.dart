@@ -5,13 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/functions/validators.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
-import 'package:taxi_app/core/utils/app_colors.dart';
-import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field_password.dart';
 import 'package:taxi_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:taxi_app/core/widgets/label_text.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -48,13 +47,7 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'EMAIL ADDRESS',
-            style: AppStyles.textRegular10.copyWith(
-              color: AppColors.accent,
-              letterSpacing: 2,
-            ),
-          ),
+          LabelText(text: 'EMAIL ADDRESS'),
           6.hs,
           CustomTextFormField(
             controller: emailController,
@@ -64,13 +57,7 @@ class _LoginFormState extends State<LoginForm> {
             suffixIcon: Icon(Icons.email_outlined),
           ),
           16.hs,
-          Text(
-            'PASSWORD',
-            style: AppStyles.textRegular10.copyWith(
-              color: AppColors.accent,
-              letterSpacing: 2,
-            ),
-          ),
+          LabelText(text: 'PASSWORD'),
           6.hs,
           CustomTextFormFieldPassword(
             controller: passwordController,

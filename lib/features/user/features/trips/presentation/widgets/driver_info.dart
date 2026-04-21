@@ -10,12 +10,15 @@ class DriverInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           trip.status == 'canceled' ? 'No Driver' : 'Driver',
-          style: AppStyles.textSemiBold12.copyWith(color: AppColors.accent),
+          style: AppStyles.textSemiBold12.copyWith(
+            color: isLight ? AppColors.slateGray : AppColors.accent,
+          ),
         ),
         Text(
           trip.status == 'canceled'

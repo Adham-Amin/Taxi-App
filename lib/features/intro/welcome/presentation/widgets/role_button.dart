@@ -16,6 +16,7 @@ class RoleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -23,17 +24,35 @@ class RoleButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: isActive ? AppColors.darkGrey : Colors.transparent,
+          color: isActive
+              ? isLight
+                    ? AppColors.white
+                    : AppColors.darkGrey
+              : Colors.transparent,
           border: Border.all(
             color: isActive
                 ? AppColors.lightGreen.withValues(alpha: 0.2)
                 : Colors.transparent,
           ),
+          boxShadow: isActive
+              ? [
+                  BoxShadow(
+                    color: Color(0x19000000),
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                    spreadRadius: -2,
+                  ),
+                ]
+              : [],
         ),
         child: Text(
           'Continue as $title',
           style: AppStyles.textBold14.copyWith(
-            color: isActive ? AppColors.lightGreen : AppColors.light,
+            color: isActive
+                ? AppColors.lightGreen
+                : isLight
+                ? AppColors.darkOliveGray
+                : AppColors.light,
           ),
         ),
       ),

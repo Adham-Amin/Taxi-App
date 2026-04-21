@@ -13,18 +13,37 @@ class TripCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.darkBlack,
+        color: isLight ? AppColors.white : AppColors.darkBlack,
         borderRadius: BorderRadius.circular(16),
+        boxShadow: isLight
+            ? [
+                BoxShadow(
+                  color: AppColors.mutedSlateGray.withValues(alpha: 0.2),
+                  blurRadius: 10,
+
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : [],
+        border: isLight
+            ? Border.all(color: AppColors.mutedSlateGray.withValues(alpha: 0.2))
+            : null,
       ),
       child: Column(
         children: [
           TripHeader(trip: trip),
           16.hs,
           TripLocations(trip: trip),
-          Divider(height: 24, color: AppColors.white.withValues(alpha: 0.08)),
+          Divider(
+            height: 24,
+            color: isLight
+                ? AppColors.black.withValues(alpha: 0.1)
+                : AppColors.white.withValues(alpha: 0.08),
+          ),
           TripDate(trip: trip),
         ],
       ),

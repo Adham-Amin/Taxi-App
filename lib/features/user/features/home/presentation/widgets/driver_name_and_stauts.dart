@@ -19,11 +19,18 @@ class DriverNameAndStauts extends StatelessWidget {
           'Your Driver',
           style: AppStyles.textRegular12.copyWith(color: AppColors.accent),
         ),
-        Text(trip.driver.name, style: AppStyles.textBold18, maxLines: 1),
+        Text(
+          trip.driver.name,
+          style: AppStyles.textBold18.copyWith(color: AppColors.light),
+          maxLines: 1,
+        ),
         4.hs,
         Text(
-          trip.status.name,
-          style: AppStyles.textRegular12.copyWith(color: AppColors.lightGreen),
+          trip.status.name.toUpperCase(),
+          style: AppStyles.textRegular12.copyWith(
+            color: AppColors.lightGreen,
+            letterSpacing: 1,
+          ),
         ),
       ],
     );

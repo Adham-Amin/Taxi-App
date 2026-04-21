@@ -6,6 +6,12 @@ class CustomDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(height: 24, color: AppColors.white.withValues(alpha: 0.08));
+    var isLight = Theme.of(context).brightness == Brightness.light;
+    return Divider(
+      height: 24,
+      color: isLight
+          ? AppColors.mutedSlateGray
+          : AppColors.white.withValues(alpha: 0.08),
+    );
   }
 }

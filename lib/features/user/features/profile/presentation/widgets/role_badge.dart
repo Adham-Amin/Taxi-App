@@ -10,12 +10,18 @@ class RoleBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.darkBlack,
+        color: isLight ? AppColors.background : AppColors.darkBlack,
         borderRadius: BorderRadius.circular(60),
-        border: Border.all(color: AppColors.grey, width: 2),
+        border: Border.all(
+          color: isLight
+              ? AppColors.mutedSlateGray.withValues(alpha: 0.2)
+              : AppColors.grey,
+          width: 2,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -24,7 +30,9 @@ class RoleBadge extends StatelessWidget {
           8.ws,
           Text(
             role.toUpperCase(),
-            style: AppStyles.textBold12.copyWith(color: AppColors.light),
+            style: AppStyles.textBold12.copyWith(
+              color: isLight ? AppColors.dark : AppColors.light,
+            ),
           ),
         ],
       ),

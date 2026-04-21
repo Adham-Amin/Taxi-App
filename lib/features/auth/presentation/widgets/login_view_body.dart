@@ -12,6 +12,7 @@ class LoginViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -23,7 +24,9 @@ class LoginViewBody extends StatelessWidget {
           12.hs,
           Text(
             'Welcome back!, Login to continue.',
-            style: AppStyles.textMedium16.copyWith(color: AppColors.accent),
+            style: AppStyles.textMedium16.copyWith(
+              color: isLight ? AppColors.darkSlateGray : AppColors.accent,
+            ),
             textAlign: TextAlign.center,
           ),
           48.hs,

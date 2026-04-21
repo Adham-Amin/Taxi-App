@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:io';
-
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,11 +9,10 @@ import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/functions/image_uploader.dart';
 import 'package:taxi_app/core/functions/validators.dart';
 import 'package:taxi_app/core/services/shared_preferences_service.dart';
-import 'package:taxi_app/core/utils/app_colors.dart';
-import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
+import 'package:taxi_app/core/widgets/label_text.dart';
 import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
 import 'package:taxi_app/features/auth/presentation/widgets/profile_image_picker.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/cubit/profile_cubit.dart';
@@ -62,13 +60,7 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
             ),
           ),
           32.hs,
-          Text(
-            'FULL NAME',
-            style: AppStyles.textRegular10.copyWith(
-              color: AppColors.accent,
-              letterSpacing: 2,
-            ),
-          ),
+          LabelText(text: 'FULL NAME'),
           6.hs,
           CustomTextFormField(
             controller: nameController,
@@ -78,13 +70,7 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
             suffixIcon: Icon(Icons.person_2_outlined),
           ),
           16.hs,
-          Text(
-            'Phone Number',
-            style: AppStyles.textRegular10.copyWith(
-              color: AppColors.accent,
-              letterSpacing: 2,
-            ),
-          ),
+          LabelText(text: 'PHONE'),
           6.hs,
           CustomTextFormField(
             controller: phoneController,

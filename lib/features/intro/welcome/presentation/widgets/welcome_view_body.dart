@@ -22,6 +22,7 @@ class _WelcomeViewBodyState extends State<WelcomeViewBody> {
   UserTypeEnum role = UserTypeEnum.user;
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -34,7 +35,9 @@ class _WelcomeViewBodyState extends State<WelcomeViewBody> {
           12.hs,
           Text(
             'Experience the next generation of peer-to-peer urban mobility.',
-            style: AppStyles.textMedium16.copyWith(color: AppColors.accent),
+            style: AppStyles.textMedium16.copyWith(
+              color: isLight ? AppColors.darkSlateGray : AppColors.accent,
+            ),
             textAlign: TextAlign.center,
           ),
           48.hs,
@@ -53,9 +56,9 @@ class _WelcomeViewBodyState extends State<WelcomeViewBody> {
           16.hs,
           CustomButton(
             title: 'Register',
-            backgroundColor: AppColors.darkGrey,
+            backgroundColor: isLight ? AppColors.light : AppColors.darkGrey,
             shadeColor: Colors.transparent,
-            colorText: AppColors.light,
+            colorText: isLight ? AppColors.black : AppColors.light,
             onTap: () {
               context.push(AppRoutes.register, extra: role.name);
             },

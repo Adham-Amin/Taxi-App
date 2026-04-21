@@ -14,6 +14,7 @@ class TripsViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -46,7 +47,9 @@ class TripsViewBody extends StatelessWidget {
                       Text(
                         '${state.trips.length} Total trips completed this year',
                         style: AppStyles.textSemiBold16.copyWith(
-                          color: AppColors.accent,
+                          color: isLight
+                              ? AppColors.darkBlack
+                              : AppColors.accent,
                         ),
                       ),
                       16.hs,

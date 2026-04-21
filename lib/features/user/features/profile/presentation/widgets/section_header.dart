@@ -10,12 +10,15 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: AppStyles.textBold12.copyWith(color: AppColors.lightGrey),
+          style: AppStyles.textBold12.copyWith(
+            color: isLight ? AppColors.slateGray : AppColors.lightGrey,
+          ),
         ),
         if (onEdit != null)
           GestureDetector(

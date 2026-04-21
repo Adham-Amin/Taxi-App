@@ -10,9 +10,10 @@ class PersonalInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: _boxDecoration(),
+      decoration: _boxDecoration(isLight),
       child: Column(
         children: [
           InfoTile(
@@ -37,11 +38,13 @@ class PersonalInfoSection extends StatelessWidget {
     );
   }
 
-  BoxDecoration _boxDecoration() {
+  BoxDecoration _boxDecoration(bool isLiaght) {
     return BoxDecoration(
-      color: AppColors.darkBlack,
+      color: isLiaght ? AppColors.white : AppColors.darkBlack,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: AppColors.grey, width: 2),
+      border: Border.all(
+        color: isLiaght ? AppColors.mutedSlateGray : AppColors.grey,
+      ),
     );
   }
 }

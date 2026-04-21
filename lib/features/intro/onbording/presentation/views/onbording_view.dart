@@ -11,6 +11,7 @@ class OnbordingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -22,7 +23,9 @@ class OnbordingView extends StatelessWidget {
             },
             child: Text(
               'Skip',
-              style: AppStyles.textSemiBold16.copyWith(color: AppColors.accent),
+              style: AppStyles.textSemiBold16.copyWith(
+                color: isLight ? AppColors.slateGray : AppColors.accent,
+              ),
             ),
           ),
         ],

@@ -13,6 +13,7 @@ class OnbordingViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -24,7 +25,9 @@ class OnbordingViewBody extends StatelessWidget {
           16.hs,
           Text(
             'Book a ride in seconds and get picked up by\na top-rated driver.',
-            style: AppStyles.textRegular16.copyWith(color: AppColors.accent),
+            style: AppStyles.textRegular16.copyWith(
+              color: isLight ? AppColors.slateGray : AppColors.accent,
+            ),
             textAlign: TextAlign.center,
           ),
           110.hs,

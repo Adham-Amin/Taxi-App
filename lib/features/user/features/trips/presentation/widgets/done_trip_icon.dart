@@ -9,12 +9,17 @@ class DoneTripIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return CircleAvatar(
       radius: 24,
       backgroundColor: trip.status == 'canceled'
-          ? AppColors.darkGrey
+          ? isLight
+                ? AppColors.background
+                : AppColors.darkGrey
           : trip.status == 'searching'
           ? AppColors.accent.withValues(alpha: 0.1)
+          : isLight
+          ? AppColors.background
           : AppColors.darkGreen,
       child: CircleAvatar(
         radius: 12,

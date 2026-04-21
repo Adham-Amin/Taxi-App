@@ -19,6 +19,7 @@ class ButtonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return GestureDetector(
       onTap: onTap,
       child: Row(
@@ -27,7 +28,9 @@ class ButtonTile extends StatelessWidget {
           8.ws,
           Text(
             title,
-            style: AppStyles.textMedium16.copyWith(color: AppColors.light),
+            style: AppStyles.textMedium16.copyWith(
+              color: isLight ? AppColors.dark : AppColors.light,
+            ),
           ),
           const Spacer(),
           trailing ??

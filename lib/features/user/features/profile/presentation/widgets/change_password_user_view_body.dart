@@ -4,11 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/functions/validators.dart';
-import 'package:taxi_app/core/utils/app_colors.dart';
-import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field_password.dart';
+import 'package:taxi_app/core/widgets/label_text.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/cubit/profile_cubit.dart';
 
 class ChangePasswordUserViewBody extends StatefulWidget {
@@ -50,13 +49,7 @@ class _ChangePasswordUserViewBodyState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             32.hs,
-            Text(
-              'CURRENT PASSWORD',
-              style: AppStyles.textRegular10.copyWith(
-                color: AppColors.accent,
-                letterSpacing: 2,
-              ),
-            ),
+            LabelText(text: 'CURRENT PASSWORD'),
             6.hs,
             CustomTextFormFieldPassword(
               controller: passwordController,
@@ -69,13 +62,7 @@ class _ChangePasswordUserViewBodyState
               hintText: '•••••••••••••',
             ),
             16.hs,
-            Text(
-              'NEW PASSWORD',
-              style: AppStyles.textRegular10.copyWith(
-                color: AppColors.accent,
-                letterSpacing: 2,
-              ),
-            ),
+            LabelText(text: 'NEW PASSWORD'),
             6.hs,
             CustomTextFormFieldPassword(
               controller: newPasswordController,

@@ -28,13 +28,13 @@ class MainPageState extends State<UserMainView> {
 
   @override
   Widget build(BuildContext context) {
-    var isDark = Theme.of(context).brightness == Brightness.dark;
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
       body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
         decoration: BoxDecoration(
-          color: isDark ? AppColors.black : Colors.white,
+          color: isLight ? AppColors.white : Colors.black,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           boxShadow: [
             BoxShadow(
@@ -45,10 +45,9 @@ class MainPageState extends State<UserMainView> {
         ),
         child: GNav(
           curve: Curves.easeOutExpo,
-          rippleColor: AppColors.dark,
-          hoverColor: AppColors.dark,
           haptic: true,
           gap: 4,
+          color: AppColors.slateGray,
           activeColor: AppColors.lightGreen,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           duration: const Duration(milliseconds: 400),

@@ -9,11 +9,12 @@ class PriceSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.darkGrey,
+        color: isLight ? AppColors.offWhite : AppColors.darkGrey,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -21,7 +22,10 @@ class PriceSection extends StatelessWidget {
         children: [
           Text(
             'FINAL PRICE',
-            style: AppStyles.textSemiBold12.copyWith(color: AppColors.accent),
+            style: AppStyles.textSemiBold12.copyWith(
+              color: isLight ? AppColors.dark : AppColors.accent,
+              letterSpacing: 1,
+            ),
           ),
           Text(
             '\$$price',

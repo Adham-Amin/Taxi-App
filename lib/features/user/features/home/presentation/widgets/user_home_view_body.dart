@@ -71,6 +71,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return BlocConsumer<TripCubit, TripState>(
       listener: (context, state) {
         state is TripError
@@ -82,7 +83,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
             : null;
       },
       builder: (context, state) {
-        return Stack(children: [_buildMap(), _buildStatusUI(state)]);
+        return Stack(children: [_buildMap(isLight), _buildStatusUI(state)]);
       },
     );
   }
@@ -126,7 +127,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     return _buildIdleUI(state is TripLoading);
   }
 
-  Widget _buildMap() {
+  Widget _buildMap(bool isLiaght) {
     return GoogleMap(
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
@@ -136,7 +137,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
       polylines: _polylines,
       onMapCreated: (controller) async {
         _mapController = controller;
-        if (darkMapStyle != null) {
+        if (darkMapStyle != null && !isLiaght) {
           await controller.setMapStyle(darkMapStyle);
         }
       },

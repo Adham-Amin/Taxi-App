@@ -4,12 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/functions/validators.dart';
-import 'package:taxi_app/core/utils/app_colors.dart';
-import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field_password.dart';
+import 'package:taxi_app/core/widgets/label_text.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/cubit/profile_cubit.dart';
 
 class ChangeEmailUserViewBody extends StatefulWidget {
@@ -50,13 +49,7 @@ class _ChangeEmailUserViewBodyState extends State<ChangeEmailUserViewBody> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             32.hs,
-            Text(
-              'New EMAIL',
-              style: AppStyles.textRegular10.copyWith(
-                color: AppColors.accent,
-                letterSpacing: 2,
-              ),
-            ),
+            LabelText(text: 'NEW EMAIL ADDRESS'),
             6.hs,
             CustomTextFormField(
               controller: newEmailController,
@@ -64,13 +57,7 @@ class _ChangeEmailUserViewBodyState extends State<ChangeEmailUserViewBody> {
               hintText: 'adham@example.com',
             ),
             16.hs,
-            Text(
-              'PASSWORD',
-              style: AppStyles.textRegular10.copyWith(
-                color: AppColors.accent,
-                letterSpacing: 2,
-              ),
-            ),
+            LabelText(text: 'CURRENT PASSWORD'),
             6.hs,
             CustomTextFormFieldPassword(
               controller: passwordController,
