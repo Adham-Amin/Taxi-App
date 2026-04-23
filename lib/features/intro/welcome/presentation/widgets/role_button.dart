@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 
@@ -46,7 +48,8 @@ class RoleButton extends StatelessWidget {
               : [],
         ),
         child: Text(
-          'Continue as $title',
+          '${LocaleKeys.continue_as.tr()} $title',
+          textAlign: TextAlign.center,
           style: AppStyles.textBold14.copyWith(
             color: isActive
                 ? AppColors.lightGreen

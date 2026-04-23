@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/features/intro/welcome/data/model/user_type_enum.dart';
 import 'package:taxi_app/features/intro/welcome/presentation/widgets/role_button.dart';
@@ -32,25 +35,30 @@ class _RoleSelectorState extends State<RoleSelector> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          RoleButton(
-            title: 'User',
-            isActive: currentIndex == 0,
-            onTap: () {
-              widget.onTap(UserTypeEnum.user);
-              setState(() {
-                currentIndex = 0;
-              });
-            },
+          Expanded(
+            child: RoleButton(
+              title: LocaleKeys.user.tr(),
+              isActive: currentIndex == 0,
+              onTap: () {
+                widget.onTap(UserTypeEnum.user);
+                setState(() {
+                  currentIndex = 0;
+                });
+              },
+            ),
           ),
-          RoleButton(
-            title: 'Driver',
-            isActive: currentIndex == 1,
-            onTap: () {
-              widget.onTap(UserTypeEnum.driver);
-              setState(() {
-                currentIndex = 1;
-              });
-            },
+          4.ws,
+          Expanded(
+            child: RoleButton(
+              title: LocaleKeys.driver.tr(),
+              isActive: currentIndex == 1,
+              onTap: () {
+                widget.onTap(UserTypeEnum.driver);
+                setState(() {
+                  currentIndex = 1;
+                });
+              },
+            ),
           ),
         ],
       ),

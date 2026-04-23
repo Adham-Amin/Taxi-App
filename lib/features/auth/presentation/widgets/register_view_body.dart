@@ -1,21 +1,21 @@
 import 'dart:io';
-
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/functions/validators.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/services/location_service.dart';
-import 'package:taxi_app/core/utils/app_colors.dart';
-import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_rich_text.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field_password.dart';
+import 'package:taxi_app/core/widgets/label_text.dart';
 import 'package:taxi_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:taxi_app/features/auth/presentation/widgets/car_info_section.dart';
 import 'package:taxi_app/features/auth/presentation/widgets/profile_image_picker.dart';
@@ -88,13 +88,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               ),
             ),
             32.hs,
-            Text(
-              'FULL NAME',
-              style: AppStyles.textRegular10.copyWith(
-                color: AppColors.accent,
-                letterSpacing: 2,
-              ),
-            ),
+            LabelText(text: LocaleKeys.full_name.tr()),
             6.hs,
             CustomTextFormField(
               controller: nameController,
@@ -104,13 +98,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               suffixIcon: Icon(Icons.person_2_outlined),
             ),
             16.hs,
-            Text(
-              'EMAIL ADDRESS',
-              style: AppStyles.textRegular10.copyWith(
-                color: AppColors.accent,
-                letterSpacing: 2,
-              ),
-            ),
+            LabelText(text: LocaleKeys.email_address.tr()),
             6.hs,
             CustomTextFormField(
               controller: emailController,
@@ -120,13 +108,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               suffixIcon: Icon(Icons.email_outlined),
             ),
             16.hs,
-            Text(
-              'Phone Number',
-              style: AppStyles.textRegular10.copyWith(
-                color: AppColors.accent,
-                letterSpacing: 2,
-              ),
-            ),
+            LabelText(text: LocaleKeys.phone_number.tr()),
             6.hs,
             CustomTextFormField(
               controller: phoneController,
@@ -136,13 +118,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               suffixIcon: Icon(Icons.phone_android_outlined),
             ),
             16.hs,
-            Text(
-              'PASSWORD',
-              style: AppStyles.textRegular10.copyWith(
-                color: AppColors.accent,
-                letterSpacing: 2,
-              ),
-            ),
+            LabelText(text: LocaleKeys.password.tr()),
             6.hs,
             CustomTextFormFieldPassword(
               controller: passwordController,
@@ -187,7 +163,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               builder: (context, state) {
                 return CustomButton(
                   isLoading: state is AuthLoading,
-                  title: 'Register',
+                  title: LocaleKeys.register.tr(),
                   onTap: () {
                     final isValid = _formKey.currentState!.validate();
                     if (!isValid) {
@@ -198,17 +174,15 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                     }
                     _formKey.currentState!.save();
 
-                    // 1) Validate image
                     if (file == null) {
                       customSnackBar(
                         context: context,
-                        message: "Please select profile image",
+                        message: LocaleKeys.please_select_profile_image.tr(),
                         type: AnimatedSnackBarType.error,
                       );
                       return;
                     }
 
-                    // 2) Handle user register
                     if (widget.role == 'user') {
                       context.read<AuthCubit>().userRegister(
                         image: file!,
@@ -220,17 +194,15 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                       return;
                     }
 
-                    // 3) Validate driver location
                     if (location == null) {
                       customSnackBar(
                         context: context,
-                        message: "Please select location",
+                        message: LocaleKeys.please_select_location.tr(),
                         type: AnimatedSnackBarType.error,
                       );
                       return;
                     }
 
-                    // 4) Driver register
                     context.read<AuthCubit>().driverRegister(
                       image: file!,
                       fullName: nameController.text.trim(),
@@ -250,8 +222,8 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
             24.hs,
             Center(
               child: CustomRichText(
-                text: 'Already have an account?',
-                linkText: 'Login',
+                text: LocaleKeys.already_have_an_account.tr(),
+                linkText: LocaleKeys.login.tr(),
                 onTap: () => context.pushReplacement(AppRoutes.login),
               ),
             ),

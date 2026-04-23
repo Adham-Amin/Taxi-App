@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
-import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
+import 'package:taxi_app/core/widgets/label_text.dart';
 
 class CarInfoSection extends StatelessWidget {
   const CarInfoSection({
@@ -27,16 +29,10 @@ class CarInfoSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         16.hs,
-        Text(
-          'Location',
-          style: AppStyles.textRegular10.copyWith(
-            color: AppColors.accent,
-            letterSpacing: 2,
-          ),
-        ),
+        LabelText(text: LocaleKeys.location.tr()),
         6.hs,
         CustomTextFormField(
-          hintText: 'Location',
+          hintText: "Location",
           controller: locationController,
           readOnly: true,
           suffixIcon: IconButton(
@@ -45,18 +41,12 @@ class CarInfoSection extends StatelessWidget {
           ),
         ),
         16.hs,
-        Text(
-          'Car Model',
-          style: AppStyles.textRegular10.copyWith(
-            color: AppColors.accent,
-            letterSpacing: 2,
-          ),
-        ),
+        LabelText(text: LocaleKeys.car_model.tr()),
         6.hs,
         CustomTextFormField(
           controller: carModelController,
           validator: (value) =>
-              value!.isEmpty ? 'Enter your license number' : null,
+              value!.isEmpty ? LocaleKeys.car_model_hint.tr() : null,
           keyboardType: TextInputType.text,
           hintText: 'Toyota',
           suffixIcon: Icon(Icons.car_repair_outlined),
@@ -68,18 +58,12 @@ class CarInfoSection extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Car Color',
-                    style: AppStyles.textRegular10.copyWith(
-                      color: AppColors.accent,
-                      letterSpacing: 2,
-                    ),
-                  ),
+                  LabelText(text: LocaleKeys.car_color.tr()),
                   6.hs,
                   CustomTextFormField(
                     controller: carColorController,
                     validator: (value) =>
-                        value!.isEmpty ? 'Enter your car color' : null,
+                        value!.isEmpty ? LocaleKeys.car_color_hint.tr() : null,
                     keyboardType: TextInputType.text,
                     hintText: 'Red',
                     suffixIcon: Icon(Icons.color_lens_outlined),
@@ -92,18 +76,13 @@ class CarInfoSection extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Car Plate',
-                    style: AppStyles.textRegular10.copyWith(
-                      color: AppColors.accent,
-                      letterSpacing: 2,
-                    ),
-                  ),
+                  LabelText(text: LocaleKeys.car_plate_number.tr()),
                   6.hs,
                   CustomTextFormField(
                     controller: carPlateController,
-                    validator: (value) =>
-                        value!.isEmpty ? 'Enter your car plate' : null,
+                    validator: (value) => value!.isEmpty
+                        ? LocaleKeys.car_plate_number_hint.tr()
+                        : null,
                     keyboardType: TextInputType.text,
                     hintText: 'ABC-123',
                     suffixIcon: Icon(Icons.numbers_outlined),

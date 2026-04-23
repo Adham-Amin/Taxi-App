@@ -1,9 +1,11 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/functions/validators.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
@@ -47,21 +49,22 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LabelText(text: 'EMAIL ADDRESS'),
+          LabelText(text: LocaleKeys.email_address.tr()),
           6.hs,
           CustomTextFormField(
             controller: emailController,
             validator: Validators.email,
             keyboardType: TextInputType.emailAddress,
-            hintText: 'alex@nocturne.com',
+            hintText: 'adham@example.com',
             suffixIcon: Icon(Icons.email_outlined),
           ),
           16.hs,
-          LabelText(text: 'PASSWORD'),
+          LabelText(text: LocaleKeys.password.tr()),
           6.hs,
           CustomTextFormFieldPassword(
             controller: passwordController,
-            validator: (value) => value!.isEmpty ? 'Enter your password' : null,
+            validator: (value) =>
+                value!.isEmpty ? LocaleKeys.enter_your_password.tr() : null,
             hintText: '••••••••••••',
           ),
           32.hs,
@@ -87,7 +90,7 @@ class _LoginFormState extends State<LoginForm> {
             builder: (context, state) {
               return CustomButton(
                 isLoading: state is AuthLoading,
-                title: 'Login',
+                title: LocaleKeys.login.tr(),
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();

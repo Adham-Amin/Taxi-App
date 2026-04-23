@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/services/shared_preferences_service.dart';
 import 'package:taxi_app/core/utils/app_assets.dart';
@@ -21,10 +23,14 @@ class OnbordingViewBody extends StatelessWidget {
         children: [
           Image.asset(AppAssets.imagesOnbording, height: 342),
           48.hs,
-          Text('Fast Rides, Anywhere', style: AppStyles.textExtraBold32),
+          Text(
+            LocaleKeys.onboard_title.tr(),
+            textAlign: TextAlign.center,
+            style: AppStyles.textExtraBold32,
+          ),
           16.hs,
           Text(
-            'Book a ride in seconds and get picked up by\na top-rated driver.',
+            LocaleKeys.onboard_sub.tr(),
             style: AppStyles.textRegular16.copyWith(
               color: isLight ? AppColors.slateGray : AppColors.accent,
             ),
@@ -32,7 +38,7 @@ class OnbordingViewBody extends StatelessWidget {
           ),
           110.hs,
           CustomButton(
-            title: 'Get Started',
+            title: LocaleKeys.get_started.tr(),
             onTap: () async {
               context.go(AppRoutes.welcome);
               await Prefs.setBool('SeenOn', true);

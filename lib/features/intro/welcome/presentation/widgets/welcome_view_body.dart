@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:svg_flutter/svg_flutter.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/utils/app_assets.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
@@ -34,7 +36,7 @@ class _WelcomeViewBodyState extends State<WelcomeViewBody> {
           Text('Crazy Taxi', style: AppStyles.textExtraBold36),
           12.hs,
           Text(
-            'Experience the next generation of peer-to-peer urban mobility.',
+            LocaleKeys.welcome_title.tr(),
             style: AppStyles.textMedium16.copyWith(
               color: isLight ? AppColors.darkSlateGray : AppColors.accent,
             ),
@@ -50,12 +52,12 @@ class _WelcomeViewBodyState extends State<WelcomeViewBody> {
           ),
           32.hs,
           CustomButton(
-            title: 'Login',
+            title: LocaleKeys.login.tr(),
             onTap: () => context.push(AppRoutes.login),
           ),
           16.hs,
           CustomButton(
-            title: 'Register',
+            title: LocaleKeys.register.tr(),
             backgroundColor: isLight ? AppColors.light : AppColors.darkGrey,
             shadeColor: Colors.transparent,
             colorText: isLight ? AppColors.black : AppColors.light,
@@ -65,8 +67,8 @@ class _WelcomeViewBodyState extends State<WelcomeViewBody> {
           ),
           Spacer(),
           CustomRichText(
-            text: 'By continuing you agree to our ',
-            linkText: 'Terms & Privacy Policy',
+            text: LocaleKeys.by_registering.tr(),
+            linkText: LocaleKeys.terms_privacy.tr(),
             onTap: () {},
           ),
           32.hs,

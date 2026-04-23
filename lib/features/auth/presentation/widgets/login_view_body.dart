@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:svg_flutter/svg.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_assets.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
@@ -23,7 +25,7 @@ class LoginViewBody extends StatelessWidget {
           Text('Crazy Taxi', style: AppStyles.textExtraBold36),
           12.hs,
           Text(
-            'Welcome back!, Login to continue.',
+            LocaleKeys.welcome_back.tr(),
             style: AppStyles.textMedium16.copyWith(
               color: isLight ? AppColors.darkSlateGray : AppColors.accent,
             ),

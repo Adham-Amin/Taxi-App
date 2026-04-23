@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/services/shared_preferences_service.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
@@ -22,7 +24,7 @@ class OnbordingView extends StatelessWidget {
               await Prefs.setBool('SeenOn', true);
             },
             child: Text(
-              'Skip',
+              LocaleKeys.skip.tr(),
               style: AppStyles.textSemiBold16.copyWith(
                 color: isLight ? AppColors.slateGray : AppColors.accent,
               ),

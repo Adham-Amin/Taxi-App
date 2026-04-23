@@ -26,23 +26,26 @@ class _CustomTextFormFieldPasswordState
   bool isPasswordVisible = false;
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      onChanged: widget.onChanged,
-      obscureText: !isPasswordVisible,
-      controller: widget.controller,
-      validator: widget.validator,
-      style: AppStyles.textRegular14,
-      decoration: InputDecoration(
-        hintText: widget.hintText,
-        suffixIcon: IconButton(
-          onPressed: () {
-            setState(() {
-              isPasswordVisible = !isPasswordVisible;
-            });
-          },
-          icon: Icon(
-            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            color: AppColors.lightGreen.withValues(alpha: 0.5),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: TextFormField(
+        onChanged: widget.onChanged,
+        obscureText: !isPasswordVisible,
+        controller: widget.controller,
+        validator: widget.validator,
+        style: AppStyles.textRegular14,
+        decoration: InputDecoration(
+          hintText: widget.hintText,
+          suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                isPasswordVisible = !isPasswordVisible;
+              });
+            },
+            icon: Icon(
+              isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+              color: AppColors.green,
+            ),
           ),
         ),
       ),

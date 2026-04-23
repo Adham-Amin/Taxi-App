@@ -16,11 +16,15 @@ class LanguageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.darkBlack,
+        color: isLight ? AppColors.white : AppColors.darkBlack,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.grey, width: 2),
+        border: Border.all(
+          color: isLight ? AppColors.mutedSlateGray : AppColors.grey,
+          width: 2,
+        ),
       ),
       child: ListTile(
         contentPadding: EdgeInsets.zero,
