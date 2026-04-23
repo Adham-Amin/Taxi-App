@@ -11,8 +11,8 @@ import 'package:taxi_app/features/user/features/trips/presentation/widgets/empty
 import 'package:taxi_app/features/user/features/trips/presentation/widgets/loading_trips_history.dart';
 import 'package:taxi_app/features/user/features/trips/presentation/widgets/trip_card.dart';
 
-class TripsViewBody extends StatelessWidget {
-  const TripsViewBody({super.key});
+class UserTripsViewBody extends StatelessWidget {
+  const UserTripsViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -145,12 +145,8 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
               listener: (context, state) {
                 if (state is AuthLoaded) {
                   state.user.role == 'user'
-                      ? context.pushReplacement(AppRoutes.userMain)
-                      : customSnackBar(
-                          context: context,
-                          message: 'success',
-                          type: AnimatedSnackBarType.success,
-                        );
+                      ? context.go(AppRoutes.userMain)
+                      : context.go(AppRoutes.driverMain);
                 }
                 if (state is AuthError) {
                   customSnackBar(

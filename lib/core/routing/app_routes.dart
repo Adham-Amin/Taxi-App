@@ -10,6 +10,7 @@ class AppRoutes {
   static const String userchangePasswordProfile = '/userchangePasswordProfile';
   static const String language = '/language';
   static const String driverMain = '/driverMain';
+  static const String driverMap = '/driverMap';
   static const String driverEditProfile = '/driverEditProfile';
   static const String driverchangeEmailProfile = '/driverchangeEmailProfile';
   static const String driverchangePasswordProfile =

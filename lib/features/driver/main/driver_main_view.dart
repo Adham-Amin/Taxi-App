@@ -2,26 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
-import 'package:taxi_app/features/user/features/home/presentation/pages/user_home_view.dart';
-import 'package:taxi_app/features/user/features/profile/presentation/pages/user_profile_view.dart';
-import 'package:taxi_app/features/user/features/trips/presentation/pages/user_trips_view.dart';
 
-class UserMainView extends StatefulWidget {
-  const UserMainView({super.key});
+class DriverMainView extends StatefulWidget {
+  const DriverMainView({super.key});
 
   static final GlobalKey<MainPageState> mainViewKey = GlobalKey();
 
   @override
-  State<UserMainView> createState() => MainPageState();
+  State<DriverMainView> createState() => MainPageState();
 }
 
-class MainPageState extends State<UserMainView> {
+class MainPageState extends State<DriverMainView> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    UserHomeView(),
-    UserTripsView(),
-    UserProfileView(),
+    Center(child: Text('Home')),
+    Center(child: Text('Trips')),
+    Center(child: Text('Settings')),
   ];
 
   void changeTab(int index) {
@@ -57,7 +54,7 @@ class MainPageState extends State<UserMainView> {
           duration: const Duration(milliseconds: 400),
           textStyle: AppStyles.textBold18.copyWith(color: AppColors.lightGreen),
           tabs: const [
-            GButton(icon: Icons.home_outlined, text: 'Home'),
+            GButton(icon: Icons.home, text: 'home'),
             GButton(icon: Icons.directions_car, text: 'Trips'),
             GButton(icon: Icons.settings_outlined, text: 'Settings'),
           ],

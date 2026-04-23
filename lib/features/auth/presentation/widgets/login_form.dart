@@ -80,11 +80,7 @@ class _LoginFormState extends State<LoginForm> {
               if (state is AuthLoaded) {
                 state.user.role == 'user'
                     ? context.go(AppRoutes.userMain)
-                    : customSnackBar(
-                        context: context,
-                        message: 'Driver logged in successfully',
-                        type: AnimatedSnackBarType.success,
-                      );
+                    : context.go(AppRoutes.driverMain);
               }
             },
             builder: (context, state) {
