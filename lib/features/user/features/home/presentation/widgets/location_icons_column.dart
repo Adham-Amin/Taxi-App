@@ -13,7 +13,7 @@ class LocationIconsColumn extends StatelessWidget {
         24.hs,
         Icon(Icons.circle, color: AppColors.white, size: 16),
         4.hs,
-        Container(height: 36, width: 2, color: AppColors.lightGreen),
+        Container(height: 40, width: 2, color: AppColors.lightGreen),
         4.hs,
         Icon(Icons.location_on, color: AppColors.red),
       ],

@@ -86,5 +86,8 @@
   "cancel_request" :  "Cancel Request",
   "ride_completed_sub" :  "Hope you enjoyed the ride with",
   "ride_completed" :  "Trip Completed",
-  "done" :  "Done"
+  "done" :  "Done",
+  "please_fill_all_fields" :  "Please fill all fields",
+  "start_your_ride" :  "Start Your Ride",
+  "select_pickup_and_destination" :  "Select your pickup location and destination"
 }

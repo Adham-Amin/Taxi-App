@@ -7,7 +7,7 @@ import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
 
-class RequestButton extends StatelessWidget {
+class RequestButton extends StatefulWidget {
   const RequestButton({
     super.key,
     required this.onTap,
@@ -20,8 +20,33 @@ class RequestButton extends StatelessWidget {
   final TextEditingController priceController;
 
   @override
+  State<RequestButton> createState() => _RequestButtonState();
+}
+
+class _RequestButtonState extends State<RequestButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+      lowerBound: 0.95,
+      upperBound: 1.0,
+    )..repeat(reverse: true);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final isLight = Theme.of(context).brightness == Brightness.light;
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -40,8 +65,9 @@ class RequestButton extends StatelessWidget {
               12.ws,
               Expanded(
                 child: CustomTextFormField(
+                  keyboardType: TextInputType.number,
                   hintText: LocaleKeys.enter_amount.tr(),
-                  controller: priceController,
+                  controller: widget.priceController,
                 ),
               ),
               12.ws,
@@ -54,14 +80,18 @@ class RequestButton extends StatelessWidget {
             ],
           ),
           16.hs,
-          CustomButton(
-            isLoading: isLoading,
-            icon: Icon(
-              Icons.speed_sharp,
-              color: isLight ? AppColors.white : AppColors.dark,
+
+          ScaleTransition(
+            scale: widget.isLoading ? AlwaysStoppedAnimation(1) : _controller,
+            child: CustomButton(
+              isLoading: widget.isLoading,
+              icon: Icon(
+                Icons.speed_sharp,
+                color: isLight ? AppColors.white : AppColors.dark,
+              ),
+              title: LocaleKeys.request_ride.tr(),
+              onTap: widget.onTap,
             ),
-            title: LocaleKeys.request_ride.tr(),
-            onTap: onTap,
           ),
         ],
       ),

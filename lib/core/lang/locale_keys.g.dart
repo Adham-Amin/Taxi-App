@@ -91,5 +91,8 @@ abstract class  LocaleKeys {
   static const ride_completed_sub = 'ride_completed_sub';
   static const ride_completed = 'ride_completed';
   static const done = 'done';
+  static const please_fill_all_fields = 'please_fill_all_fields';
+  static const start_your_ride = 'start_your_ride';
+  static const select_pickup_and_destination = 'select_pickup_and_destination';
 
 }

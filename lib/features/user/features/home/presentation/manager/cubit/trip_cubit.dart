@@ -72,15 +72,15 @@ class TripCubit extends Cubit<TripState> {
   Future<void> cancelRide() async {
     if (currentTripId == null) return;
     await tripRepo.cancelRide(tripId: currentTripId!);
-    close();
     emit(TripCanceled());
+    close();
   }
 
   Future<void> doneRide() async {
     if (currentTripId == null) return;
     await tripRepo.doneRide(tripId: currentTripId!);
-    close();
     emit(TripDone());
+    close();
   }
 
   @override

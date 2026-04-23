@@ -21,12 +21,20 @@ class PickUpLocationList extends StatelessWidget {
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, index) => 6.hs,
+            separatorBuilder: (context, index) => 8.hs,
             itemCount: placeList.length > 3 ? 3 : placeList.length,
             itemBuilder: (context, index) => Container(
               decoration: BoxDecoration(
-                color: isLight ? AppColors.white : AppColors.dark,
+                color: isLight ? AppColors.white : AppColors.darkGreen,
                 borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppColors.lightGreen),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.lightGreen.withValues(alpha: 0.3),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
               child: ListTile(
                 contentPadding: const EdgeInsets.symmetric(

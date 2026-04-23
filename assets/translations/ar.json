@@ -86,5 +86,8 @@
   "cancel_request" :  "إلغاء الطلب",
   "ride_completed_sub" :  "أنتم بخير في الرحلة مع",
   "ride_completed" :  "الرحلة المكتملة",
-  "done" :  "تم"
+  "done" :  "تم",
+  "please_fill_all_fields" :  "يرجى ملء جميع الحقول", 
+  "start_your_ride" :  "ابدأ رحلتك",
+  "select_pickup_and_destination" :  "حدد مكان الاستلام والوصول"
 }

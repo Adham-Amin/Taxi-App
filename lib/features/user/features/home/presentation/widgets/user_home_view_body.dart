@@ -2,18 +2,21 @@
 
 import 'dart:async';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
+import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/helper/map_helper.dart';
-
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/core/services/shared_preferences_service.dart';
 import 'package:taxi_app/core/theme_cubit/theme_cubit.dart';
 import 'package:taxi_app/core/theme_cubit/theme_state.dart';
+import 'package:taxi_app/core/utils/app_colors.dart';
+import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/features/auth/data/models/driver_model.dart';
 import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
@@ -151,61 +154,116 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
   }
 
   Widget _buildIdleUI(bool isLoading) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        children: [
-          MapSearchCard(
-            currentLocation: (currentLocation) {
-              setState(() => _currentLocation = currentLocation);
-              _onPickupSelected(pickup: currentLocation);
-            },
-            destLocation: (dest) {
-              setState(() => _destinationLocation = dest);
-              _onDestinationSelected(destination: dest);
-            },
+    return DraggableScrollableSheet(
+      initialChildSize: 0.38,
+      minChildSize: 0.05,
+      maxChildSize: 0.85,
+      snap: true,
+      snapSizes: const [0.25, 0.65, 0.85],
+      builder: (context, scrollController) {
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+          decoration: BoxDecoration(
+            color: AppColors.dark.withOpacity(0.6),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
           ),
-          const Spacer(),
-
-          RequestButton(
-            isLoading: isLoading,
-            priceController: _priceController,
-            onTap: () {
-              if (_destinationLocation == null ||
-                  _currentLocation == null ||
-                  _priceController.text.isEmpty) {
-                customSnackBar(
-                  context: context,
-                  message: 'Please fill all fields',
-                  type: AnimatedSnackBarType.warning,
-                );
-                setState(() {});
-                return;
-              }
-
-              var formattedDate = DateFormat(
-                'yyyy MMM d, hh:mm a',
-              ).format(DateTime.now());
-
-              final trip = TripModel(
-                id: '',
-                driverId: '',
-                userId: Prefs.getUser()!.id!,
-                destination: _destinationLocation!,
-                driver: DriverModel.empty(),
-                status: TripStatus.searching,
-                pickup: _currentLocation!,
-                price: double.tryParse(_priceController.text) ?? 0.0,
-                user: Prefs.getUser()!,
-                createdAt: formattedDate,
-              );
-
-              context.read<TripCubit>().requestRide(trip: trip);
-            },
+          child: SingleChildScrollView(
+            controller: scrollController,
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    width: 60,
+                    height: 6,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  16.hs,
+                  Text(
+                    "${LocaleKeys.start_your_ride.tr()} 🚖",
+                    style: AppStyles.textExtraBold24.copyWith(
+                      color: AppColors.offWhite,
+                    ),
+                  ),
+                  4.hs,
+                  Text(
+                    LocaleKeys.select_pickup_and_destination.tr(),
+                    style: AppStyles.textMedium14.copyWith(
+                      color: AppColors.accent,
+                    ),
+                  ),
+                  16.hs,
+                  TweenAnimationBuilder(
+                    tween: Tween<double>(begin: 0, end: 1),
+                    duration: const Duration(milliseconds: 500),
+                    builder: (context, value, child) {
+                      return Opacity(
+                        opacity: value,
+                        child: Transform.translate(
+                          offset: Offset(0, (1 - value) * 10),
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: MapSearchCard(
+                      currentLocation: (currentLocation) {
+                        setState(() => _currentLocation = currentLocation);
+                        _onPickupSelected(pickup: currentLocation);
+                      },
+                      destLocation: (dest) {
+                        setState(() => _destinationLocation = dest);
+                        _onDestinationSelected(destination: dest);
+                      },
+                    ),
+                  ),
+                  16.hs,
+                  RequestButton(
+                    isLoading: isLoading,
+                    priceController: _priceController,
+                    onTap: _onRequestRide,
+                  ),
+                ],
+              ),
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
+  }
+
+  void _onRequestRide() {
+    if (_destinationLocation == null ||
+        _currentLocation == null ||
+        _priceController.text.isEmpty) {
+      customSnackBar(
+        context: context,
+        message: LocaleKeys.please_fill_all_fields.tr(),
+        type: AnimatedSnackBarType.warning,
+      );
+      return;
+    }
+    setState(() {});
+
+    final trip = TripModel(
+      id: '',
+      driverId: '',
+      userId: Prefs.getUser()!.id!,
+      destination: _destinationLocation!,
+      driver: DriverModel.empty(),
+      status: TripStatus.searching,
+      pickup: _currentLocation!,
+      price: double.tryParse(_priceController.text) ?? 0.0,
+      user: Prefs.getUser()!,
+      createdAt: DateFormat('yyyy MMM d, hh:mm a').format(DateTime.now()),
+    );
+
+    context.read<TripCubit>().requestRide(trip: trip);
   }
 
   Future<void> _applyMapStyle(bool isLight) async {

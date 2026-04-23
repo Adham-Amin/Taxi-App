@@ -35,7 +35,7 @@ class _SplashViewBodyState extends State<SplashViewBody> {
 
     final seen = Prefs.getBool('SeenOn');
     if (seen) {
-      context.go(AppRoutes.onboarding);
+      context.go(AppRoutes.welcome);
     } else {
       context.go(AppRoutes.onboarding);
     }

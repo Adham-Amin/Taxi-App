@@ -25,7 +25,7 @@ class ApiService {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           options.headers['User-Agent'] = 'FlutterApp';
-          // options.headers['Accept-Language'] = 'en';
+          options.headers['Accept-Language'] = 'en';
           return handler.next(options);
         },
       ),
