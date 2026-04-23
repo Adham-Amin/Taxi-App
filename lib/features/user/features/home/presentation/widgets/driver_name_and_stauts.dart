@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
@@ -16,7 +18,7 @@ class DriverNameAndStauts extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          'Your Driver',
+          LocaleKeys.your_driver.tr(),
           style: AppStyles.textRegular12.copyWith(color: AppColors.accent),
         ),
         Text(

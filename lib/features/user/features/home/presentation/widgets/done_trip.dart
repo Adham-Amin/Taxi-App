@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
@@ -27,7 +29,7 @@ class DoneTrip extends StatelessWidget {
           32.hs,
           TripCompletedCard(trip: trip),
           Spacer(),
-          CustomButton(title: 'Done', onTap: onTap),
+          CustomButton(title: LocaleKeys.done.tr(), onTap: onTap),
           32.hs,
         ],
       ),

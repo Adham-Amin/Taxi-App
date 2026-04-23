@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
 import 'package:taxi_app/features/user/features/home/presentation/manager/map_cubit/google_map_cubit.dart';
@@ -37,7 +39,7 @@ class _SearchSectionState extends State<SearchSection> {
     return Column(
       children: [
         CustomTextFormField(
-          hintText: 'Where to?',
+          hintText: LocaleKeys.to.tr(),
           controller: _searchController,
           onChanged: (value) {
             if (_debounce?.isActive ?? false) _debounce!.cancel();

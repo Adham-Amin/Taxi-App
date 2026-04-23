@@ -71,5 +71,20 @@
   "destination" : "مكان الوصول",
   "search_destinations" : "ابحث عن مواقع الوصول...",
   "total_completed" : "الرحلات الكلية في السنة الحالية",
-  "trip_history" : "الرحلات السابقة"
+  "trip_history" : "الرحلات السابقة",
+  "message" : "الرسالة",
+  "call" : "اتصال",
+  "your_driver" : "سائقك",
+  "final_price" : "السعر النهائي",
+  "from" : "من",
+  "to" : "إلى",
+  "enter_amount" : "ادخل المبلغ",
+  "egp" : "جنيه",
+  "request_ride" : "طلب رحلة",
+  "searching_for" : "جاري البحث عن ",
+  "searching_for_sub" : "يتم تطابقك مع أفضل السائقين في سعرك.",
+  "cancel_request" :  "إلغاء الطلب",
+  "ride_completed_sub" :  "أنتم بخير في الرحلة مع",
+  "ride_completed" :  "الرحلة المكتملة",
+  "done" :  "تم"
 }

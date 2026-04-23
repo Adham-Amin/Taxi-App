@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
@@ -47,7 +49,7 @@ class _LocationFieldsColumnState extends State<LocationFieldsColumn> {
     return Column(
       children: [
         CustomTextFormField(
-          hintText: 'From',
+          hintText: LocaleKeys.from.tr(),
           controller: fromController,
           onChanged: (value) {
             if (_debounce?.isActive ?? false) _debounce!.cancel();

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/car_loading.dart';
@@ -61,11 +63,11 @@ class _SearchingDriverOverlayState extends State<SearchingDriverOverlay>
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: "Searching for ",
+                  text: LocaleKeys.searching_for.tr(),
                   style: AppStyles.textExtraBold30,
                 ),
                 TextSpan(
-                  text: "driver...",
+                  text: "${LocaleKeys.driver.tr()}...",
                   style: AppStyles.textExtraBold30.copyWith(
                     color: AppColors.lightGreen,
                   ),
@@ -75,7 +77,7 @@ class _SearchingDriverOverlayState extends State<SearchingDriverOverlay>
           ),
           16.hs,
           Text(
-            "Matching you with the best nearby\n partners at your price.",
+            LocaleKeys.searching_for_sub.tr(),
             textAlign: TextAlign.center,
             style: AppStyles.textRegular16.copyWith(color: AppColors.accent),
           ),
@@ -88,7 +90,7 @@ class _SearchingDriverOverlayState extends State<SearchingDriverOverlay>
                 Icon(Icons.close, color: AppColors.accent, size: 20),
                 8.ws,
                 Text(
-                  "Cancel Request",
+                  LocaleKeys.cancel_request.tr(),
                   style: AppStyles.textSemiBold16.copyWith(
                     color: AppColors.accent,
                   ),

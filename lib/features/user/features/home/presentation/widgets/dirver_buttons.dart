@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
@@ -17,7 +19,7 @@ class DirverButtons extends StatelessWidget {
       children: [
         Expanded(
           child: CustomButton(
-            title: 'Message',
+            title: LocaleKeys.message.tr(),
             onTap: () {},
             colorText: isLight ? AppColors.dark : AppColors.light,
             backgroundColor: isLight ? AppColors.offWhite : AppColors.darkGrey,
@@ -28,7 +30,7 @@ class DirverButtons extends StatelessWidget {
         12.ws,
         Expanded(
           child: CustomButton(
-            title: 'Call',
+            title: LocaleKeys.call.tr(),
             onTap: () {
               launchUrl(Uri.parse('tel:${trip.driver.phone}'));
             },

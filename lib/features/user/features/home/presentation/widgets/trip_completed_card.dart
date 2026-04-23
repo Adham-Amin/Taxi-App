@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/dot_icon.dart';
@@ -50,11 +52,11 @@ class TripCompletedCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     LocationItem(
-                      title: 'PICKUP',
+                      title: LocaleKeys.pickup.tr(),
                       value: trip.pickup.fullAddress,
                     ),
                     LocationItem(
-                      title: 'DESTINATION',
+                      title: LocaleKeys.destination.tr(),
                       value: trip.destination.fullAddress,
                     ),
                   ],

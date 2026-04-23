@@ -71,5 +71,20 @@
   "destination" : "DESTINATION",
   "search_destinations" : "Search destinations...",
   "total_completed" : "Total trips this year",
-  "trip_history" : "Trip History"
+  "trip_history" : "Trip History",
+  "message" : "Message",
+  "call" : "Call",
+  "your_driver" : "Your Driver",
+  "final_price" : "FINAL PRICE",
+  "from" : "From",
+  "to" : "To",
+  "enter_amount" : "Enter amount",
+  "egp" : "EGP",
+  "request_ride" : "Request Ride",
+  "searching_for" : "Searching for ",
+  "searching_for_sub" : "Matching you with the best nearby\n drivers at your price.",
+  "cancel_request" :  "Cancel Request",
+  "ride_completed_sub" :  "Hope you enjoyed the ride with",
+  "ride_completed" :  "Trip Completed",
+  "done" :  "Done"
 }

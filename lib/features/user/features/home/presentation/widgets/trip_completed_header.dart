@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 
@@ -22,12 +24,12 @@ class TripCompletedHeader extends StatelessWidget {
         ),
         24.hs,
         Text(
-          'Trip Completed',
+          LocaleKeys.ride_completed.tr(),
           style: AppStyles.textExtraBold30.copyWith(color: AppColors.light),
         ),
         8.hs,
         Text(
-          'Hope you enjoyed the ride with \n Crazy Taxi.',
+          '${LocaleKeys.ride_completed_sub.tr()} \n Crazy Taxi.',
           textAlign: TextAlign.center,
           style: AppStyles.textRegular18.copyWith(color: AppColors.accent),
         ),

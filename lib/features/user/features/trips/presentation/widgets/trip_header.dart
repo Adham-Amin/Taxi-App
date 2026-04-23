@@ -13,6 +13,7 @@ class TripHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         DoneTripIcon(trip: trip),
         12.ws,

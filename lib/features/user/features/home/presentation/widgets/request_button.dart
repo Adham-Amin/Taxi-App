@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
@@ -19,6 +21,7 @@ class RequestButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -37,13 +40,13 @@ class RequestButton extends StatelessWidget {
               12.ws,
               Expanded(
                 child: CustomTextFormField(
-                  hintText: 'Enter amount',
+                  hintText: LocaleKeys.enter_amount.tr(),
                   controller: priceController,
                 ),
               ),
               12.ws,
               Text(
-                'EGP',
+                LocaleKeys.egp.tr(),
                 style: AppStyles.textExtraBold36.copyWith(
                   color: AppColors.lightGreen,
                 ),
@@ -53,7 +56,11 @@ class RequestButton extends StatelessWidget {
           16.hs,
           CustomButton(
             isLoading: isLoading,
-            title: 'Request Ride',
+            icon: Icon(
+              Icons.speed_sharp,
+              color: isLight ? AppColors.white : AppColors.dark,
+            ),
+            title: LocaleKeys.request_ride.tr(),
             onTap: onTap,
           ),
         ],

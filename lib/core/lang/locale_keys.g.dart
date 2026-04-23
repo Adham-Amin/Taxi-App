@@ -76,5 +76,20 @@ abstract class  LocaleKeys {
   static const search_destinations = 'search_destinations';
   static const total_completed = 'total_completed';
   static const trip_history = 'trip_history';
+  static const message = 'message';
+  static const call = 'call';
+  static const your_driver = 'your_driver';
+  static const final_price = 'final_price';
+  static const from = 'from';
+  static const to = 'to';
+  static const enter_amount = 'enter_amount';
+  static const egp = 'egp';
+  static const request_ride = 'request_ride';
+  static const searching_for = 'searching_for';
+  static const searching_for_sub = 'searching_for_sub';
+  static const cancel_request = 'cancel_request';
+  static const ride_completed_sub = 'ride_completed_sub';
+  static const ride_completed = 'ride_completed';
+  static const done = 'done';
 
 }

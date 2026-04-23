@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 
@@ -21,7 +23,7 @@ class PriceSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'FINAL PRICE',
+            LocaleKeys.final_price.tr(),
             style: AppStyles.textSemiBold12.copyWith(
               color: isLight ? AppColors.dark : AppColors.accent,
               letterSpacing: 1,
