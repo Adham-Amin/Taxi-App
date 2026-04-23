@@ -67,5 +67,14 @@ abstract class  LocaleKeys {
   static const personal_info = 'personal_info';
   static const settings = 'settings';
   static const edit = 'edit';
+  static const no_driver = 'no_driver';
+  static const self_cancelled = 'self_cancelled';
+  static const searching = 'searching';
+  static const no_trips = 'no_trips';
+  static const pickup = 'pickup';
+  static const destination = 'destination';
+  static const search_destinations = 'search_destinations';
+  static const total_completed = 'total_completed';
+  static const trip_history = 'trip_history';
 
 }

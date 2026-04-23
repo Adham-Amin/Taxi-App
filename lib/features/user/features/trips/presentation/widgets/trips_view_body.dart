@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
@@ -21,10 +23,10 @@ class TripsViewBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           12.hs,
-          Text('Trip History', style: AppStyles.textExtraBold30),
+          Text(LocaleKeys.trip_history.tr(), style: AppStyles.textExtraBold30),
           16.hs,
           CustomTextFormField(
-            hintText: 'Search destinations...',
+            hintText: LocaleKeys.search_destinations.tr(),
             onChanged: (value) {
               if (value.trim().isEmpty) {
                 context.read<TripsHistoryCubit>().listenToTrips();
@@ -45,7 +47,7 @@ class TripsViewBody extends StatelessWidget {
                   return Column(
                     children: [
                       Text(
-                        '${state.trips.length} Total trips completed this year',
+                        '${state.trips.length} ${LocaleKeys.total_completed.tr()}',
                         style: AppStyles.textSemiBold16.copyWith(
                           color: isLight
                               ? AppColors.darkBlack

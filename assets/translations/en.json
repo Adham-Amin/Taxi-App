@@ -62,5 +62,14 @@
   "please_fill_at_least_one_field" : "Please Fill at least one field",
   "personal_info" : "PERSONAL INFO",
   "settings" : "SETTINGS",
-  "edit" : "Edit"
+  "edit" : "Edit",
+  "no_driver" : "No Driver",
+  "self_cancelled" : "Self-Cancelled",
+  "searching" : "Searching",
+  "no_trips" : "No trips yet",
+  "pickup" : "PICKUP",
+  "destination" : "DESTINATION",
+  "search_destinations" : "Search destinations...",
+  "total_completed" : "Total trips this year",
+  "trip_history" : "Trip History"
 }

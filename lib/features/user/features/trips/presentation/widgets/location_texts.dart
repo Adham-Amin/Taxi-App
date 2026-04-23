@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/location_item.dart';
 import 'package:taxi_app/features/user/features/trips/domain/entities/trip_entity.dart';
 
@@ -15,9 +17,15 @@ class LocationTexts extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: LocationItem(title: 'PICKUP', value: trip.originAddress),
+            child: LocationItem(
+              title: LocaleKeys.pickup.tr(),
+              value: trip.originAddress,
+            ),
           ),
-          LocationItem(title: 'DESTINATION', value: trip.destinationAddress),
+          LocationItem(
+            title: LocaleKeys.destination.tr(),
+            value: trip.destinationAddress,
+          ),
         ],
       ),
     );

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/user/features/trips/domain/entities/trip_entity.dart';
@@ -15,16 +17,18 @@ class DriverInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          trip.status == 'canceled' ? 'No Driver' : 'Driver',
+          trip.status == 'canceled'
+              ? LocaleKeys.no_driver.tr()
+              : LocaleKeys.driver.tr(),
           style: AppStyles.textSemiBold12.copyWith(
             color: isLight ? AppColors.slateGray : AppColors.accent,
           ),
         ),
         Text(
           trip.status == 'canceled'
-              ? 'Self-Cancelled'
+              ? LocaleKeys.self_cancelled.tr()
               : trip.status == 'searching'
-              ? 'Searching'
+              ? LocaleKeys.searching.tr()
               : trip.driverName,
           style: AppStyles.textBold14,
         ),

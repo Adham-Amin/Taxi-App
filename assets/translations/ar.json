@@ -62,5 +62,14 @@
   "please_fill_at_least_one_field" : "يرجى ملء حقل واحد على الاقل", 
   "personal_info" : "معلومات شخصية",
   "settings" : "الاعدادات",
-  "edit" : "تعديل"
+  "edit" : "تعديل",
+  "no_driver" : "لا يوجد سائق",
+  "self_cancelled" : "تم الغاء",
+  "searching" : "جاري البحث",
+  "no_trips" : "لا يوجد رحلات",
+  "pickup" : "مكان الاستلام",
+  "destination" : "مكان الوصول",
+  "search_destinations" : "ابحث عن مواقع الوصول...",
+  "total_completed" : "الرحلات الكلية في السنة الحالية",
+  "trip_history" : "الرحلات السابقة"
 }
