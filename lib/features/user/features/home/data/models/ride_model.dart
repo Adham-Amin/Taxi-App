@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/features/auth/data/models/driver_model.dart';
 import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
+import 'package:taxi_app/features/driver/offers/domain/entities/offer_entity.dart';
 import 'package:taxi_app/features/user/features/home/data/models/trip_status_enum.dart';
 import 'package:taxi_app/features/user/features/trips/domain/entities/trip_entity.dart';
 
@@ -90,5 +91,15 @@ class TripModel {
     originAddress: pickup.fullAddress,
     destinationAddress: destination.fullAddress,
     date: createdAt,
+  );
+
+  OfferEntity toOfferEntity() => OfferEntity(
+    createdAt: createdAt,
+    price: price,
+    destination: destination,
+    id: id,
+    pickup: pickup,
+    image: user.image ?? '',
+    name: user.name ?? '',
   );
 }
