@@ -36,26 +36,23 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: TextFormField(
-        onTapOutside: (_) => FocusScope.of(context).unfocus(),
-        onTap: onTap,
-        onFieldSubmitted: onFieldSubmitted,
-        readOnly: readOnly,
-        onChanged: onChanged,
-        controller: controller,
-        validator: validator,
-        keyboardType: keyboardType,
-        style: AppStyles.textRegular14,
-        textAlign: textAlign,
-        maxLines: maxLines,
-        inputFormatters: inputFormatters,
-        decoration: InputDecoration(
-          hintText: hintText,
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
-        ),
+    return TextFormField(
+      onTapOutside: (_) => FocusScope.of(context).unfocus(),
+      onTap: onTap,
+      onFieldSubmitted: onFieldSubmitted,
+      readOnly: readOnly,
+      onChanged: onChanged,
+      controller: controller,
+      validator: validator,
+      keyboardType: keyboardType,
+      style: AppStyles.textRegular14,
+      textAlign: textAlign,
+      maxLines: maxLines,
+      inputFormatters: inputFormatters,
+      decoration: InputDecoration(
+        hintText: hintText,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
       ),
     );
   }

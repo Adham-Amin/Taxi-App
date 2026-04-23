@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/widgets/custom_back_button.dart';
 import 'package:taxi_app/features/user/features/profile/data/datasources/user_profile_data_source.dart';
 import 'package:taxi_app/features/user/features/profile/data/repositories/user_profile_repo_impl.dart';
@@ -21,7 +23,7 @@ class UserUpdateProfileView extends StatelessWidget {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: Center(child: CustomBackButton()),
-          title: Text('Update Profile'),
+          title: Text(LocaleKeys.update_profile.tr()),
         ),
         body: SafeArea(child: UserUpdateProfileViewBody()),
       ),

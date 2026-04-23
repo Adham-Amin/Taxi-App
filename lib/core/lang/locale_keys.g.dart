@@ -43,6 +43,29 @@ abstract class  LocaleKeys {
   static const please_select_location = 'please_select_location';
   static const language = 'language';
   static const become_a = 'become_a';
-  static const click_Icon_to_select_location = 'click_Icon_to_select_location';
+  static const new_email_address = 'new_email_address';
+  static const new_password = 'new_password';
+  static const current_password = 'current_password';
+  static const email_changed = 'email_changed';
+  static const save = 'save';
+  static const change_password = 'change_password';
+  static const change_email = 'change_email';
+  static const update_profile = 'update_profile';
+  static const invalid_email = 'invalid_email';
+  static const password_length = 'password_length';
+  static const password_not_match = 'password_not_match';
+  static const password_changed = 'password_changed';
+  static const password_uppercase = 'password_uppercase';
+  static const password_lowercase = 'password_lowercase';
+  static const password_number = 'password_number';
+  static const password_special_character = 'password_special_character';
+  static const dark_mode = 'dark_mode';
+  static const logout = 'logout';
+  static const profile_updated = 'profile_updated';
+  static const please_change_at_least_one_field = 'please_change_at_least_one_field';
+  static const please_fill_at_least_one_field = 'please_fill_at_least_one_field';
+  static const personal_info = 'personal_info';
+  static const settings = 'settings';
+  static const edit = 'edit';
 
 }

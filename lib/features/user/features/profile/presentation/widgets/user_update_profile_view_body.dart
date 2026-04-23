@@ -2,12 +2,14 @@
 
 import 'dart:io';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/functions/image_uploader.dart';
 import 'package:taxi_app/core/functions/validators.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/services/shared_preferences_service.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
@@ -60,7 +62,7 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
             ),
           ),
           32.hs,
-          LabelText(text: 'FULL NAME'),
+          LabelText(text: LocaleKeys.full_name.tr()),
           6.hs,
           CustomTextFormField(
             controller: nameController,
@@ -70,7 +72,7 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
             suffixIcon: Icon(Icons.person_2_outlined),
           ),
           16.hs,
-          LabelText(text: 'PHONE'),
+          LabelText(text: LocaleKeys.phone_number.tr()),
           6.hs,
           CustomTextFormField(
             controller: phoneController,
@@ -85,7 +87,7 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
               if (state is UserProfileLoaded) {
                 customSnackBar(
                   context: context,
-                  message: 'Profile Updated Successfully',
+                  message: LocaleKeys.profile_updated.tr(),
                   type: AnimatedSnackBarType.success,
                 );
                 context.pop(true);
@@ -123,7 +125,8 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
                     } else {
                       customSnackBar(
                         context: context,
-                        message: 'Please change at least one field',
+                        message: LocaleKeys.please_change_at_least_one_field
+                            .tr(),
                         type: AnimatedSnackBarType.warning,
                       );
                       setState(() {});
@@ -131,12 +134,12 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
                   } else {
                     customSnackBar(
                       context: context,
-                      message: 'Please Fill at least one field',
+                      message: LocaleKeys.please_fill_at_least_one_field.tr(),
                       type: AnimatedSnackBarType.warning,
                     );
                   }
                 },
-                title: 'Save',
+                title: LocaleKeys.save.tr(),
               );
             },
           ),

@@ -1,9 +1,11 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/functions/validators.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
@@ -49,21 +51,22 @@ class _ChangeEmailUserViewBodyState extends State<ChangeEmailUserViewBody> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             32.hs,
-            LabelText(text: 'NEW EMAIL ADDRESS'),
+            LabelText(text: LocaleKeys.new_email_address.tr()),
             6.hs,
             CustomTextFormField(
               controller: newEmailController,
               validator: Validators.email,
               hintText: 'adham@example.com',
+              suffixIcon: Icon(Icons.email_outlined),
             ),
             16.hs,
-            LabelText(text: 'CURRENT PASSWORD'),
+            LabelText(text: LocaleKeys.password.tr()),
             6.hs,
             CustomTextFormFieldPassword(
               controller: passwordController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Password is required';
+                  return LocaleKeys.enter_your_password.tr();
                 }
                 return null;
               },
@@ -76,7 +79,7 @@ class _ChangeEmailUserViewBodyState extends State<ChangeEmailUserViewBody> {
                   context.pop(true);
                   customSnackBar(
                     context: context,
-                    message: 'Email changed successfully',
+                    message: LocaleKeys.email_changed.tr(),
                     type: AnimatedSnackBarType.success,
                   );
                 }
@@ -91,7 +94,7 @@ class _ChangeEmailUserViewBodyState extends State<ChangeEmailUserViewBody> {
               builder: (context, state) {
                 return CustomButton(
                   isLoading: state is UserProfileLoading,
-                  title: 'Save',
+                  title: LocaleKeys.save.tr(),
                   onTap: () {
                     if (formKey.currentState!.validate()) {
                       formKey.currentState!.save();

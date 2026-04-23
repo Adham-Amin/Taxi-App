@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/widgets/custom_divider.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/widgets/info_tile.dart';
@@ -18,19 +20,19 @@ class PersonalInfoSection extends StatelessWidget {
         children: [
           InfoTile(
             icon: Icons.person_outlined,
-            title: 'NAME',
+            title: LocaleKeys.full_name.tr(),
             subtitle: user.name!,
           ),
           const CustomDivider(),
           InfoTile(
             icon: Icons.email_outlined,
-            title: 'EMAIL',
+            title: LocaleKeys.email_address.tr(),
             subtitle: user.email!,
           ),
           const CustomDivider(),
           InfoTile(
             icon: Icons.phone_outlined,
-            title: 'PHONE',
+            title: LocaleKeys.phone_number.tr(),
             subtitle: user.phone!,
           ),
         ],

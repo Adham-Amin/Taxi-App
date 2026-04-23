@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/cubit/profile_cubit.dart';
@@ -42,7 +44,7 @@ class UserProfileViewBody extends StatelessWidget {
                 ProfileHeader(user: user),
                 24.hs,
                 SectionHeader(
-                  title: 'PERSONAL INFO',
+                  title: LocaleKeys.personal_info.tr(),
                   onEdit: () async {
                     var result = await context.push(AppRoutes.userEditProfile);
 
@@ -54,7 +56,7 @@ class UserProfileViewBody extends StatelessWidget {
                 12.hs,
                 PersonalInfoSection(user: user),
                 24.hs,
-                SectionHeader(title: 'SETTINGS'),
+                SectionHeader(title: LocaleKeys.settings.tr()),
                 12.hs,
                 const SettingsSection(),
                 32.hs,

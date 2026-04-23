@@ -1,8 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/features/user/features/profile/presentation/cubit/profile_cubit.dart';
@@ -30,7 +32,7 @@ class SettingsSection extends StatelessWidget {
               }
             },
             icon: Icons.email_outlined,
-            title: 'Change Email',
+            title: LocaleKeys.change_email.tr(),
           ),
           const CustomDivider(),
           ButtonTile(
@@ -38,7 +40,7 @@ class SettingsSection extends StatelessWidget {
               context.push(AppRoutes.userchangePasswordProfile);
             },
             icon: Icons.password_outlined,
-            title: 'Change Password',
+            title: LocaleKeys.change_password.tr(),
           ),
           const CustomDivider(),
           ButtonTile(
@@ -46,7 +48,7 @@ class SettingsSection extends StatelessWidget {
               context.push(AppRoutes.language);
             },
             icon: Icons.language_outlined,
-            title: 'Language',
+            title: LocaleKeys.language.tr(),
           ),
           const CustomDivider(),
           DarkModeButton(),

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 
@@ -24,7 +26,7 @@ class SectionHeader extends StatelessWidget {
           GestureDetector(
             onTap: onEdit,
             child: Text(
-              'Edit',
+              LocaleKeys.edit.tr(),
               style: AppStyles.textBold14.copyWith(color: AppColors.lightGreen),
             ),
           ),
