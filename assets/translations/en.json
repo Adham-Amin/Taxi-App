@@ -89,5 +89,7 @@
   "done" :  "Done",
   "please_fill_all_fields" :  "Please fill all fields",
   "start_your_ride" :  "Start Your Ride",
-  "select_pickup_and_destination" :  "Select your pickup location and destination"
+  "select_pickup_and_destination" :  "Select your pickup location and destination",
+  "home" : "HOME",
+  "trips" : "TRIPS"
 }

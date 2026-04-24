@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/user/features/home/presentation/pages/user_home_view.dart';
@@ -56,10 +58,13 @@ class MainPageState extends State<UserMainView> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           duration: const Duration(milliseconds: 400),
           textStyle: AppStyles.textBold18.copyWith(color: AppColors.lightGreen),
-          tabs: const [
-            GButton(icon: Icons.home_outlined, text: 'Home'),
-            GButton(icon: Icons.directions_car, text: 'Trips'),
-            GButton(icon: Icons.settings_outlined, text: 'Settings'),
+          tabs: [
+            GButton(icon: Icons.home_outlined, text: LocaleKeys.home.tr()),
+            GButton(icon: Icons.directions_car, text: LocaleKeys.trips.tr()),
+            GButton(
+              icon: Icons.settings_outlined,
+              text: LocaleKeys.settings.tr(),
+            ),
           ],
           selectedIndex: _selectedIndex,
           onTabChange: (value) {

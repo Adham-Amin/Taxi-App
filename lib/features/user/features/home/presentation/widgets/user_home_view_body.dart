@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'dart:async';
+import 'dart:ui';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -153,82 +154,126 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     );
   }
 
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return LocaleKeys.start_your_ride.tr();
+    if (hour < 17) return LocaleKeys.start_your_ride.tr();
+    return LocaleKeys.start_your_ride.tr();
+  }
+
   Widget _buildIdleUI(bool isLoading) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.38,
-      minChildSize: 0.05,
-      maxChildSize: 0.85,
+      initialChildSize: 0.40,
+      minChildSize: 0.06,
+      maxChildSize: 0.88,
       snap: true,
-      snapSizes: const [0.25, 0.65, 0.85],
+      snapSizes: const [0.40, 0.70, 0.88],
       builder: (context, scrollController) {
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-          decoration: BoxDecoration(
-            color: AppColors.dark.withOpacity(0.6),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-          ),
-          child: SingleChildScrollView(
-            controller: scrollController,
-            physics: const BouncingScrollPhysics(),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    width: 60,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+        return ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.dark.withOpacity(0.75),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(24),
+                ),
+                border: Border(
+                  top: BorderSide(
+                    color: AppColors.lightGreen.withOpacity(0.15),
+                    width: 1,
                   ),
-                  16.hs,
-                  Text(
-                    "${LocaleKeys.start_your_ride.tr()} 🚖",
-                    style: AppStyles.textExtraBold24.copyWith(
-                      color: AppColors.offWhite,
-                    ),
-                  ),
-                  4.hs,
-                  Text(
-                    LocaleKeys.select_pickup_and_destination.tr(),
-                    style: AppStyles.textMedium14.copyWith(
-                      color: AppColors.accent,
-                    ),
-                  ),
-                  16.hs,
-                  TweenAnimationBuilder(
-                    tween: Tween<double>(begin: 0, end: 1),
-                    duration: const Duration(milliseconds: 500),
-                    builder: (context, value, child) {
-                      return Opacity(
-                        opacity: value,
-                        child: Transform.translate(
-                          offset: Offset(0, (1 - value) * 10),
-                          child: child,
+                ),
+              ),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 12, bottom: 8),
+                        child: Container(
+                          width: 40,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: AppColors.slateGray.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
                         ),
-                      );
-                    },
-                    child: MapSearchCard(
-                      currentLocation: (currentLocation) {
-                        setState(() => _currentLocation = currentLocation);
-                        _onPickupSelected(pickup: currentLocation);
-                      },
-                      destLocation: (dest) {
-                        setState(() => _destinationLocation = dest);
-                        _onDestinationSelected(destination: dest);
-                      },
+                      ),
                     ),
-                  ),
-                  16.hs,
-                  RequestButton(
-                    isLoading: isLoading,
-                    priceController: _priceController,
-                    onTap: _onRequestRide,
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _getGreeting(),
+                            style: AppStyles.textBold24.copyWith(
+                              color: AppColors.offWhite,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          6.hs,
+                          Text(
+                            LocaleKeys.select_pickup_and_destination.tr(),
+                            style: AppStyles.textRegular14.copyWith(
+                              color: AppColors.mutedSlateGray,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    20.hs,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Container(
+                        height: 1,
+                        color: AppColors.grey.withOpacity(0.6),
+                      ),
+                    ),
+                    20.hs,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: TweenAnimationBuilder(
+                        tween: Tween<double>(begin: 0, end: 1),
+                        duration: const Duration(milliseconds: 500),
+                        builder: (context, value, child) {
+                          return Opacity(
+                            opacity: value,
+                            child: Transform.translate(
+                              offset: Offset(0, (1 - value) * 10),
+                              child: child,
+                            ),
+                          );
+                        },
+                        child: MapSearchCard(
+                          currentLocation: (currentLocation) {
+                            setState(() => _currentLocation = currentLocation);
+                            _onPickupSelected(pickup: currentLocation);
+                          },
+                          destLocation: (dest) {
+                            setState(() => _destinationLocation = dest);
+                            _onDestinationSelected(destination: dest);
+                          },
+                        ),
+                      ),
+                    ),
+                    16.hs,
+                    // Request button section
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                      child: RequestButton(
+                        isLoading: isLoading,
+                        priceController: _priceController,
+                        onTap: _onRequestRide,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -349,7 +394,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     setState(() {});
     await MapHelper.fitBounds(
       controller: _mapController!,
-      padding: 170,
+      padding: 80,
       points: points,
     );
   }
