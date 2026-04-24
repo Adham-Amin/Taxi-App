@@ -73,6 +73,11 @@ class AuthDataSourceImpl implements AuthDataSource {
       final data = DriverModel.fromMap(doc.data()!);
 
       return UserInfoModel(
+        lat: data.lat,
+        lng: data.lng,
+        carColor: data.carColor,
+        carModel: data.carModel,
+        carPlateNumber: data.carPlateNumber,
         name: data.name,
         email: data.email,
         role: role,
@@ -170,6 +175,11 @@ class AuthDataSourceImpl implements AuthDataSource {
       phone,
     );
     return UserInfoModel(
+      lat: lat,
+      lng: lng,
+      carColor: carColor,
+      carModel: carModel,
+      carPlateNumber: carPlateNumber,
       image: imageUrl ?? '',
       phone: phone,
       id: updatedUser.uid,
@@ -201,7 +211,6 @@ class AuthDataSourceImpl implements AuthDataSource {
       lat: lat,
       lng: lng,
       role: updatedUser.photoURL ?? '',
-      isAvailable: true,
     );
     await FirebaseFirestore.instance
         .collection("drivers")

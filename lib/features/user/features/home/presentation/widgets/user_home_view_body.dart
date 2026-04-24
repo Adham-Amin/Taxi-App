@@ -163,8 +163,8 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
 
   Widget _buildIdleUI(bool isLoading) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.40,
-      minChildSize: 0.06,
+      initialChildSize: 0.42,
+      minChildSize: 0.04,
       maxChildSize: 0.88,
       snap: true,
       snapSizes: const [0.40, 0.70, 0.88],

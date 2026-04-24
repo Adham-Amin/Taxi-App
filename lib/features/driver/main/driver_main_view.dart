@@ -1,7 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
+import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
+import 'package:taxi_app/features/driver/offers/presentation/pages/offers_view.dart';
 
 class DriverMainView extends StatefulWidget {
   const DriverMainView({super.key});
@@ -15,10 +21,18 @@ class DriverMainView extends StatefulWidget {
 class MainPageState extends State<DriverMainView> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    Center(child: Text('Home')),
+  List<Widget> get _pages => [
+    OffersView(),
     Center(child: Text('Trips')),
-    Center(child: Text('Settings')),
+    Center(
+      child: IconButton(
+        onPressed: () {
+          FirebaseAuth.instance.signOut();
+          context.go(AppRoutes.welcome);
+        },
+        icon: Icon(Icons.logout),
+      ),
+    ),
   ];
 
   void changeTab(int index) {
@@ -53,10 +67,13 @@ class MainPageState extends State<DriverMainView> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           duration: const Duration(milliseconds: 400),
           textStyle: AppStyles.textBold18.copyWith(color: AppColors.lightGreen),
-          tabs: const [
-            GButton(icon: Icons.home, text: 'home'),
-            GButton(icon: Icons.directions_car, text: 'Trips'),
-            GButton(icon: Icons.settings_outlined, text: 'Settings'),
+          tabs: [
+            GButton(icon: Icons.home, text: LocaleKeys.home.tr()),
+            GButton(icon: Icons.directions_car, text: LocaleKeys.trips.tr()),
+            GButton(
+              icon: Icons.settings_outlined,
+              text: LocaleKeys.settings.tr(),
+            ),
           ],
           selectedIndex: _selectedIndex,
           onTabChange: (value) {

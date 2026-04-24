@@ -47,15 +47,18 @@ class RoleButton extends StatelessWidget {
                 ]
               : [],
         ),
-        child: Text(
-          '${LocaleKeys.continue_as.tr()} $title',
-          textAlign: TextAlign.center,
-          style: AppStyles.textBold14.copyWith(
-            color: isActive
-                ? AppColors.lightGreen
-                : isLight
-                ? AppColors.darkOliveGray
-                : AppColors.light,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            '${LocaleKeys.continue_as.tr()} $title',
+            textAlign: TextAlign.center,
+            style: AppStyles.textBold14.copyWith(
+              color: isActive
+                  ? AppColors.lightGreen
+                  : isLight
+                  ? AppColors.darkOliveGray
+                  : AppColors.light,
+            ),
           ),
         ),
       ),

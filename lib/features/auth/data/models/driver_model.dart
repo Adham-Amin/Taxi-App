@@ -10,7 +10,6 @@ class DriverModel {
   final double? lat;
   final double? lng;
   final String role;
-  bool? isAvailable;
 
   DriverModel({
     this.id,
@@ -24,7 +23,6 @@ class DriverModel {
     this.lat,
     this.lng,
     required this.role,
-    this.isAvailable = true,
   });
 
   factory DriverModel.empty() => DriverModel(
@@ -52,7 +50,6 @@ class DriverModel {
       'lat': lat,
       'lng': lng,
       'role': role,
-      'isAvailable': isAvailable,
     };
   }
 
@@ -67,7 +64,6 @@ class DriverModel {
       carPlateNumber: map['carPlateNumber'] ?? '',
       image: map['image'] ?? '',
       role: map['role'] ?? '',
-      isAvailable: map['isAvailable'] ?? true,
       lat: (map['lat'] as num?)?.toDouble(),
       lng: (map['lng'] as num?)?.toDouble(),
     );
