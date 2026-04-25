@@ -18,4 +18,13 @@ class OfferEntity {
     required this.destination,
     required this.createdAt,
   });
+
+  OfferEntity.empty()
+    : id = '',
+      image = '',
+      name = '',
+      price = 0,
+      pickup = LocationModel(fullAddress: '', lat: 0, lng: 0),
+      destination = LocationModel(fullAddress: '', lat: 0, lng: 0),
+      createdAt = '';
 }
