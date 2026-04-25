@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/features/driver/driver_trips/domain/repositories/driver_trips_repo.dart';
-import 'package:taxi_app/features/user/features/trips/domain/entities/trip_entity.dart';
+import 'package:taxi_app/features/user/trips/domain/entities/trip_entity.dart';
 
 part 'driver_trips_state.dart';
 

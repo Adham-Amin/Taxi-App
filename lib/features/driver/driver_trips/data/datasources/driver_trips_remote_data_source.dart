@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
+import 'package:taxi_app/features/user/home/data/models/ride_model.dart';
 
 abstract class DriverTripsRemoteDataSource {
   Stream<List<TripModel>> getTripsHistoryStream();

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:taxi_app/features/auth/data/models/driver_model.dart';
 import 'package:taxi_app/features/driver/offers/domain/entities/offer_entity.dart';
-import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
-import 'package:taxi_app/features/user/features/home/data/models/trip_status_enum.dart';
+import 'package:taxi_app/features/user/home/data/models/ride_model.dart';
+import 'package:taxi_app/features/user/home/data/models/trip_status_enum.dart';
 
 abstract class OfferDataSource {
   Future<void> acceptOffer({

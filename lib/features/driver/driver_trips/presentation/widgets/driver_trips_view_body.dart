@@ -5,9 +5,9 @@ import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/driver/driver_trips/presentation/cubit/driver_trips_cubit.dart';
-import 'package:taxi_app/features/user/features/trips/domain/entities/trip_entity.dart';
-import 'package:taxi_app/features/user/features/trips/presentation/widgets/empty_trips_history.dart';
-import 'package:taxi_app/features/user/features/trips/presentation/widgets/trip_card.dart';
+import 'package:taxi_app/features/user/trips/domain/entities/trip_entity.dart';
+import 'package:taxi_app/features/user/trips/presentation/widgets/empty_trips_history.dart';
+import 'package:taxi_app/features/user/trips/presentation/widgets/trip_card.dart';
 
 class DriverTripsViewBody extends StatelessWidget {
   const DriverTripsViewBody({super.key});
