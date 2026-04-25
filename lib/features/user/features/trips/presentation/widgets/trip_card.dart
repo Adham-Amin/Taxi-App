@@ -7,9 +7,10 @@ import 'package:taxi_app/features/user/features/trips/presentation/widgets/trip_
 import 'package:taxi_app/features/user/features/trips/presentation/widgets/trip_header.dart';
 
 class TripCard extends StatelessWidget {
-  const TripCard({super.key, required this.trip});
+  const TripCard({super.key, required this.trip, this.isDriver});
 
   final TripEntity trip;
+  final bool? isDriver;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class TripCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          TripHeader(trip: trip),
+          TripHeader(trip: trip, isDriver: isDriver),
           16.hs,
           RouteInfo(
             pickupAddress: trip.originAddress,

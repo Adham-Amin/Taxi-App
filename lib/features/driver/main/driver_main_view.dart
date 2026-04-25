@@ -7,6 +7,7 @@ import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
+import 'package:taxi_app/features/driver/driver_trips/presentation/pages/driver_trips_view.dart';
 import 'package:taxi_app/features/driver/offers/presentation/pages/offers_view.dart';
 
 class DriverMainView extends StatefulWidget {
@@ -23,7 +24,7 @@ class MainPageState extends State<DriverMainView> {
 
   List<Widget> get _pages => [
     OffersView(),
-    Center(child: Text('Trips')),
+    DriverTripsView(),
     Center(
       child: IconButton(
         onPressed: () {

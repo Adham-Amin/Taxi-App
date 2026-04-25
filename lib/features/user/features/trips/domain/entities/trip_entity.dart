@@ -1,4 +1,5 @@
 class TripEntity {
+  final String userName;
   final String driverName;
   final String originAddress;
   final String destinationAddress;
@@ -7,6 +8,7 @@ class TripEntity {
   final String date;
 
   TripEntity({
+    required this.userName,
     required this.driverName,
     required this.originAddress,
     required this.destinationAddress,

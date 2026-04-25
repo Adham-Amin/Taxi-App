@@ -21,7 +21,7 @@ class OfferEntity {
 
   OfferEntity.empty()
     : id = '',
-      image = '',
+      image = 'https://via.placeholder.com/150',
       name = '',
       price = 0,
       pickup = LocationModel(fullAddress: '', lat: 0, lng: 0),

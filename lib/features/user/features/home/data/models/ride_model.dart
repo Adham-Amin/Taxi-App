@@ -85,6 +85,7 @@ class TripModel {
   );
 
   TripEntity toEntity() => TripEntity(
+    userName: user.name ?? '',
     driverName: driver.name,
     price: price,
     status: status.name,

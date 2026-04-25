@@ -18,6 +18,7 @@ class LoadingTripsHistory extends StatelessWidget {
         separatorBuilder: (context, index) => 16.hs,
         itemBuilder: (context, index) => TripCard(
           trip: TripEntity(
+            userName: 'John Doe',
             driverName: 'John Doe',
             originAddress: '123 Main St',
             destinationAddress: '456 Elm St',

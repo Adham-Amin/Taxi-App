@@ -6,9 +6,10 @@ import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/user/features/trips/domain/entities/trip_entity.dart';
 
 class DriverInfo extends StatelessWidget {
-  const DriverInfo({super.key, required this.trip});
+  const DriverInfo({super.key, required this.trip, this.isDriver});
 
   final TripEntity trip;
+  final bool? isDriver;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,9 @@ class DriverInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          trip.status == 'canceled'
+          isDriver == true
+              ? LocaleKeys.user.tr()
+              : trip.status == 'canceled'
               ? LocaleKeys.no_driver.tr()
               : LocaleKeys.driver.tr(),
           style: AppStyles.textSemiBold12.copyWith(
@@ -25,7 +28,9 @@ class DriverInfo extends StatelessWidget {
           ),
         ),
         Text(
-          trip.status == 'canceled'
+          isDriver == true
+              ? trip.userName
+              : trip.status == 'canceled'
               ? LocaleKeys.self_cancelled.tr()
               : trip.status == 'searching'
               ? LocaleKeys.searching.tr()

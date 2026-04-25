@@ -6,9 +6,10 @@ import 'package:taxi_app/features/user/features/trips/presentation/widgets/drive
 import 'package:taxi_app/features/user/features/trips/presentation/widgets/trip_price_status.dart';
 
 class TripHeader extends StatelessWidget {
-  const TripHeader({super.key, required this.trip});
+  const TripHeader({super.key, required this.trip, this.isDriver});
 
   final TripEntity trip;
+  final bool? isDriver;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,9 @@ class TripHeader extends StatelessWidget {
       children: [
         DoneTripIcon(trip: trip),
         12.ws,
-        Expanded(child: DriverInfo(trip: trip)),
+        Expanded(
+          child: DriverInfo(trip: trip, isDriver: isDriver),
+        ),
         TripPriceStatus(trip: trip),
       ],
     );
