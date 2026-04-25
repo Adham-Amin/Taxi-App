@@ -14,7 +14,6 @@ class TripDate extends StatelessWidget {
     var isLight = Theme.of(context).brightness == Brightness.light;
     return Row(
       children: [
-        8.ws,
         Icon(
           Icons.calendar_month,
           color: isLight ? AppColors.dark : AppColors.accent,

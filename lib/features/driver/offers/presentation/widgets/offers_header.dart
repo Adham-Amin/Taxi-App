@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 
@@ -18,7 +18,7 @@ class OffersHeader extends StatelessWidget {
             letterSpacing: 2,
           ),
         ),
-        SizedBox(height: 8.h),
+        8.hs,
         Text(
           'Active Requests',
           style: AppStyles.textExtraBold36.copyWith(
@@ -27,7 +27,7 @@ class OffersHeader extends StatelessWidget {
                 : AppColors.white,
           ),
         ),
-        SizedBox(height: 8.h),
+        8.hs,
         Text(
           'Real-time offers from passengers in your immediate vicinity. Accept to lock the fare.',
           style: AppStyles.textRegular16.copyWith(color: AppColors.accent),

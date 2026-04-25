@@ -1,11 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
-import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
+import 'package:taxi_app/core/widgets/route_info.dart';
 import 'package:taxi_app/features/user/features/home/data/models/ride_model.dart';
-import 'package:taxi_app/features/user/features/home/presentation/widgets/dot_icon.dart';
-import 'package:taxi_app/features/user/features/home/presentation/widgets/location_item.dart';
 import 'package:taxi_app/features/user/features/home/presentation/widgets/price_section.dart';
 
 class TripCompletedCard extends StatelessWidget {
@@ -23,46 +20,9 @@ class TripCompletedCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          SizedBox(
-            height: 132,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    4.hs,
-                    DotIcon(color: AppColors.red),
-                    4.hs,
-                    Expanded(
-                      child: Container(
-                        width: 2,
-                        height: 64,
-                        color: Colors.white24,
-                      ),
-                    ),
-                    4.hs,
-                    DotIcon(color: AppColors.lightGreen),
-                    4.hs,
-                  ],
-                ),
-                16.ws,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    LocationItem(
-                      title: LocaleKeys.pickup.tr(),
-                      value: trip.pickup.fullAddress,
-                    ),
-                    LocationItem(
-                      title: LocaleKeys.destination.tr(),
-                      value: trip.destination.fullAddress,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+          RouteInfo(
+            pickupAddress: trip.pickup.fullAddress,
+            destinationAddress: trip.destination.fullAddress,
           ),
           24.hs,
           PriceSection(price: trip.price.toString()),

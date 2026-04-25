@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
+import 'package:taxi_app/core/widgets/route_info.dart';
 import 'package:taxi_app/features/user/features/trips/domain/entities/trip_entity.dart';
 import 'package:taxi_app/features/user/features/trips/presentation/widgets/trip_date.dart';
 import 'package:taxi_app/features/user/features/trips/presentation/widgets/trip_header.dart';
-import 'package:taxi_app/features/user/features/trips/presentation/widgets/trip_locations.dart';
 
 class TripCard extends StatelessWidget {
   const TripCard({super.key, required this.trip});
@@ -37,7 +37,11 @@ class TripCard extends StatelessWidget {
         children: [
           TripHeader(trip: trip),
           16.hs,
-          TripLocations(trip: trip),
+          RouteInfo(
+            pickupAddress: trip.originAddress,
+            destinationAddress: trip.destinationAddress,
+          ),
+          // TripLocations(trip: trip),
           Divider(
             height: 24,
             color: isLight
