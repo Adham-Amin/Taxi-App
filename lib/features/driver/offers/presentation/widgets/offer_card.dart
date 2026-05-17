@@ -21,12 +21,13 @@ class OfferCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: AppColors.darkBlack2,
+        color: isLight ? AppColors.white : AppColors.darkBlack2,
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: AppColors.darkGrey, width: 1),
+        border: Border.all(color: isLight ? AppColors.mutedSlateGray : AppColors.darkGrey, width: 1),
       ),
       child: Column(
         children: [

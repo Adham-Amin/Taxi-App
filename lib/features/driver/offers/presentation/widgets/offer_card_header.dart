@@ -12,6 +12,7 @@ class OfferCardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Row(
       children: [
         Container(
@@ -32,7 +33,7 @@ class OfferCardHeader extends StatelessWidget {
         Expanded(
           child: Text(
             offer.name,
-            style: AppStyles.textBold16.copyWith(color: AppColors.white),
+            style: AppStyles.textBold16,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -44,7 +45,7 @@ class OfferCardHeader extends StatelessWidget {
               'OFFER PRICE',
               style: AppStyles.textRegular10.copyWith(
                 fontWeight: FontWeight.w700,
-                color: AppColors.accent,
+                color: isLight ? AppColors.darkGrey : AppColors.accent,
                 letterSpacing: 1,
               ),
             ),

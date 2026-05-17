@@ -15,23 +15,24 @@ class AddressSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLight = Theme.of(context).brightness == Brightness.light;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildlabeAddress(text: 'PICKUP'),
+        _buildlabeAddress(text: 'PICKUP', isLight: isLight),
         SizedBox(height: 4.h),
         Text(
           pickupAddress,
-          style: AppStyles.textBold16.copyWith(color: AppColors.white),
+          style: AppStyles.textBold16,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: 16.h),
-        _buildlabeAddress(text: 'DESTINATION'),
+        _buildlabeAddress(text: 'DESTINATION', isLight: isLight),
         SizedBox(height: 4.h),
         Text(
           destinationAddress,
-          style: AppStyles.textBold16.copyWith(color: AppColors.white),
+          style: AppStyles.textBold16,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -39,11 +40,11 @@ class AddressSection extends StatelessWidget {
     );
   }
 
-  Text _buildlabeAddress({required String text}) {
+  Text _buildlabeAddress({required String text, required bool isLight}) {
     return Text(
       text,
       style: AppStyles.textSemiBold12.copyWith(
-        color: AppColors.accent,
+        color: isLight ? AppColors.darkGrey : AppColors.accent,
         letterSpacing: 1,
       ),
     );

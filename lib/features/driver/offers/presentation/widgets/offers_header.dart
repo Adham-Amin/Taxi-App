@@ -30,7 +30,7 @@ class OffersHeader extends StatelessWidget {
         8.hs,
         Text(
           'Real-time offers from passengers in your immediate vicinity. Accept to lock the fare.',
-          style: AppStyles.textRegular16.copyWith(color: AppColors.accent),
+          style: AppStyles.textRegular16.copyWith(color: Theme.of(context).brightness == Brightness.light ? AppColors.darkGrey : AppColors.accent),
         ),
       ],
     );
