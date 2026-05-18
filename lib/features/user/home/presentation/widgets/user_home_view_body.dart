@@ -122,9 +122,10 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
       return DriverInfo(trip: trip);
     }
 
-    if (state is TripCompleted) {
+    if (state is TripCompleted || state is TripDone) {
+      var trip = (state as dynamic).trip as TripModel;
       return DoneTrip(
-        trip: state.trip,
+        trip: trip,
         onTap: () {
           _priceController.clear();
           _polylines.clear();

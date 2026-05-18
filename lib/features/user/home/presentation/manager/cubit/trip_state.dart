@@ -28,7 +28,10 @@ class TripCompleted extends TripState {
   TripCompleted(this.trip);
 }
 
-class TripDone extends TripState {}
+class TripDone extends TripState {
+  final TripModel trip;
+  TripDone(this.trip);
+}
 
 class TripCanceled extends TripState {}
 

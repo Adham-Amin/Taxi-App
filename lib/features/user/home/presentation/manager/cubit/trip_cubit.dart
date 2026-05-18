@@ -56,7 +56,7 @@ class TripCubit extends Cubit<TripState> {
         break;
 
       case TripStatus.done:
-        emit(TripDone());
+        emit(TripDone(trip));
         break;
 
       case TripStatus.completed:
@@ -78,8 +78,7 @@ class TripCubit extends Cubit<TripState> {
 
   Future<void> doneRide() async {
     if (currentTripId == null) return;
-    await tripRepo.doneRide(tripId: currentTripId!);
-    emit(TripDone());
+    emit(TripCanceled());
     close();
   }
 
