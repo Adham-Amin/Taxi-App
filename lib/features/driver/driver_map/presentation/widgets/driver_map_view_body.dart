@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 
 import 'package:animated_snack_bar/animated_snack_bar.dart';
@@ -12,8 +14,11 @@ import 'package:taxi_app/core/helper/map_helper.dart';
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/services/location_service.dart';
+import 'package:taxi_app/core/theme_cubit/theme_cubit.dart';
+import 'package:taxi_app/core/theme_cubit/theme_state.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/features/driver/driver_map/presentation/cubit/driver_map_cubit.dart';
+import 'package:taxi_app/features/driver/driver_map/presentation/widgets/driver_loading.dart';
 import 'package:taxi_app/features/driver/driver_map/presentation/widgets/trip_action_button.dart';
 import 'package:taxi_app/features/driver/driver_map/presentation/widgets/trip_done_overlay.dart';
 import 'package:taxi_app/features/driver/driver_map/presentation/widgets/user_info_panel.dart';
@@ -36,7 +41,7 @@ class _DriverMapViewBodyState extends State<DriverMapViewBody> {
 
   final Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
-  String? _darkMapStyle;
+  String? darkMapStyle;
 
   Type? _lastPhaseType;
 
@@ -61,6 +66,7 @@ class _DriverMapViewBodyState extends State<DriverMapViewBody> {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return BlocConsumer<DriverMapCubit, DriverMapState>(
       listener: (context, state) {
         if (state is DriverMapTripDone) {
@@ -81,7 +87,7 @@ class _DriverMapViewBodyState extends State<DriverMapViewBody> {
       builder: (context, state) {
         return Stack(
           children: [
-            _buildMap(),
+            _buildMap(isLight),
             if (state is DriverMapTripCompleted)
               TripDoneOverlay(
                 trip: state.trip,
@@ -92,25 +98,31 @@ class _DriverMapViewBodyState extends State<DriverMapViewBody> {
                 state is DriverMapOnTrip)
               _buildBottomPanel(state),
             if (state is DriverMapLoading || state is DriverMapInitial)
-              const Center(child: CircularProgressIndicator()),
+              DriverLoading(),
           ],
         );
       },
     );
   }
 
-  Widget _buildMap() {
-    return GoogleMap(
-      myLocationButtonEnabled: false,
-      zoomControlsEnabled: false,
-      compassEnabled: false,
-      style: _darkMapStyle,
-      initialCameraPosition: _initialCameraPosition,
-      markers: _markers,
-      polylines: _polylines,
-      onMapCreated: (controller) {
-        _mapController = controller;
+    Widget _buildMap(bool isLight) {
+    return BlocListener<ThemeCubit, ThemeState>(
+      listener: (context, state) {
+        final isLight = state.themeMode == ThemeMode.light;
+        _applyMapStyle(isLight);
       },
+      child: GoogleMap(
+        myLocationButtonEnabled: false,
+        zoomControlsEnabled: false,
+        compassEnabled: false,
+        initialCameraPosition: _initialCameraPosition,
+        markers: _markers,
+        polylines: _polylines,
+        onMapCreated: (controller) async {
+          _mapController = controller;
+          _applyMapStyle(isLight);
+        },
+      ),
     );
   }
 
@@ -148,6 +160,16 @@ class _DriverMapViewBodyState extends State<DriverMapViewBody> {
         ],
       ),
     );
+  }
+
+    Future<void> _applyMapStyle(bool isLight) async {
+    if (_mapController == null) return;
+
+    if (isLight) {
+      await _mapController!.setMapStyle(null);
+    } else {
+      await _mapController!.setMapStyle(darkMapStyle);
+    }
   }
 
   void _onPhaseChanged(DriverMapState state) {
@@ -296,8 +318,7 @@ class _DriverMapViewBodyState extends State<DriverMapViewBody> {
       },
     );
   }
-
   Future<void> _loadMapStyle() async {
-    _darkMapStyle = await rootBundle.loadString('assets/json/map_style.json');
+    darkMapStyle = await rootBundle.loadString('assets/json/map_style.json');
   }
 }

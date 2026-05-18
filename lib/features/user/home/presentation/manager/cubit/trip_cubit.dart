@@ -78,7 +78,7 @@ class TripCubit extends Cubit<TripState> {
 
   Future<void> doneRide() async {
     if (currentTripId == null) return;
-    emit(TripCanceled());
+    emit(TripInitial());
     close();
   }
 

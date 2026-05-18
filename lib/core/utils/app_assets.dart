@@ -34,6 +34,10 @@ class AppAssets {
   /// assets/images/splash_screen.png
   static const String imagesSplashScreen = "assets/images/splash_screen.png";
 
+  /// Assets for lottieMercedes
+  /// assets/lottie/Mercedes.json
+  static const String lottieMercedes = "assets/lottie/Mercedes.json";
+
   /// Assets for svgsCheckmark
   /// assets/svgs/checkmark.svg
   static const String svgsCheckmark = "assets/svgs/checkmark.svg";
