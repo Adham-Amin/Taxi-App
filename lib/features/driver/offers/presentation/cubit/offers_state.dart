@@ -11,7 +11,10 @@ class OffersLoaded extends OffersState {
   OffersLoaded({required this.offers});
 }
 
-class OffersAcceptLoaded extends OffersState {}
+class OffersAcceptLoaded extends OffersState {
+  final OfferEntity offer;
+  OffersAcceptLoaded({required this.offer});
+}
 
 class OffersError extends OffersState {
   final String message;

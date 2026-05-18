@@ -80,13 +80,23 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     final isLight = Theme.of(context).brightness == Brightness.light;
     return BlocConsumer<TripCubit, TripState>(
       listener: (context, state) {
-        state is TripError
-            ? customSnackBar(
-                context: context,
-                message: state.message,
-                type: AnimatedSnackBarType.warning,
-              )
-            : null;
+        if (state is TripError) {
+          customSnackBar(
+            context: context,
+            message: state.message,
+            type: AnimatedSnackBarType.warning,
+          );
+        } else if (state is TripAccepted ||
+            state is TripArrived ||
+            state is TripOnGoing) {
+          final trip = (state as dynamic).trip as TripModel;
+          if (trip.status == TripStatus.accepted) {
+            _updateDriverMarker(LatLng(trip.driver.lat!, trip.driver.lng!));
+          } else {
+            _markers.removeWhere((m) => m.markerId.value == 'driver_marker');
+            setState(() {});
+          }
+        }
       },
       builder: (context, state) {
         return Stack(children: [_buildMap(isLight), _buildStatusUI(state)]);
@@ -109,11 +119,6 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
 
     if (state is TripAccepted || state is TripArrived || state is TripOnGoing) {
       final trip = (state as dynamic).trip as TripModel;
-      if (trip.status == TripStatus.accepted) {
-        _updateDriverMarker(LatLng(trip.driver.lat!, trip.driver.lng!));
-      } else {
-        _markers.removeWhere((m) => m.markerId.value == 'driver_marker');
-      }
       return DriverInfo(trip: trip);
     }
 

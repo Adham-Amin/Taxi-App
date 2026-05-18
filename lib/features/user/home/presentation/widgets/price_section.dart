@@ -16,7 +16,10 @@ class PriceSection extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isLight ? AppColors.offWhite : AppColors.darkGrey,
+        color: isLight ? AppColors.softGray : AppColors.darkGrey,
+        border: Border.all(
+          color: isLight ? AppColors.mutedSlateGray : AppColors.grey,
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(

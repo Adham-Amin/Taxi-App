@@ -2,7 +2,9 @@ import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/features/auth/presentation/pages/login_view.dart';
 import 'package:taxi_app/features/auth/presentation/pages/register_view.dart';
+import 'package:taxi_app/features/driver/driver_map/presentation/pages/driver_map_view.dart';
 import 'package:taxi_app/features/driver/main/driver_main_view.dart';
+import 'package:taxi_app/features/driver/offers/domain/entities/offer_entity.dart';
 import 'package:taxi_app/features/intro/onbording/presentation/views/onbording_view.dart';
 import 'package:taxi_app/features/intro/splash/presentation/views/splash_view.dart';
 import 'package:taxi_app/features/intro/welcome/presentation/views/welcome_view.dart';
@@ -70,6 +72,12 @@ class RouterGenerationConfig {
         path: AppRoutes.driverMain,
         name: AppRoutes.driverMain,
         builder: (context, state) => const DriverMainView(),
+      ),
+      GoRoute(
+        path: AppRoutes.driverMap,
+        name: AppRoutes.driverMap,
+        builder: (context, state) =>
+            DriverMapView(offer: state.extra as OfferEntity),
       ),
     ],
   );

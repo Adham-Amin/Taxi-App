@@ -12,10 +12,11 @@ class TripCompletedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = Theme.of(context).brightness == Brightness.light;
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.dark.withValues(alpha: 0.6),
+        color: isLight ? AppColors.offWhite : AppColors.dark.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(

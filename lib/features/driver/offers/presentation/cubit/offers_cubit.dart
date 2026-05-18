@@ -34,12 +34,13 @@ class OffersCubit extends Cubit<OffersState> {
   Future<void> acceptOffer({
     required String offerId,
     required DriverModel driver,
+    required OfferEntity offer,
   }) async {
     emit(OffersLoading());
     var result = await offerRepo.acceptOffer(offerId: offerId, driver: driver);
     result.fold(
       (failure) => emit(OffersError(message: failure.message)),
-      (_) => emit(OffersAcceptLoaded()),
+      (_) => emit(OffersAcceptLoaded(offer: offer)),
     );
   }
 }

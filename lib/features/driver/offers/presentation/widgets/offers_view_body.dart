@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/services/shared_preferences_service.dart';
 import 'package:taxi_app/core/widgets/custom_error.dart';
 import 'package:taxi_app/features/auth/data/models/driver_model.dart';
@@ -24,7 +26,12 @@ class OffersViewBody extends StatelessWidget {
           const OffersHeader(),
           SizedBox(height: 24.h),
           Expanded(
-            child: BlocBuilder<OffersCubit, OffersState>(
+            child: BlocConsumer<OffersCubit, OffersState>(
+              listener: (context, state) {
+                if (state is OffersAcceptLoaded) {
+                  context.push(AppRoutes.driverMap, extra: state.offer);
+                }
+              },
               builder: (context, state) {
                 if (state is OffersLoading) {
                   return LoadingOffers();
@@ -49,6 +56,7 @@ class OffersViewBody extends StatelessWidget {
                           final user = Prefs.getUser()!;
                           context.read<OffersCubit>().acceptOffer(
                             offerId: offer.id,
+                            offer: offer,
                             driver: DriverModel(
                               lat: user.lat,
                               lng: user.lng,
