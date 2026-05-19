@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
 import 'package:taxi_app/features/driver/offers/domain/entities/offer_entity.dart';
@@ -38,7 +40,7 @@ class OfferCard extends StatelessWidget {
             destinationAddress: offer.destination.fullAddress,
           ),
           24.hs,
-          CustomButton(title: 'Accept', onTap: onAccept, isLoading: isLoading),
+          CustomButton(title: LocaleKeys.accept.tr(), onTap: onAccept, isLoading: isLoading),
         ],
       ),
     );

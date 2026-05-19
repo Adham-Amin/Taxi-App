@@ -12,7 +12,7 @@ class DriverProfileRepoImpl extends DriverProfileRepo {
   Future<Either<Failure, UserInfoModel>> getDriverProfile() async {
     try {
       var user = await driverProfileDataSource.getDriverProfile();
-      return Right(user.toUserInfoModel());
+      return Right(user);
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
@@ -25,7 +25,7 @@ class DriverProfileRepoImpl extends DriverProfileRepo {
     try {
       await driverProfileDataSource.updateDriverProfile(driver: driver);
       var user = await driverProfileDataSource.getDriverProfile();
-      Prefs.setUser(user.toUserInfoModel());
+      Prefs.setUser(user);
       return const Right(null);
     } catch (e) {
       return Left(ServerFailure(e.toString()));

@@ -5,6 +5,10 @@ import 'package:taxi_app/features/auth/presentation/pages/register_view.dart';
 import 'package:taxi_app/features/driver/driver_map/presentation/pages/driver_map_view.dart';
 import 'package:taxi_app/features/driver/main/driver_main_view.dart';
 import 'package:taxi_app/features/driver/offers/domain/entities/offer_entity.dart';
+import 'package:taxi_app/features/driver/settings/presentation/pages/change_email_driver_view.dart';
+import 'package:taxi_app/features/driver/settings/presentation/pages/change_password_driver_view.dart';
+import 'package:taxi_app/features/driver/settings/presentation/pages/driver_update_profile_view.dart';
+import 'package:taxi_app/features/driver/settings/presentation/pages/update_vehicle_view.dart';
 import 'package:taxi_app/features/intro/onbording/presentation/views/onbording_view.dart';
 import 'package:taxi_app/features/intro/splash/presentation/views/splash_view.dart';
 import 'package:taxi_app/features/intro/welcome/presentation/views/welcome_view.dart';
@@ -78,6 +82,26 @@ class RouterGenerationConfig {
         name: AppRoutes.driverMap,
         builder: (context, state) =>
             DriverMapView(offer: state.extra as OfferEntity),
+      ),
+      GoRoute(
+        path: AppRoutes.driverEditProfile,
+        name: AppRoutes.driverEditProfile,
+        builder: (context, state) => const DriverUpdateProfileView(),
+      ),
+      GoRoute(
+        path: AppRoutes.driverchangePasswordProfile,
+        name: AppRoutes.driverchangePasswordProfile,
+        builder: (context, state) => const ChangePasswordDriverView(),
+      ),
+      GoRoute(
+        path: AppRoutes.driverchangeEmailProfile,
+        name: AppRoutes.driverchangeEmailProfile,
+        builder: (context, state) => const ChangeEmailDriverView(),
+      ),
+      GoRoute(
+        path: AppRoutes.driverchangeCarProfile,
+        name: AppRoutes.driverchangeCarProfile,
+        builder: (context, state) => const UpdateVehicleView(),
       ),
     ],
   );

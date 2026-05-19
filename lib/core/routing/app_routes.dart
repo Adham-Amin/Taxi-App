@@ -15,4 +15,5 @@ class AppRoutes {
   static const String driverchangeEmailProfile = '/driverchangeEmailProfile';
   static const String driverchangePasswordProfile =
       '/driverchangePasswordProfile';
+  static const String driverchangeCarProfile = '/driverchangeCarProfile';
 }

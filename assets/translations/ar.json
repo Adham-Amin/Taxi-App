@@ -91,5 +91,19 @@
   "start_your_ride" :  "ابدأ رحلتك",
   "select_pickup_and_destination" :  "حدد مكان الاستلام والوصول",
   "home" : "الرئيسية",
-  "trips" : "الرحلات"
+  "trips" : "الرحلات",
+  "update_vehicle" : "تحديث معلومات السيارة",
+  "vehicle_info" : "معلومات السيارة",
+  "vehicle_model" : "نوع السيارة",
+  "vehicle_color" : "لون السيارة",
+  "vehicle_plate_number" : "رقم لوحة السيارة",
+  "vehicle_info_updated" : "تم تحديث معلومات السيارة بنجاح",
+  "live_feed" : "مصدر التنقل",
+  "live_feed_sub" : "عروض فورية من ركاب في محيطك المباشر. اقبل العرض لتثبيت السعر.",
+  "accept" : "قبول",
+  "active_requests" : "طلبات مفعلة",
+  "no_requests" : "لا يوجد طلبات ",
+  "trips_total" : "الرحلات الكلية",
+  "total_earned" : "الأجر الكلي",
+  "avg_fare" : "المبلغ الوسيط"
 }

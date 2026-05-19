@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 
@@ -12,7 +14,7 @@ class OffersHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'LIVE FEED',
+          LocaleKeys.live_feed.tr(),
           style: AppStyles.textBold12.copyWith(
             color: AppColors.lightGreen,
             letterSpacing: 2,
@@ -20,7 +22,7 @@ class OffersHeader extends StatelessWidget {
         ),
         8.hs,
         Text(
-          'Active Requests',
+          LocaleKeys.active_requests.tr(),
           style: AppStyles.textExtraBold36.copyWith(
             color: Theme.of(context).brightness == Brightness.light
                 ? AppColors.dark
@@ -29,7 +31,7 @@ class OffersHeader extends StatelessWidget {
         ),
         8.hs,
         Text(
-          'Real-time offers from passengers in your immediate vicinity. Accept to lock the fare.',
+          LocaleKeys.live_feed_sub.tr(),
           style: AppStyles.textRegular16.copyWith(color: Theme.of(context).brightness == Brightness.light ? AppColors.darkGrey : AppColors.accent),
         ),
       ],

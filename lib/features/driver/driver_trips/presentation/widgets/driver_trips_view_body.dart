@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/driver/driver_trips/presentation/cubit/driver_trips_cubit.dart';
@@ -23,7 +25,7 @@ class DriverTripsViewBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Trip History', style: AppStyles.textExtraBold30),
+                  Text(LocaleKeys.trip_history.tr(), style: AppStyles.textExtraBold30),
                   const Spacer(),
                   const EmptyTripsHistory(),
                   const Spacer(),
@@ -36,10 +38,10 @@ class DriverTripsViewBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Trip History', style: AppStyles.textExtraBold30),
+                Text(LocaleKeys.trip_history.tr(), style: AppStyles.textExtraBold30),
                 4.hs,
                 Text(
-                  '${state.trips.length} trips total',
+                  '${state.trips.length} ${LocaleKeys.trips_total.tr()}',
                   style: AppStyles.textMedium14.copyWith(
                     color: AppColors.accent,
                   ),
@@ -145,16 +147,16 @@ class TripsHistoryIngoCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           TripsInfoItem(
-            label: 'TOTAL EARNED',
+            label: LocaleKeys.total_earned.tr(),
             value:
                 '\$${(trip.map((e) => e.price).reduce((value, element) => value + element)).toStringAsFixed(2)}',
             colorValue: AppColors.lightGreen,
           ),
           Container(width: 1, color: AppColors.accent, height: 40),
-          TripsInfoItem(label: 'TRIPS', value: '${trip.length}'),
+          TripsInfoItem(label: LocaleKeys.trips.tr(), value: '${trip.length}'),
           Container(width: 1, color: AppColors.accent, height: 40),
           TripsInfoItem(
-            label: 'Avg Fare',
+            label: LocaleKeys.avg_fare.tr(),
             value:
                 '\$${(trip.map((e) => e.price).reduce((value, element) => value + element) / trip.length).toStringAsFixed(2)}',
           ),

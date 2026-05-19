@@ -91,5 +91,19 @@
   "start_your_ride" :  "Start Your Ride",
   "select_pickup_and_destination" :  "Select your pickup location and destination",
   "home" : "HOME",
-  "trips" : "TRIPS"
+  "trips" : "TRIPS",
+  "update_vehicle" : "Update Vehicle Info", 
+  "vehicle_info" : "VEHICLE INFO",
+  "vehicle_model" : "Vehicle Model",
+  "vehicle_color" : "Vehicle Color",
+  "vehicle_plate_number" : "Vehicle Plate Number",
+  "vehicle_updated" : "Vehicle Updated Successfully",
+  "live_feed" : "LIVE FEED",
+  "active_requests" : "Active Requests",
+  "live_feed_sub" : "Real-time offers from passengers in your immediate vicinity. Accept to lock the fare.",
+  "accept" : "Accept",
+  "no_requests" : "No active requests right now",
+  "trips_total" : "trips total",
+  "total_earned" : "TOTAL EARNED",
+  "avg_fare" : "Avg Fare"
 }

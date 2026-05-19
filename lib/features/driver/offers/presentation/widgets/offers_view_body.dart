@@ -1,15 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/services/shared_preferences_service.dart';
 import 'package:taxi_app/core/widgets/custom_error.dart';
 import 'package:taxi_app/features/auth/data/models/driver_model.dart';
-import 'package:taxi_app/features/driver/offers/domain/entities/offer_entity.dart';
 import 'package:taxi_app/features/driver/offers/presentation/cubit/offers_cubit.dart';
+import 'package:taxi_app/features/driver/offers/presentation/widgets/loading_offers.dart';
 import 'package:taxi_app/features/driver/offers/presentation/widgets/offer_card.dart';
 import 'package:taxi_app/features/driver/offers/presentation/widgets/offers_header.dart';
 
@@ -41,8 +42,8 @@ class OffersViewBody extends StatelessWidget {
                 }
                 if (state is OffersLoaded) {
                   if (state.offers.isEmpty) {
-                    return const CustomError(
-                      message: 'No active requests right now',
+                    return CustomError(
+                      message: LocaleKeys.no_requests.tr(),
                     );
                   }
                   return ListView.separated(
@@ -81,24 +82,6 @@ class OffersViewBody extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class LoadingOffers extends StatelessWidget {
-  const LoadingOffers({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Skeletonizer(
-      enabled: true,
-      child: ListView.separated(
-        itemCount: 2,
-        separatorBuilder: (_, _) => 16.hs,
-        itemBuilder: (context, index) {
-          return OfferCard(offer: OfferEntity.empty(), onAccept: () {});
-        },
       ),
     );
   }

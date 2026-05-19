@@ -1,0 +1,32 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
+import 'package:taxi_app/core/widgets/custom_back_button.dart';
+import 'package:taxi_app/features/driver/settings/data/datasources/driver_profile_data_source.dart';
+import 'package:taxi_app/features/driver/settings/data/repositories/driver_profile_repo_impl.dart';
+import 'package:taxi_app/features/driver/settings/presentation/cubit/settings_cubit.dart';
+import 'package:taxi_app/features/driver/settings/presentation/widgets/driver_update_profile_view_body.dart';
+
+class DriverUpdateProfileView extends StatelessWidget {
+  const DriverUpdateProfileView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SettingsCubit( 
+        driverProfileRepo: DriverProfileRepoImpl(
+          driverProfileDataSource: DriverProfileDataSourceImpl(),
+        )
+      ),
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: Center(child: CustomBackButton()),
+          title: Text(LocaleKeys.update_profile.tr()),
+        ),
+        body: SafeArea(child: DriverUpdateProfileViewBody()),
+      ),
+    );
+  }
+}

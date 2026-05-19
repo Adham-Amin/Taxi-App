@@ -1,14 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:taxi_app/core/lang/locale_keys.g.dart';
-import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 import 'package:taxi_app/features/driver/driver_trips/presentation/pages/driver_trips_view.dart';
 import 'package:taxi_app/features/driver/offers/presentation/pages/offers_view.dart';
+import 'package:taxi_app/features/driver/settings/presentation/pages/settings_view.dart';
 
 class DriverMainView extends StatefulWidget {
   const DriverMainView({super.key});
@@ -25,15 +23,7 @@ class MainPageState extends State<DriverMainView> {
   List<Widget> get _pages => [
     OffersView(),
     DriverTripsView(),
-    Center(
-      child: IconButton(
-        onPressed: () {
-          FirebaseAuth.instance.signOut();
-          context.go(AppRoutes.welcome);
-        },
-        icon: Icon(Icons.logout),
-      ),
-    ),
+    SettingsView()
   ];
 
   void changeTab(int index) {

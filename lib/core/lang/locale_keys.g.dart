@@ -96,5 +96,18 @@ abstract class  LocaleKeys {
   static const select_pickup_and_destination = 'select_pickup_and_destination';
   static const home = 'home';
   static const trips = 'trips';
-
+  static const update_vehicle = 'update_vehicle';
+  static const vehicle_info = 'vehicle_info';
+  static const vehicle_model = 'vehicle_model';
+  static const vehicle_color = 'vehicle_color';
+  static const vehicle_plate_number = 'vehicle_plate_number';
+  static const vehicle_info_updated = 'vehicle_info_updated';
+  static const live_feed = 'live_feed';
+  static const live_feed_sub = 'live_feed_sub';
+  static const accept = 'accept';
+  static const active_requests = 'active_requests';
+  static const no_requests = 'no_requests';
+  static const trips_total = 'trips_total';
+  static const avg_fare = 'avg_fare';
+  static const total_earned = 'total_earned';
 }

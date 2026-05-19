@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
 
@@ -19,7 +21,7 @@ class AddressSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildlabeAddress(text: 'PICKUP', isLight: isLight),
+        _buildlabeAddress(text: LocaleKeys.pickup.tr(), isLight: isLight),
         SizedBox(height: 4.h),
         Text(
           pickupAddress,
@@ -28,7 +30,7 @@ class AddressSection extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: 16.h),
-        _buildlabeAddress(text: 'DESTINATION', isLight: isLight),
+        _buildlabeAddress(text: LocaleKeys.destination.tr(), isLight: isLight),
         SizedBox(height: 4.h),
         Text(
           destinationAddress,
