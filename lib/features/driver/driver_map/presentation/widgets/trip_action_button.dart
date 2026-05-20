@@ -7,11 +7,15 @@ class TripActionButton extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.isLoading = false,
+    this.color
+  , this.textColor
   });
 
   final String title;
   final VoidCallback onTap;
   final bool isLoading;
+  final Color? color;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +23,8 @@ class TripActionButton extends StatelessWidget {
       title: title,
       onTap: onTap,
       isLoading: isLoading,
+      backgroundColor: color,
+      colorText: textColor,
     );
   }
 }

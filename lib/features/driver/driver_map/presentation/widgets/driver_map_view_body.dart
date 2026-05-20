@@ -16,6 +16,7 @@ import 'package:taxi_app/core/routing/app_routes.dart';
 import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/core/theme_cubit/theme_cubit.dart';
 import 'package:taxi_app/core/theme_cubit/theme_state.dart';
+import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/features/driver/driver_map/presentation/cubit/driver_map_cubit.dart';
 import 'package:taxi_app/features/driver/driver_map/presentation/widgets/driver_loading.dart';
@@ -129,20 +130,29 @@ class _DriverMapViewBodyState extends State<DriverMapViewBody> {
   Widget _buildBottomPanel(DriverMapState state) {
     final String actionTitle;
     final VoidCallback actionOnTap;
+    final Color buttonColor;
+    final Color textColor;
     String? userPhone;
 
     if (state is DriverMapGoingToPickup) {
       actionTitle = 'Arrived';
       actionOnTap = () => context.read<DriverMapCubit>().arrivedAtPickup();
+      buttonColor = AppColors.darkSlateGray;
+      textColor = AppColors.white;
       userPhone = state.trip.user.phone;
     } else if (state is DriverMapArrivedAtPickup) {
       actionTitle = 'Start Trip';
       actionOnTap = () => context.read<DriverMapCubit>().startRide();
+      buttonColor = AppColors.lightGreen;
+      textColor = AppColors.darkGreen;
       userPhone = state.trip.user.phone;
     } else if (state is DriverMapOnTrip) {
       actionTitle = 'End Trip';
       actionOnTap = () => context.read<DriverMapCubit>().endRide();
       userPhone = state.trip.user.phone;
+      buttonColor = AppColors.red;
+      textColor = AppColors.white;
+
     } else {
       return const SizedBox.shrink();
     }
@@ -156,7 +166,7 @@ class _DriverMapViewBodyState extends State<DriverMapViewBody> {
         children: [
           UserInfoPanel(offer: widget.offer, userPhone: userPhone),
           16.hs,
-          TripActionButton(title: actionTitle, onTap: actionOnTap),
+          TripActionButton(title: actionTitle, onTap: actionOnTap, color: buttonColor, textColor: textColor),
         ],
       ),
     );
