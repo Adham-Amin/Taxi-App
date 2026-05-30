@@ -1,14 +1,12 @@
-// ignore_for_file: use_build_context_synchronously, deprecated_member_use
-
 import 'dart:async';
 import 'dart:ui';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
+import 'package:taxi_app/core/helper/animated_driver_marker.dart';
 import 'package:taxi_app/core/helper/map_helper.dart';
 import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/models/location_model.dart';
@@ -18,7 +16,9 @@ import 'package:taxi_app/core/theme_cubit/theme_cubit.dart';
 import 'package:taxi_app/core/theme_cubit/theme_state.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
+import 'package:taxi_app/core/widgets/animated_wrappers.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
+import 'package:taxi_app/core/widgets/premium_snack_bar.dart';
 import 'package:taxi_app/features/auth/data/models/driver_model.dart';
 import 'package:taxi_app/features/user/home/data/models/ride_model.dart';
 import 'package:taxi_app/features/user/home/data/models/trip_status_enum.dart';
@@ -37,7 +37,8 @@ class UserHomeViewBody extends StatefulWidget {
   State<UserHomeViewBody> createState() => _UserHomeViewBodyState();
 }
 
-class _UserHomeViewBodyState extends State<UserHomeViewBody> {
+class _UserHomeViewBodyState extends State<UserHomeViewBody>
+    with TickerProviderStateMixin {
   late TextEditingController _priceController;
   GoogleMapController? _mapController;
   StreamSubscription? _locationSubscription;
@@ -51,20 +52,52 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
 
   final Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
+  List<LatLng> _fullRoutePoints = [];
+  int _passedPointIndex = 0;
 
-  String status = '';
   String? darkMapStyle;
+
+  LatLng? _driverPosition;
+  double _driverBearing = 0;
+  Timer? _markerAnimationTimer;
+  AnimationController? _markerAnimController;
+  Animation<double>? _markerAnim;
+  LatLng? _markerAnimStart;
+  LatLng? _markerAnimEnd;
+
+  late AnimationController _sheetAnimController;
+  late Animation<double> _sheetFadeAnim;
 
   @override
   void initState() {
     super.initState();
-    _loadMapStyle();
+    MapHelper.loadMapStyle();
     _initLocationStream();
     _priceController = TextEditingController();
     initialCameraPosition = const CameraPosition(
       target: LatLng(27.003337, 29.9530391),
       zoom: 5,
     );
+
+    _sheetAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 420),
+    );
+    _sheetFadeAnim = CurvedAnimation(
+      parent: _sheetAnimController,
+      curve: Curves.easeOutCubic,
+    );
+    _sheetAnimController.forward();
+
+    _markerAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _markerAnim = CurvedAnimation(
+      parent: _markerAnimController!,
+      curve: Curves.easeInOut,
+    );
+    _markerAnimController!.addListener(_onMarkerAnimTick);
   }
 
   @override
@@ -72,6 +105,9 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     _mapController?.dispose();
     _locationSubscription?.cancel();
     _priceController.dispose();
+    _sheetAnimController.dispose();
+    _markerAnimController?.dispose();
+    _markerAnimationTimer?.cancel();
     super.dispose();
   }
 
@@ -86,16 +122,24 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
             message: state.message,
             type: AnimatedSnackBarType.warning,
           );
-        } else if (state is TripAccepted ||
-            state is TripArrived ||
-            state is TripOnGoing) {
-          final trip = (state as dynamic).trip as TripModel;
-          if (trip.status == TripStatus.accepted) {
-            _updateDriverMarker(LatLng(trip.driver.lat!, trip.driver.lng!));
-          } else {
-            _markers.removeWhere((m) => m.markerId.value == 'driver_marker');
-            setState(() {});
-          }
+        } else if (state is TripAccepted) {
+          _onTripAccepted(state.trip);
+          PremiumSnackBar.show(
+            context,
+            icon: Icons.check_circle_rounded,
+            message: 'Driver is on the way!',
+            color: const Color(0xFF00C853),
+          );
+        } else if (state is TripArrived) {
+          _onDriverArrived(state.trip);
+          PremiumSnackBar.show(
+            context,
+            icon: Icons.location_on_rounded,
+            message: 'Your driver has arrived!',
+            color: const Color(0xFF2196F3),
+          );
+        } else if (state is TripOnGoing) {
+          _onTripOnGoing(state.trip);
         }
       },
       builder: (context, state) {
@@ -108,10 +152,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     if (state is TripSearching) {
       return SearchingDriverOverlay(
         cancelSearching: () {
-          _priceController.clear();
-          _polylines.clear();
-          _markers.clear();
-          _initLocationStream();
+          _clearTripState();
           context.read<TripCubit>().cancelRide();
         },
       );
@@ -119,20 +160,24 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
 
     if (state is TripAccepted || state is TripArrived || state is TripOnGoing) {
       final trip = (state as dynamic).trip as TripModel;
-      return DriverInfo(trip: trip);
+      return Positioned(
+        bottom: 24,
+        left: 16,
+        right: 16,
+        child: AnimatedSlideIn(child: DriverInfo(trip: trip)),
+      );
     }
 
     if (state is TripCompleted || state is TripDone) {
-      var trip = (state as dynamic).trip as TripModel;
-      return DoneTrip(
-        trip: trip,
-        onTap: () {
-          _priceController.clear();
-          _polylines.clear();
-          _markers.clear();
-          _initLocationStream();
-          context.read<TripCubit>().doneRide();
-        },
+      final trip = (state as dynamic).trip as TripModel;
+      return AnimatedSlideIn(
+        child: DoneTrip(
+          trip: trip,
+          onTap: () {
+            _clearTripState();
+            context.read<TripCubit>().doneRide();
+          },
+        ),
       );
     }
 
@@ -142,29 +187,28 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
   Widget _buildMap(bool isLight) {
     return BlocListener<ThemeCubit, ThemeState>(
       listener: (context, state) {
-        final isLight = state.themeMode == ThemeMode.light;
-        _applyMapStyle(isLight);
+        if (_mapController != null) {
+          MapHelper.applyMapStyle(
+            _mapController!,
+            state.themeMode == ThemeMode.light,
+          );
+        }
       },
       child: GoogleMap(
         myLocationButtonEnabled: false,
         zoomControlsEnabled: false,
         compassEnabled: false,
+        rotateGesturesEnabled: true,
+        tiltGesturesEnabled: false,
         initialCameraPosition: initialCameraPosition,
         markers: _markers,
         polylines: _polylines,
         onMapCreated: (controller) async {
           _mapController = controller;
-          _applyMapStyle(isLight);
+          MapHelper.applyMapStyle(controller, isLight);
         },
       ),
     );
-  }
-
-  String _getGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) return LocaleKeys.start_your_ride.tr();
-    if (hour < 17) return LocaleKeys.start_your_ride.tr();
-    return LocaleKeys.start_your_ride.tr();
   }
 
   Widget _buildIdleUI(bool isLoading) {
@@ -175,110 +219,142 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
       snap: true,
       snapSizes: const [0.40, 0.70, 0.88],
       builder: (context, scrollController) {
-        return ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.dark.withOpacity(0.75),
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(24),
-                ),
-                border: Border(
-                  top: BorderSide(
-                    color: AppColors.lightGreen.withOpacity(0.15),
-                    width: 1,
+        return FadeTransition(
+          opacity: _sheetFadeAnim,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.dark.withValues(alpha: 0.82),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(28),
+                  ),
+                  border: Border(
+                    top: BorderSide(
+                      color: AppColors.lightGreen.withValues(alpha: 0.20),
+                      width: 1.5,
+                    ),
                   ),
                 ),
-              ),
-              child: SingleChildScrollView(
-                controller: scrollController,
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 12, bottom: 8),
-                        child: Container(
-                          width: 40,
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: AppColors.slateGray.withOpacity(0.6),
-                            borderRadius: BorderRadius.circular(2),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 14, bottom: 8),
+                          child: Container(
+                            width: 36,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: AppColors.slateGray.withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(2),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _getGreeting(),
-                            style: AppStyles.textBold24.copyWith(
-                              color: AppColors.offWhite,
-                              letterSpacing: -0.5,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Greeting with live time dot
+                            Row(
+                              children: [
+                                Container(
+                                  width: 8,
+                                  height: 8,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.lightGreen,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.lightGreen.withValues(
+                                          alpha: 0.5,
+                                        ),
+                                        blurRadius: 8,
+                                        spreadRadius: 1,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                8.ws,
+                                Text(
+                                  LocaleKeys.start_your_ride.tr(),
+                                  style: AppStyles.textBold24.copyWith(
+                                    color: AppColors.offWhite,
+                                    letterSpacing: -0.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            6.hs,
+                            Text(
+                              LocaleKeys.select_pickup_and_destination.tr(),
+                              style: AppStyles.textRegular14.copyWith(
+                                color: AppColors.mutedSlateGray,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      20.hs,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Container(
+                          height: 1,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.transparent,
+                                AppColors.grey.withValues(alpha: 0.5),
+                                Colors.transparent,
+                              ],
                             ),
                           ),
-                          6.hs,
-                          Text(
-                            LocaleKeys.select_pickup_and_destination.tr(),
-                            style: AppStyles.textRegular14.copyWith(
-                              color: AppColors.mutedSlateGray,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                    20.hs,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Container(
-                        height: 1,
-                        color: AppColors.grey.withOpacity(0.6),
-                      ),
-                    ),
-                    20.hs,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: TweenAnimationBuilder(
-                        tween: Tween<double>(begin: 0, end: 1),
-                        duration: const Duration(milliseconds: 500),
-                        builder: (context, value, child) {
-                          return Opacity(
+                      20.hs,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: TweenAnimationBuilder<double>(
+                          tween: Tween(begin: 0, end: 1),
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeOutCubic,
+                          builder: (context, value, child) => Opacity(
                             opacity: value,
                             child: Transform.translate(
-                              offset: Offset(0, (1 - value) * 10),
+                              offset: Offset(0, (1 - value) * 16),
                               child: child,
                             ),
-                          );
-                        },
-                        child: MapSearchCard(
-                          currentLocation: (currentLocation) {
-                            setState(() => _currentLocation = currentLocation);
-                            _onPickupSelected(pickup: currentLocation);
-                          },
-                          destLocation: (dest) {
-                            setState(() => _destinationLocation = dest);
-                            _onDestinationSelected(destination: dest);
-                          },
+                          ),
+                          child: MapSearchCard(
+                            currentLocation: (loc) {
+                              setState(() => _currentLocation = loc);
+                              _onPickupSelected(pickup: loc);
+                            },
+                            destLocation: (dest) {
+                              setState(() => _destinationLocation = dest);
+                              _onDestinationSelected(destination: dest);
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    16.hs,
-                    // Request button section
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                      child: RequestButton(
-                        isLoading: isLoading,
-                        priceController: _priceController,
-                        onTap: _onRequestRide,
+                      16.hs,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+                        child: RequestButton(
+                          isLoading: isLoading,
+                          priceController: _priceController,
+                          onTap: _onRequestRide,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -286,6 +362,92 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
         );
       },
     );
+  }
+
+  void _onTripAccepted(TripModel trip) {
+    if (trip.driver.lat == null || trip.driver.lng == null) return;
+    _driverPosition = LatLng(trip.driver.lat!, trip.driver.lng!);
+    _updateDriverMarkerSmooth(_driverPosition!);
+  }
+
+  void _onDriverArrived(TripModel trip) {
+    if (trip.driver.lat != null && trip.driver.lng != null) {
+      final pos = LatLng(trip.driver.lat!, trip.driver.lng!);
+      _updateDriverMarkerSmooth(pos);
+    }
+  }
+
+  void _onTripOnGoing(TripModel trip) {
+    if (trip.driver.lat == null || trip.driver.lng == null) return;
+    final newPos = LatLng(trip.driver.lat!, trip.driver.lng!);
+
+    if (_driverPosition != null) {
+      _driverBearing = calculateBearing(_driverPosition!, newPos);
+      _animateMarkerMovement(_driverPosition!, newPos);
+      _updateProgressivePolyline(newPos);
+    }
+
+    _driverPosition = newPos;
+    if (_mapController != null) {
+      MapHelper.smoothCameraFollow(
+        _mapController!,
+        newPos,
+        zoom: 17.5,
+        bearing: _driverBearing,
+      );
+    }
+  }
+
+  void _animateMarkerMovement(LatLng start, LatLng end) {
+    _markerAnimStart = start;
+    _markerAnimEnd = end;
+    _markerAnimController!
+      ..reset()
+      ..forward();
+  }
+
+  void _onMarkerAnimTick() async {
+    if (_markerAnimStart == null || _markerAnimEnd == null) return;
+    final t = _markerAnim!.value;
+    final interpolated = lerpLatLng(_markerAnimStart!, _markerAnimEnd!, t);
+    await _updateDriverMarkerSmooth(interpolated);
+  }
+
+  Future<void> _updateDriverMarkerSmooth(LatLng position) async {
+    final icon = await AnimatedDriverMarker.build(
+      bearingDegrees: _driverBearing,
+      color: AppColors.lightGreen,
+      size: 88,
+    );
+
+    _markers.removeWhere((m) => m.markerId.value == 'driver_marker');
+    _markers.add(
+      Marker(
+        markerId: const MarkerId('driver_marker'),
+        position: position,
+        icon: icon,
+        anchor: const Offset(0.5, 0.5),
+        flat: true,
+        rotation: 0,
+        zIndexInt: 2,
+      ),
+    );
+
+    if (mounted) setState(() {});
+  }
+
+  void _updateProgressivePolyline(LatLng driverPos) {
+    if (_fullRoutePoints.isEmpty) return;
+
+    final result = MapHelper.buildProgressivePolylines(
+      fullRoute: _fullRoutePoints,
+      currentPassedIndex: _passedPointIndex,
+      driverPos: driverPos,
+    );
+    _passedPointIndex = result.passedIndex;
+    _polylines = result.polylines;
+
+    if (mounted) setState(() {});
   }
 
   void _onRequestRide() {
@@ -299,7 +461,6 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
       );
       return;
     }
-    setState(() {});
 
     final trip = TripModel(
       id: '',
@@ -317,34 +478,8 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
     context.read<TripCubit>().requestRide(trip: trip);
   }
 
-  Future<void> _applyMapStyle(bool isLight) async {
-    if (_mapController == null) return;
-
-    if (isLight) {
-      await _mapController!.setMapStyle(null);
-    } else {
-      await _mapController!.setMapStyle(darkMapStyle);
-    }
-  }
-
-  Future<void> _updateDriverMarker(LatLng location) async {
-    _markers.removeWhere((m) => m.markerId.value == 'driver_marker');
-
-    final marker = Marker(
-      markerId: const MarkerId('driver_marker'),
-      position: LatLng(location.latitude, location.longitude),
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-    );
-
-    _markers.add(marker);
-    setState(() {});
-  }
-
-  Future<void> _loadMapStyle() async {
-    darkMapStyle = await rootBundle.loadString('assets/json/map_style.json');
-  }
-
   void _initLocationStream() {
+    _locationSubscription?.cancel();
     _locationSubscription = _locationService.getLocationStream().listen((
       location,
     ) {
@@ -359,49 +494,72 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody> {
   }
 
   Future<void> _updateLocation(LocationModel location) async {
-    if (_mapController != null) {
-      await _mapController!.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(location.lat, location.lng), zoom: 18),
-        ),
-      );
-    }
+    if (_mapController == null) return;
+    await MapHelper.smoothCameraFollow(
+      _mapController!,
+      LatLng(location.lat, location.lng),
+      zoom: 18,
+    );
     _markers.removeWhere((m) => m.markerId.value == 'myLocation');
     final marker = await MapHelper.buildCurrentMarker(location: location);
     _markers.add(marker);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   Future<void> _onPickupSelected({required LocationModel pickup}) async {
     _currentLocation = pickup;
-    _mapController!.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(pickup.lat, pickup.lng), zoom: 18),
-      ),
+    if (_mapController != null) {
+      await MapHelper.smoothCameraFollow(
+        _mapController!,
+        LatLng(pickup.lat, pickup.lng),
+        zoom: 17,
+      );
+    }
+    _markers.add(
+      MapHelper.buildPickupMarker(pickup: LatLng(pickup.lat, pickup.lng)),
     );
-    final pickUP = LatLng(pickup.lat, pickup.lng);
-    _markers.add(MapHelper.buildPickupMarker(pickup: pickUP));
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   Future<void> _onDestinationSelected({
     required LocationModel destination,
   }) async {
     if (_currentLocation == null) return;
+
     final dest = LatLng(destination.lat, destination.lng);
     _markers.add(MapHelper.buildDestinationMarker(destination: dest));
-    setState(() {});
+    if (mounted) setState(() {});
+
     await context.read<MapCubit>().getPolylinePoints(
       origin: LatLng(_currentLocation!.lat, _currentLocation!.lng),
       destination: dest,
     );
-    final points = context.read<MapCubit>().polylinePoints;
-    _polylines = MapHelper.buildRoutePolylines(points: points);
-    setState(() {});
-    await MapHelper.fitBounds(
-      controller: _mapController!,
-      padding: 80,
-      points: points,
-    );
+
+    // ignore: use_build_context_synchronously
+    _fullRoutePoints = context.read<MapCubit>().polylinePoints;
+    _passedPointIndex = 0;
+
+    _polylines = MapHelper.buildInitialPolylines(_fullRoutePoints);
+
+    if (mounted) setState(() {});
+
+    if (_mapController != null && _fullRoutePoints.isNotEmpty) {
+      await MapHelper.fitBounds(
+        controller: _mapController!,
+        padding: 80,
+        points: _fullRoutePoints,
+      );
+    }
+  }
+
+  void _clearTripState() {
+    _priceController.clear();
+    _polylines.clear();
+    _fullRoutePoints.clear();
+    _passedPointIndex = 0;
+    _markers.clear();
+    _driverPosition = null;
+    _driverBearing = 0;
+    _initLocationStream();
   }
 }
