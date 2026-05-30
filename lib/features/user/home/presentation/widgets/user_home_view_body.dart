@@ -124,12 +124,6 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
           );
         } else if (state is TripAccepted) {
           _onTripAccepted(state.trip);
-          PremiumSnackBar.show(
-            context,
-            icon: Icons.check_circle_rounded,
-            message: 'Driver is on the way!',
-            color: const Color(0xFF00C853),
-          );
         } else if (state is TripArrived) {
           _onDriverArrived(state.trip);
           PremiumSnackBar.show(
