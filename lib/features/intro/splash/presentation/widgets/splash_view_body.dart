@@ -24,7 +24,10 @@ class _SplashViewBodyState extends State<SplashViewBody> {
   void checkNavigation() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      final role = user.photoURL ?? "";
+      // Prefer the persisted role: Google sign-in overwrites photoURL with the
+      // account avatar, so photoURL is only a reliable role marker for legacy
+      // email/password accounts.
+      final role = Prefs.getUser()?.role ?? user.photoURL ?? "";
       if (role == 'user') {
         context.go(AppRoutes.userMain);
       } else {

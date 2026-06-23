@@ -12,7 +12,20 @@
           "package_name": "com.example.taxi_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "609710171216-j0psaarnj3niukn6gqd4eru5qd1lo08v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.taxi_app",
+            "certificate_hash": "4158674b5b0ad8b45c8a1a46eda4c7f5c92cb25b"
+          }
+        },
+        {
+          "client_id": "609710171216-rod5nas8t2segc8vvk6knv6nivi69agi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCktiI3diwjirvsm0Y10S8mx6CFqJRR-u8"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "609710171216-rod5nas8t2segc8vvk6knv6nivi69agi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "609710171216-fm0psm7tdksj4fqlkquhikbscf8oi3m9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.taxiApp"
+              }
+            }
+          ]
         }
       }
     }

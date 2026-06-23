@@ -70,6 +70,67 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  Future<void> loginWithGoogle() async {
+    emit(AuthLoading());
+    final result = await authRepo.loginWithGoogle();
+    result.fold(
+      (l) => l == kGoogleSignInCancelled
+          ? emit(AuthInitial())
+          : emit(AuthError(message: l)),
+      (user) => (user.role ?? '').isEmpty
+          ? emit(AuthGoogleNeedsProfile(googleData: user))
+          : emit(AuthLoaded(user: user)),
+    );
+  }
+
+  Future<void> completeGoogleUserProfile({
+    required String name,
+    required String phone,
+    String? googlePhotoUrl,
+    File? image,
+  }) async {
+    emit(AuthLoading());
+    final result = await authRepo.completeGoogleUserProfile(
+      name: name,
+      phone: phone,
+      googlePhotoUrl: googlePhotoUrl,
+      image: image,
+    );
+    result.fold(
+      (l) => emit(AuthError(message: l)),
+      (r) => emit(AuthLoaded(user: r)),
+    );
+  }
+
+  Future<void> completeGoogleDriverProfile({
+    required String name,
+    required String phone,
+    String? googlePhotoUrl,
+    File? image,
+    required String carModel,
+    required String carColor,
+    required String carPlateNumber,
+    required double lat,
+    required double lng,
+  }) async {
+    emit(AuthLoading());
+    final result = await authRepo.completeGoogleDriverProfile(
+      name: name,
+      phone: phone,
+      googlePhotoUrl: googlePhotoUrl,
+      image: image,
+      carModel: carModel,
+      carColor: carColor,
+      carPlateNumber: carPlateNumber,
+      lat: lat,
+      lng: lng,
+    );
+    result.fold(
+      (l) => emit(AuthError(message: l)),
+      (r) => emit(AuthLoaded(user: r)),
+    );
+  }
+
   Future<void> forgetPassword({required String email}) async {
     emit(AuthForgetPasswordLoading());
     var result = await authRepo.forgetPassword(email: email);

@@ -1,5 +1,8 @@
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/routing/app_routes.dart';
+import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
+import 'package:taxi_app/features/auth/presentation/pages/complete_profile_view.dart';
 import 'package:taxi_app/features/auth/presentation/pages/login_view.dart';
 import 'package:taxi_app/features/auth/presentation/pages/register_view.dart';
 import 'package:taxi_app/features/driver/driver_map/presentation/pages/driver_map_view.dart';
@@ -19,7 +22,13 @@ import 'package:taxi_app/features/user/profile/presentation/pages/change_passwor
 import 'package:taxi_app/features/user/profile/presentation/pages/user_update_profile_view.dart';
 
 class RouterGenerationConfig {
+  /// Root navigator key, exposed so non-widget code (e.g. push notification
+  /// handlers) can surface UI such as in-app snackbars.
+  static final GlobalKey<NavigatorState> rootNavigatorKey =
+      GlobalKey<NavigatorState>();
+
   static GoRouter router = GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: AppRoutes.splash,
     routes: [
       GoRoute(
@@ -41,6 +50,12 @@ class RouterGenerationConfig {
         path: AppRoutes.login,
         name: AppRoutes.login,
         builder: (context, state) => const LoginView(),
+      ),
+      GoRoute(
+        path: AppRoutes.completeProfile,
+        name: AppRoutes.completeProfile,
+        builder: (context, state) =>
+            CompleteProfileView(googleData: state.extra as UserInfoModel),
       ),
       GoRoute(
         path: AppRoutes.register,

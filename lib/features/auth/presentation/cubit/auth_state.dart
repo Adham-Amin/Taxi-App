@@ -11,6 +11,14 @@ final class AuthLoaded extends AuthState {
   AuthLoaded({required this.user});
 }
 
+/// Emitted after a successful Google sign-in for a brand-new account that has
+/// no Firestore profile/role yet. Carries the Google profile data so the
+/// complete-profile screen can prefill name/email/photo.
+final class AuthGoogleNeedsProfile extends AuthState {
+  final UserInfoModel googleData;
+  AuthGoogleNeedsProfile({required this.googleData});
+}
+
 final class AuthError extends AuthState {
   final String message;
   AuthError({required this.message});

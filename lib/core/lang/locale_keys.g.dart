@@ -33,6 +33,7 @@ abstract class  LocaleKeys {
   static const already_have_an_account = 'already_have_an_account';
   static const login_with_facebook = 'login_with_facebook';
   static const login_with_google = 'login_with_google';
+  static const complete_profile = 'complete_profile';
   static const or = 'or';
   static const enter_your_email = 'enter_your_email';
   static const enter_your_password = 'enter_your_password';
