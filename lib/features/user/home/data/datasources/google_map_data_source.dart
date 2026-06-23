@@ -9,6 +9,10 @@ abstract class MapDataSource {
     required LatLng origin,
     required LatLng destination,
   });
+  Future<PlaceResponse> reverseGeocode({
+    required double lat,
+    required double lng,
+  });
 }
 
 class MapDataSourceImpl implements MapDataSource {
@@ -40,5 +44,18 @@ class MapDataSourceImpl implements MapDataSource {
     return RouteResponse.fromJson(data['routes'][0]).geometry!.coordinates
         .map((e) => LatLng(e[1].toDouble(), e[0].toDouble()))
         .toList();
+  }
+
+  @override
+  Future<PlaceResponse> reverseGeocode({
+    required double lat,
+    required double lng,
+  }) async {
+    var data = await _apiService.get(
+      baseUrl: 'https://nominatim.openstreetmap.org',
+      endPoint: '/reverse?lat=$lat&lon=$lng&format=json',
+    );
+
+    return PlaceResponse.fromJson(data);
   }
 }

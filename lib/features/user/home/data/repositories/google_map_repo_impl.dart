@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi_app/core/errors/failure.dart';
+import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/features/user/home/data/datasources/google_map_data_source.dart';
 import 'package:taxi_app/features/user/home/domain/entities/place_entity.dart';
 import 'package:taxi_app/features/user/home/domain/repositories/google_map_repo.dart';
@@ -37,6 +38,29 @@ class MapRepoImpl extends MapRepo {
         destination: destination,
       );
       return Right(data);
+    } catch (e) {
+      if (e is DioException) {
+        return Left(ServerFailure.fromDioException(e));
+      } else {
+        return Left(ServerFailure(e.toString()));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, LocationModel>> reverseGeocode({
+    required double lat,
+    required double lng,
+  }) async {
+    try {
+      var place = await googleMapDataSource.reverseGeocode(lat: lat, lng: lng);
+      return Right(
+        LocationModel(
+          lat: lat,
+          lng: lng,
+          fullAddress: place.displayName ?? '',
+        ),
+      );
     } catch (e) {
       if (e is DioException) {
         return Left(ServerFailure.fromDioException(e));

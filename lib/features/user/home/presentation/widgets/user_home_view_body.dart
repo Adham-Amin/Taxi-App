@@ -50,7 +50,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
   LocationModel? _currentLocation;
   LocationModel? _destinationLocation;
 
-  final Set<Marker> _markers = {};
+  Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
   List<LatLng> _fullRoutePoints = [];
   int _passedPointIndex = 0;
@@ -494,10 +494,15 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
       LatLng(location.lat, location.lng),
       zoom: 18,
     );
-    _markers.removeWhere((m) => m.markerId.value == 'myLocation');
     final marker = await MapHelper.buildCurrentMarker(location: location);
-    _markers.add(marker);
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        _markers = {
+          ..._markers.where((m) => m.markerId.value != 'myLocation'),
+          marker,
+        };
+      });
+    }
   }
 
   Future<void> _onPickupSelected({required LocationModel pickup}) async {
@@ -509,10 +514,14 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
         zoom: 17,
       );
     }
-    _markers.add(
-      MapHelper.buildPickupMarker(pickup: LatLng(pickup.lat, pickup.lng)),
-    );
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        _markers = {
+          ..._markers.where((m) => m.markerId.value != 'pickup'),
+          MapHelper.buildPickupMarker(pickup: LatLng(pickup.lat, pickup.lng)),
+        };
+      });
+    }
   }
 
   Future<void> _onDestinationSelected({
@@ -521,8 +530,15 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
     if (_currentLocation == null) return;
 
     final dest = LatLng(destination.lat, destination.lng);
-    _markers.add(MapHelper.buildDestinationMarker(destination: dest));
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {
+        _markers = {
+          ..._markers.where((m) => m.markerId.value != 'destination'),
+          MapHelper.buildDestinationMarker(destination: dest),
+        };
+        _polylines = {};
+      });
+    }
 
     await context.read<MapCubit>().getPolylinePoints(
       origin: LatLng(_currentLocation!.lat, _currentLocation!.lng),
@@ -548,10 +564,12 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
 
   void _clearTripState() {
     _priceController.clear();
-    _polylines.clear();
+    setState(() {
+      _markers = {};
+      _polylines = {};
+    });
     _fullRoutePoints.clear();
     _passedPointIndex = 0;
-    _markers.clear();
     _driverPosition = null;
     _driverBearing = 0;
     _initLocationStream();

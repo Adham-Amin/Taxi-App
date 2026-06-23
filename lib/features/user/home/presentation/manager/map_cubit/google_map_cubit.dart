@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/features/user/home/domain/entities/place_entity.dart';
 import 'package:taxi_app/features/user/home/domain/repositories/google_map_repo.dart';
 part 'google_map_state.dart';
@@ -50,5 +51,17 @@ class MapCubit extends Cubit<GoogleMapState> {
       polylinePoints = r;
       emit(PolylineLoaded());
     });
+  }
+
+  Future<void> reverseGeocode({
+    required double lat,
+    required double lng,
+  }) async {
+    emit(AddressLoading());
+    var result = await googleMapRepo.reverseGeocode(lat: lat, lng: lng);
+    result.fold(
+      (l) => emit(GoogleMapError(failure: l.message)),
+      (r) => emit(AddressLoaded(location: r)),
+    );
   }
 }

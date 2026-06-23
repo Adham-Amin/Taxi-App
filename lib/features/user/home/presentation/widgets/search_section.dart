@@ -6,6 +6,8 @@ import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
 import 'package:taxi_app/features/user/home/presentation/manager/map_cubit/google_map_cubit.dart';
+import 'package:taxi_app/features/user/home/presentation/pages/location_picker_view.dart';
+import 'package:taxi_app/features/user/home/presentation/widgets/pick_on_map_button.dart';
 import 'package:taxi_app/features/user/home/presentation/widgets/search_list.dart';
 
 class SearchSection extends StatefulWidget {
@@ -65,7 +67,29 @@ class _SearchSectionState extends State<SearchSection> {
             widget.destination(dest);
           },
         ),
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: PickOnMapButton(onTap: _pickDestinationFromMap),
+        ),
       ],
     );
+  }
+
+  Future<void> _pickDestinationFromMap() async {
+    final mapCubit = context.read<MapCubit>();
+    mapCubit.clearPlaces();
+
+    final result = await Navigator.of(context).push<LocationModel>(
+      MaterialPageRoute(
+        builder: (_) => BlocProvider.value(
+          value: mapCubit,
+          child: LocationPickerView(title: LocaleKeys.to.tr()),
+        ),
+      ),
+    );
+
+    if (result == null || !mounted) return;
+    _searchController.text = result.fullAddress;
+    widget.destination(result);
   }
 }

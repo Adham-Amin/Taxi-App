@@ -24,7 +24,7 @@ class ApiService {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          options.headers['User-Agent'] = 'FlutterApp';
+          options.headers['User-Agent'] = 'Taxi Rider App';
           options.headers['Accept-Language'] = 'en';
           return handler.next(options);
         },

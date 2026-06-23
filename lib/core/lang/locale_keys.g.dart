@@ -110,4 +110,9 @@ abstract class  LocaleKeys {
   static const trips_total = 'trips_total';
   static const avg_fare = 'avg_fare';
   static const total_earned = 'total_earned';
+  static const pick_on_map = 'pick_on_map';
+  static const select_location = 'select_location';
+  static const move_map_to_select = 'move_map_to_select';
+  static const confirm_location = 'confirm_location';
+  static const locating_address = 'locating_address';
 }

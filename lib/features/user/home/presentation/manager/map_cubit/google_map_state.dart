@@ -12,6 +12,13 @@ class PolylineLoading extends GoogleMapState {}
 
 class PolylineLoaded extends GoogleMapState {}
 
+class AddressLoading extends GoogleMapState {}
+
+class AddressLoaded extends GoogleMapState {
+  final LocationModel location;
+  AddressLoaded({required this.location});
+}
+
 class GoogleMapError extends GoogleMapState {
   final String failure;
   GoogleMapError({required this.failure});

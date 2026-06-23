@@ -105,5 +105,10 @@
   "no_requests" : "لا يوجد طلبات ",
   "trips_total" : "الرحلات الكلية",
   "total_earned" : "الأجر الكلي",
-  "avg_fare" : "المبلغ الوسيط"
+  "avg_fare" : "المبلغ الوسيط",
+  "pick_on_map" : "اختر من الخريطة",
+  "select_location" : "اختر الموقع",
+  "move_map_to_select" : "حرّك الخريطة لتحديد الموقع",
+  "confirm_location" : "تأكيد الموقع",
+  "locating_address" : "جارٍ تحديد العنوان..."
 }

@@ -8,9 +8,9 @@ import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
-// ignore: unused_import
-import 'package:taxi_app/features/user/home/domain/entities/place_entity.dart';
 import 'package:taxi_app/features/user/home/presentation/manager/map_cubit/google_map_cubit.dart';
+import 'package:taxi_app/features/user/home/presentation/pages/location_picker_view.dart';
+import 'package:taxi_app/features/user/home/presentation/widgets/pick_on_map_button.dart';
 import 'package:taxi_app/features/user/home/presentation/widgets/pick_up_location_list.dart';
 import 'package:taxi_app/features/user/home/presentation/widgets/search_section.dart';
 
@@ -86,9 +86,31 @@ class _LocationFieldsColumnState extends State<LocationFieldsColumn> {
             widget.currentLocation(loc);
           },
         ),
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: PickOnMapButton(onTap: _pickPickupFromMap),
+        ),
         8.hs,
         SearchSection(destination: widget.destination),
       ],
     );
+  }
+
+  Future<void> _pickPickupFromMap() async {
+    final mapCubit = context.read<MapCubit>();
+    mapCubit.clearPlaces();
+
+    final result = await Navigator.of(context).push<LocationModel>(
+      MaterialPageRoute(
+        builder: (_) => BlocProvider.value(
+          value: mapCubit,
+          child: LocationPickerView(title: LocaleKeys.from.tr()),
+        ),
+      ),
+    );
+
+    if (result == null || !mounted) return;
+    fromController.text = result.fullAddress;
+    widget.currentLocation(result);
   }
 }
