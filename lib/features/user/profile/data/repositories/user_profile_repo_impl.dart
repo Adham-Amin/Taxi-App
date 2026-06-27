@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:taxi_app/core/errors/failure.dart';
 import 'package:taxi_app/core/services/shared_preferences_service.dart';
@@ -20,10 +22,12 @@ class UserProfileRepoImpl extends UserProfileRepo {
 
   @override
   Future<Either<Failure, void>> updateUserProfile({
+    required File? file,
     required UserInfoModel profileUserModel,
   }) async {
     try {
       await userProfileDataSource.updateUserProfile(
+        file: file,
         userModel: profileUserModel,
       );
       var user = await userProfileDataSource.getUserProfile();

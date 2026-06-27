@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/core/services/api_service.dart';
+import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/features/user/home/data/datasources/google_map_data_source.dart';
 import 'package:taxi_app/features/user/home/data/datasources/trip_data_source.dart';
 import 'package:taxi_app/features/user/home/data/repositories/google_map_repo_impl.dart';
@@ -23,6 +24,7 @@ class UserHomeView extends StatelessWidget {
               googleMapDataSource: MapDataSourceImpl(
                 apiService: ApiService(Dio()),
               ),
+              locationService: LocationServices(),
             ),
           ),
         ),

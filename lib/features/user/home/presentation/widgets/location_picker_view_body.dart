@@ -9,8 +9,11 @@ import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/models/location_model.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
+import 'package:taxi_app/core/utils/egypt_geo.dart';
 import 'package:taxi_app/core/widgets/custom_button.dart';
+import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:taxi_app/features/user/home/domain/entities/place_entity.dart';
 import 'package:taxi_app/features/user/home/presentation/manager/map_cubit/google_map_cubit.dart';
 
@@ -40,14 +43,21 @@ class _LocationPickerViewBodyState extends State<LocationPickerViewBody> {
     final initial = widget.initialLocation;
     _centerTarget = initial != null
         ? LatLng(initial.lat, initial.lng)
-        : const LatLng(27.003337, 29.9530391);
+        : EgyptGeo.center;
     _initialCameraPosition = CameraPosition(
       target: _centerTarget,
       zoom: initial != null ? 16 : 5,
     );
-    // Resolve the address for the starting position so confirm works
-    // even before the user moves the map.
-    WidgetsBinding.instance.addPostFrameCallback((_) => _resolveCenter());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (initial != null) {
+        // Resolve the address for the starting position so confirm works
+        // even before the user moves the map.
+        _resolveCenter();
+      } else {
+        // No starting point: open on the user's current location immediately.
+        context.read<MapCubit>().getCurrentLocation();
+      }
+    });
   }
 
   @override
@@ -76,7 +86,28 @@ class _LocationPickerViewBodyState extends State<LocationPickerViewBody> {
 
   void _onConfirm(GoogleMapState state) {
     if (state is! AddressLoaded) return;
+    if (!EgyptGeo.isInside(state.location.lat, state.location.lng)) {
+      customSnackBar(
+        context: context,
+        message: LocaleKeys.location_outside_egypt.tr(),
+        type: AnimatedSnackBarType.warning,
+      );
+      return;
+    }
     Navigator.of(context).pop(state.location);
+  }
+
+  Future<void> _onCurrentLocationLoaded(LocationModel location) async {
+    final target = LatLng(location.lat, location.lng);
+    _centerTarget = target;
+    if (_mapController != null) {
+      await _mapController!.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: target, zoom: 16),
+        ),
+      );
+    }
+    _resolveCenter();
   }
 
   void _onSearchChanged(String value) {
@@ -111,27 +142,43 @@ class _LocationPickerViewBodyState extends State<LocationPickerViewBody> {
   Widget build(BuildContext context) {
     final isLight = Theme.of(context).brightness == Brightness.light;
     return Scaffold(
-      body: Stack(
-        children: [
-          GoogleMap(
-            myLocationButtonEnabled: false,
-            zoomControlsEnabled: false,
-            compassEnabled: false,
-            tiltGesturesEnabled: false,
-            initialCameraPosition: _initialCameraPosition,
-            onMapCreated: (controller) {
-              _mapController = controller;
-              MapHelper.applyMapStyle(controller, isLight);
-            },
-            onCameraMove: (position) => _centerTarget = position.target,
-            onCameraIdle: _onCameraIdle,
-          ),
-          // Fixed center pin floating above the map center.
-          const Center(child: _CenterPin()),
-          _buildBackButton(),
-          _buildSearchBar(),
-          _buildBottomCard(),
-        ],
+      body: BlocListener<MapCubit, GoogleMapState>(
+        listenWhen: (_, current) =>
+            current is CurrentLocationLoaded || current is GoogleMapError,
+        listener: (context, state) {
+          if (state is CurrentLocationLoaded) {
+            _onCurrentLocationLoaded(state.location);
+          } else if (state is GoogleMapError) {
+            customSnackBar(
+              context: context,
+              message: state.failure,
+              type: AnimatedSnackBarType.warning,
+            );
+          }
+        },
+        child: Stack(
+          children: [
+            GoogleMap(
+              myLocationButtonEnabled: false,
+              zoomControlsEnabled: false,
+              compassEnabled: false,
+              tiltGesturesEnabled: false,
+              cameraTargetBounds: CameraTargetBounds(EgyptGeo.bounds),
+              initialCameraPosition: _initialCameraPosition,
+              onMapCreated: (controller) {
+                _mapController = controller;
+                MapHelper.applyMapStyle(controller, isLight);
+              },
+              onCameraMove: (position) => _centerTarget = position.target,
+              onCameraIdle: _onCameraIdle,
+            ),
+            // Fixed center pin floating above the map center.
+            const Center(child: _CenterPin()),
+            _buildBackButton(),
+            _buildSearchBar(),
+            _buildBottomCard(),
+          ],
+        ),
       ),
     );
   }

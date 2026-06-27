@@ -59,6 +59,13 @@ class NotificationService {
   /// backend can target this device. [role] selects the collection.
   static Future<void> saveTokenForUser(String uid, String role) async {
     if (uid.isEmpty) return;
+
+    // iOS Simulator doesn't support APNS → skip silently
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
+      final apns = await _messaging.getAPNSToken();
+      if (apns == null) return;
+    }
+
     final token = await _messaging.getToken();
     if (token == null) return;
     await _writeToken(uid, token, role: role);
@@ -71,10 +78,9 @@ class NotificationService {
   }) async {
     final collection = role == 'driver' ? 'drivers' : 'users';
     try {
-      await FirebaseFirestore.instance
-          .collection(collection)
-          .doc(uid)
-          .set({'fcmToken': token}, SetOptions(merge: true));
+      await FirebaseFirestore.instance.collection(collection).doc(uid).set({
+        'fcmToken': token,
+      }, SetOptions(merge: true));
     } catch (e) {
       debugPrint('Failed to save FCM token: $e');
     }

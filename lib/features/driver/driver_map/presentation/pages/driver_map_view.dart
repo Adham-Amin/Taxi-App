@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/core/services/api_service.dart';
+import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/features/driver/driver_map/data/datasources/driver_map_data_source.dart';
 import 'package:taxi_app/features/driver/driver_map/data/repositories/driver_map_repo_impl.dart';
 import 'package:taxi_app/features/driver/driver_map/presentation/cubit/driver_map_cubit.dart';
@@ -30,6 +31,7 @@ class DriverMapView extends StatelessWidget {
         BlocProvider(
           create: (context) => MapCubit(
             googleMapRepo: MapRepoImpl(
+              locationService: LocationServices(),
               googleMapDataSource: MapDataSourceImpl(
                 apiService: ApiService(Dio()),
               ),

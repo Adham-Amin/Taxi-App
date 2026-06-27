@@ -4,6 +4,13 @@ abstract class GoogleMapState {}
 
 class GoogleMapInitial extends GoogleMapState {}
 
+class CurrentLocationLoading extends GoogleMapState {}
+
+class CurrentLocationLoaded extends GoogleMapState {
+  final LocationModel location;
+  CurrentLocationLoaded({required this.location});
+}
+
 class PlacesLoading extends GoogleMapState {}
 
 class PlacesLoaded extends GoogleMapState {}

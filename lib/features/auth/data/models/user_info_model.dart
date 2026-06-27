@@ -1,6 +1,6 @@
 class UserInfoModel {
   final String? id;
-  final String? image;
+  String? image;
   final String? phone;
   final String? name;
   final String? email;

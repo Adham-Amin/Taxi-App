@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
-import 'package:taxi_app/core/functions/image_uploader.dart';
 import 'package:taxi_app/core/functions/validators.dart';
 import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/services/shared_preferences_service.dart';
@@ -103,42 +100,29 @@ class _UserUpdateProfileViewBodyState extends State<UserUpdateProfileViewBody> {
             builder: (context, state) {
               return CustomButton(
                 isLoading: state is UserProfileLoading,
-                onTap: () async {
-                  if (file != null) {
-                    var imageUrl = await uploadImageToCloudinary(file!);
-                    context.read<UserProfileCubit>().updateUserProfile(
-                      profileUserModel: UserInfoModel(
-                        image: imageUrl,
-                        name: nameController.text,
-                        phone: phoneController.text,
-                      ),
-                    );
-                  } else if (file == null) {
-                    if (nameController.text != Prefs.getUser()!.name ||
-                        phoneController.text != Prefs.getUser()!.phone) {
-                      context.read<UserProfileCubit>().updateUserProfile(
-                        profileUserModel: UserInfoModel(
-                          name: nameController.text,
-                          phone: phoneController.text,
-                        ),
-                      );
-                    } else {
-                      customSnackBar(
-                        context: context,
-                        message: LocaleKeys.please_change_at_least_one_field
-                            .tr(),
-                        type: AnimatedSnackBarType.warning,
-                      );
-                      setState(() {});
-                    }
-                  } else {
-                    customSnackBar(
-                      context: context,
-                      message: LocaleKeys.please_fill_at_least_one_field.tr(),
-                      type: AnimatedSnackBarType.warning,
-                    );
-                  }
-                },
+                onTap: state is UserProfileLoading
+                    ? null
+                    : () async {
+                        if (file != null ||
+                            nameController.text != Prefs.getUser()!.name ||
+                            phoneController.text != Prefs.getUser()!.phone) {
+                          context.read<UserProfileCubit>().updateUserProfile(
+                            file: file,
+                            profileUserModel: UserInfoModel(
+                              name: nameController.text,
+                              phone: phoneController.text,
+                            ),
+                          );
+                        } else {
+                          customSnackBar(
+                            context: context,
+                            message: LocaleKeys.please_change_at_least_one_field
+                                .tr(),
+                            type: AnimatedSnackBarType.warning,
+                          );
+                          setState(() {});
+                        }
+                      },
                 title: LocaleKeys.save.tr(),
               );
             },

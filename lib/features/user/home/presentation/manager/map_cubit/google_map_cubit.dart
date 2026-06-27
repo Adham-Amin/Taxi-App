@@ -1,8 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/models/location_model.dart';
+import 'package:taxi_app/core/utils/egypt_geo.dart';
 import 'package:taxi_app/features/user/home/domain/entities/place_entity.dart';
 import 'package:taxi_app/features/user/home/domain/repositories/google_map_repo.dart';
+import 'package:easy_localization/easy_localization.dart';
 part 'google_map_state.dart';
 
 class MapCubit extends Cubit<GoogleMapState> {
@@ -13,6 +16,21 @@ class MapCubit extends Cubit<GoogleMapState> {
   List<PlaceEntity> pickUpPlaces = [];
   List<PlaceEntity> distinationplaces = [];
   List<LatLng> polylinePoints = [];
+
+  /// Synchronous guard for presentation-layer validation of selected points.
+  bool isInsideEgypt(double lat, double lng) => EgyptGeo.isInside(lat, lng);
+
+  Future<void> getCurrentLocation() async {
+    emit(CurrentLocationLoading());
+    final result = await googleMapRepo.getCurrentLocation();
+    result.fold((l) => emit(GoogleMapError(failure: l.message)), (location) {
+      if (!EgyptGeo.isInside(location.lat, location.lng)) {
+        emit(GoogleMapError(failure: LocaleKeys.location_outside_egypt.tr()));
+        return;
+      }
+      emit(CurrentLocationLoaded(location: location));
+    });
+  }
 
   Future<void> getPickUpPlaces({required String query}) async {
     emit(PlacesLoading());

@@ -3,13 +3,30 @@ import 'package:dio/dio.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi_app/core/errors/failure.dart';
 import 'package:taxi_app/core/models/location_model.dart';
+import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/features/user/home/data/datasources/google_map_data_source.dart';
 import 'package:taxi_app/features/user/home/domain/entities/place_entity.dart';
+import 'package:taxi_app/features/user/home/domain/entities/route_info_entity.dart';
 import 'package:taxi_app/features/user/home/domain/repositories/google_map_repo.dart';
 
 class MapRepoImpl extends MapRepo {
   final MapDataSource googleMapDataSource;
-  MapRepoImpl({required this.googleMapDataSource});
+  final LocationServices locationService;
+  MapRepoImpl({
+    required this.googleMapDataSource,
+    required this.locationService,
+  });
+
+  @override
+  Future<Either<Failure, LocationModel>> getCurrentLocation() async {
+    try {
+      final location = await locationService.getCurrentLocation();
+      return Right(location);
+    } catch (e) {
+      final message = e.toString().replaceFirst('Exception: ', '');
+      return Left(ServerFailure(message));
+    }
+  }
 
   @override
   Future<Either<Failure, List<PlaceEntity>>> getPlaces({
@@ -55,12 +72,28 @@ class MapRepoImpl extends MapRepo {
     try {
       var place = await googleMapDataSource.reverseGeocode(lat: lat, lng: lng);
       return Right(
-        LocationModel(
-          lat: lat,
-          lng: lng,
-          fullAddress: place.displayName ?? '',
-        ),
+        LocationModel(lat: lat, lng: lng, fullAddress: place.displayName ?? ''),
       );
+    } catch (e) {
+      if (e is DioException) {
+        return Left(ServerFailure.fromDioException(e));
+      } else {
+        return Left(ServerFailure(e.toString()));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, RouteInfoEntity>> getRoute({
+    required LatLng origin,
+    required LatLng destination,
+  }) async {
+    try {
+      var route = await googleMapDataSource.getRoute(
+        origin: origin,
+        destination: destination,
+      );
+      return Right(route);
     } catch (e) {
       if (e is DioException) {
         return Left(ServerFailure.fromDioException(e));

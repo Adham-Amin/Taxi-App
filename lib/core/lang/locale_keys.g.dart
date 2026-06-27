@@ -116,4 +116,5 @@ abstract class  LocaleKeys {
   static const move_map_to_select = 'move_map_to_select';
   static const confirm_location = 'confirm_location';
   static const locating_address = 'locating_address';
+  static const location_outside_egypt = 'location_outside_egypt';
 }

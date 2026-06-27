@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/features/auth/data/models/user_info_model.dart';
 import 'package:taxi_app/features/user/profile/domain/repositories/user_profile_repo.dart';
@@ -21,9 +22,11 @@ class UserProfileCubit extends Cubit<UserProfileState> {
 
   Future<void> updateUserProfile({
     required UserInfoModel profileUserModel,
+    required File? file,
   }) async {
     emit(UserProfileLoading());
     var result = await userProfileRepo.updateUserProfile(
+      file: file,
       profileUserModel: profileUserModel,
     );
     result.fold(

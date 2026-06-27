@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:taxi_app/core/functions/extentions.dart';
 import 'package:taxi_app/core/lang/locale_keys.g.dart';
 import 'package:taxi_app/core/models/location_model.dart';
-import 'package:taxi_app/core/services/location_service.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/widgets/custom_text_form_field.dart';
 import 'package:taxi_app/features/user/home/presentation/manager/map_cubit/google_map_cubit.dart';
@@ -48,28 +47,34 @@ class _LocationFieldsColumnState extends State<LocationFieldsColumn> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomTextFormField(
-          hintText: LocaleKeys.from.tr(),
-          controller: fromController,
-          onChanged: (value) {
-            if (_debounce?.isActive ?? false) _debounce!.cancel();
-            _debounce = Timer(const Duration(milliseconds: 400), () {
-              if (value.isNotEmpty) {
-                context.read<MapCubit>().getPickUpPlaces(query: value);
-              } else {
-                context.read<MapCubit>().clearPlaces();
-              }
-            });
+        BlocListener<MapCubit, GoogleMapState>(
+          listenWhen: (_, current) => current is CurrentLocationLoaded,
+          listener: (context, state) {
+            if (state is CurrentLocationLoaded) {
+              fromController.text = state.location.fullAddress;
+              widget.currentLocation(state.location);
+            }
           },
-          suffixIcon: IconButton(
-            onPressed: () async {
-              context.read<MapCubit>().clearPlaces();
-              final loc = await LocationServices().getCurrentLocation();
-              fromController.text = loc.fullAddress;
-              widget.currentLocation(loc);
-              setState(() {});
+          child: CustomTextFormField(
+            hintText: LocaleKeys.from.tr(),
+            controller: fromController,
+            onChanged: (value) {
+              if (_debounce?.isActive ?? false) _debounce!.cancel();
+              _debounce = Timer(const Duration(milliseconds: 400), () {
+                if (value.isNotEmpty) {
+                  context.read<MapCubit>().getPickUpPlaces(query: value);
+                } else {
+                  context.read<MapCubit>().clearPlaces();
+                }
+              });
             },
-            icon: Icon(Icons.my_location, color: AppColors.darkRed),
+            suffixIcon: IconButton(
+              onPressed: () {
+                context.read<MapCubit>().clearPlaces();
+                context.read<MapCubit>().getCurrentLocation();
+              },
+              icon: Icon(Icons.my_location, color: AppColors.darkRed),
+            ),
           ),
         ),
         10.hs,

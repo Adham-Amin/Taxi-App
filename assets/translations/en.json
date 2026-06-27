@@ -111,5 +111,6 @@
   "select_location": "Select location",
   "move_map_to_select": "Move the map to position the pin",
   "confirm_location": "Confirm location",
-  "locating_address": "Locating address..."
+  "locating_address": "Locating address...",
+  "location_outside_egypt": "Selected location is outside Egypt. Please pick a location inside Egypt."
 }

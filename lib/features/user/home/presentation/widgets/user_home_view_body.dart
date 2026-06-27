@@ -16,6 +16,7 @@ import 'package:taxi_app/core/theme_cubit/theme_cubit.dart';
 import 'package:taxi_app/core/theme_cubit/theme_state.dart';
 import 'package:taxi_app/core/utils/app_colors.dart';
 import 'package:taxi_app/core/utils/app_styles.dart';
+import 'package:taxi_app/core/utils/egypt_geo.dart';
 import 'package:taxi_app/core/widgets/animated_wrappers.dart';
 import 'package:taxi_app/core/widgets/custom_snack_bar.dart';
 import 'package:taxi_app/core/widgets/premium_snack_bar.dart';
@@ -50,6 +51,10 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
   LocationModel? _currentLocation;
   LocationModel? _destinationLocation;
 
+  /// The camera auto-centers on the user only once (on open / first GPS fix);
+  /// afterwards the user is free to pan without being yanked back.
+  bool _hasCentered = false;
+
   Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
   List<LatLng> _fullRoutePoints = [];
@@ -75,7 +80,7 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
     _initLocationStream();
     _priceController = TextEditingController();
     initialCameraPosition = const CameraPosition(
-      target: LatLng(27.003337, 29.9530391),
+      target: EgyptGeo.center,
       zoom: 5,
     );
 
@@ -179,21 +184,39 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
   }
 
   Widget _buildMap(bool isLight) {
-    return BlocListener<ThemeCubit, ThemeState>(
-      listener: (context, state) {
-        if (_mapController != null) {
-          MapHelper.applyMapStyle(
-            _mapController!,
-            state.themeMode == ThemeMode.light,
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ThemeCubit, ThemeState>(
+          listener: (context, state) {
+            if (_mapController != null) {
+              MapHelper.applyMapStyle(
+                _mapController!,
+                state.themeMode == ThemeMode.light,
+              );
+            }
+          },
+        ),
+        // Surfaces location/Egypt-validation failures from the pickup icon.
+        BlocListener<MapCubit, GoogleMapState>(
+          listenWhen: (_, current) => current is GoogleMapError,
+          listener: (context, state) {
+            if (state is GoogleMapError) {
+              customSnackBar(
+                context: context,
+                message: state.failure,
+                type: AnimatedSnackBarType.warning,
+              );
+            }
+          },
+        ),
+      ],
       child: GoogleMap(
         myLocationButtonEnabled: false,
         zoomControlsEnabled: false,
         compassEnabled: false,
         rotateGesturesEnabled: true,
         tiltGesturesEnabled: false,
+        cameraTargetBounds: CameraTargetBounds(EgyptGeo.bounds),
         initialCameraPosition: initialCameraPosition,
         markers: _markers,
         polylines: _polylines,
@@ -489,11 +512,16 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
 
   Future<void> _updateLocation(LocationModel location) async {
     if (_mapController == null) return;
-    await MapHelper.smoothCameraFollow(
-      _mapController!,
-      LatLng(location.lat, location.lng),
-      zoom: 18,
-    );
+    // Center the camera only on the first GPS fix (on open); afterwards keep
+    // the live marker in sync without yanking the camera back from a user pan.
+    if (!_hasCentered) {
+      _hasCentered = true;
+      await MapHelper.smoothCameraFollow(
+        _mapController!,
+        LatLng(location.lat, location.lng),
+        zoom: 18,
+      );
+    }
     final marker = await MapHelper.buildCurrentMarker(location: location);
     if (mounted) {
       setState(() {
@@ -506,6 +534,10 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
   }
 
   Future<void> _onPickupSelected({required LocationModel pickup}) async {
+    if (!EgyptGeo.isInside(pickup.lat, pickup.lng)) {
+      _showOutsideEgypt();
+      return;
+    }
     _currentLocation = pickup;
     if (_mapController != null) {
       await MapHelper.smoothCameraFollow(
@@ -527,6 +559,10 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
   Future<void> _onDestinationSelected({
     required LocationModel destination,
   }) async {
+    if (!EgyptGeo.isInside(destination.lat, destination.lng)) {
+      _showOutsideEgypt();
+      return;
+    }
     if (_currentLocation == null) return;
 
     final dest = LatLng(destination.lat, destination.lng);
@@ -560,6 +596,14 @@ class _UserHomeViewBodyState extends State<UserHomeViewBody>
         points: _fullRoutePoints,
       );
     }
+  }
+
+  void _showOutsideEgypt() {
+    customSnackBar(
+      context: context,
+      message: LocaleKeys.location_outside_egypt.tr(),
+      type: AnimatedSnackBarType.warning,
+    );
   }
 
   void _clearTripState() {
